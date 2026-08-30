@@ -19,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry('/solutions', 0.9, 'monthly'),
     entry('/why-aspis', 0.8, 'monthly'),
     entry('/resources', 0.8, 'weekly'),
+    entry('/resources/white-papers', 0.7, 'weekly'),
+    entry('/resources/solution-briefs', 0.7, 'weekly'),
+    entry('/resources/threat-research', 0.7, 'weekly'),
+    entry('/resources/deployment-guides', 0.6, 'monthly'),
+    entry('/resources/compliance', 0.6, 'monthly'),
+    entry('/newsroom', 0.6, 'weekly'),
     entry('/about', 0.6, 'monthly'),
     entry('/leadership', 0.6, 'monthly'),
     entry('/partners', 0.6, 'monthly'),
@@ -28,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry('/contact', 0.7, 'monthly'),
     ...PRODUCT_KEYS.map((k) => entry(`/products/${k}`, 0.9, 'monthly')),
     ...SOLUTION_KEYS.map((k) => entry(`/solutions/${k}`, 0.8, 'monthly')),
+    entry('/capabilities/platform-architecture', 0.9, 'monthly'),
     ...CAPABILITY_KEYS.map((k) => entry(`/capabilities/${k}`, 0.7, 'monthly')),
   ];
 }

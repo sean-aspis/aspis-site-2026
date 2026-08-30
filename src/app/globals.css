@@ -393,6 +393,125 @@ img {
   background: transparent;
 }
 
+
+/* --------------------------------------------------------------------------
+   Links inside running prose must be distinguishable without relying on
+   colour (WCAG 1.4.1), so they carry an underline the standalone nav and
+   card links don't need.
+   -------------------------------------------------------------------------- */
+.lnk-inline {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.lnk-inline:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Anchor targets must clear the sticky header when jumped to. */
+:target {
+  scroll-margin-top: 110px;
+}
+
+/* Decorative device and console mocks are exposed as a single labelled image
+   (role="img"), so nothing inside them should be focusable or announced. */
+[data-mock] * {
+  user-select: none;
+}
+
+.crumb {
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.crumb:hover {
+  color: var(--accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   Architecture diagrams.
+   Stacked bands with a connector between them. Vertical at every width, so
+   the mobile view is the same diagram rather than a shrunken desktop one.
+   -------------------------------------------------------------------------- */
+.stack-diagram {
+  display: grid;
+  gap: 30px;
+  max-width: 880px;
+}
+
+.stack-band {
+  position: relative;
+  border: 1px solid var(--line);
+  padding: clamp(18px, 2vw, 26px);
+  display: grid;
+  gap: 10px;
+}
+
+/* The connector: a short rule with an arrowhead, drawn in the gap below each
+   band except the last. */
+.stack-band[data-last='false']::after {
+  content: '';
+  position: absolute;
+  left: clamp(18px, 2vw, 26px);
+  bottom: -30px;
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(180deg, var(--band-color), rgba(122, 160, 255, 0.14));
+}
+.stack-band[data-last='false']::before {
+  content: '';
+  position: absolute;
+  left: clamp(14px, 2vw, 22px);
+  bottom: -12px;
+  width: 9px;
+  height: 9px;
+  border-right: 1px solid var(--band-color);
+  border-bottom: 1px solid var(--band-color);
+  transform: rotate(45deg);
+  opacity: 0.85;
+}
+
+.stack-band-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+
+/* Horizontal process rows collapse to vertical below the tablet breakpoint. */
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+}
+.flow-step {
+  flex: 1 1 min(180px, 100%);
+  border: 1px solid var(--line);
+  padding: 16px 18px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  flex: 0 0 auto;
+}
+@media (max-width: 720px) {
+  .flow-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .flow-arrow {
+    justify-content: flex-start;
+    transform: rotate(90deg);
+    padding-left: 18px;
+  }
+}
+
 /* Card and tile hovers.
    The design file hovers to a lighter ground, not a lift — a lift pulls a cell
    out of a collapsed-border grid and breaks the shared hairline. Border colour
