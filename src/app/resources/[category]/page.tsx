@@ -1,47 +1,45 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { PAGES } from '@/data/pages';
 import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
 import { ChapterHeader } from '@/components/ui/Primitives';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import DocumentCard from '@/components/ui/DocumentCard';
+import { docsForCategory, type DocCategory } from '@/data/documents';
 
 /**
  * Resource categories previously all resolved to /resources, so five distinct
- * nav labels led to one page. Each now has its own route.
+ * nav labels led to one page. Each now has its own route, and each lists the
+ * real documents filed under it (src/data/documents.ts).
  *
- * A category lists the real items the design file carries for it and says
- * plainly when more is coming. No documents, dates or research are invented.
+ * Two categories — threat research and deployment guides — have no published
+ * document yet. They say so plainly and point at what does exist rather than
+ * inventing a listing.
  */
 const CATEGORIES = {
   'white-papers': {
     name: 'White Papers',
-    kind: 'WHITE PAPER',
     accent: 'var(--cyan)',
     lede: 'Technical and strategic guidance for CISOs, security architects, compliance leaders, and government security professionals.',
   },
   'solution-briefs': {
     name: 'Solution Briefs',
-    kind: 'SOLUTION BRIEF',
     accent: 'var(--blue)',
-    lede: 'Organized by product and mission: Enterprise, FSX, Defense, Executive, ManageiT, SentinelIQ.',
+    lede: 'Industry use cases: the threat picture a sector actually faces, and what the platform does about it.',
   },
   'threat-research': {
     name: 'Threat Research',
-    kind: 'THREAT RESEARCH',
     accent: 'var(--coral)',
     lede: 'Emerging threats affecting enterprise mobility and secure communications.',
   },
   'deployment-guides': {
     name: 'Deployment Guides',
-    kind: 'DEPLOYMENT GUIDE',
     accent: 'var(--teal)',
     lede: 'Onboarding, identity integration, provisioning, validation, hardening, and administrator enablement.',
   },
   compliance: {
     name: 'Compliance Resources',
-    kind: 'COMPLIANCE',
     accent: 'var(--amber)',
     lede: 'How ASPIS capabilities support customer programs across regulated frameworks.',
   },
@@ -63,7 +61,12 @@ export async function generateMetadata({
   const { category } = await params;
   if (!isCategory(category)) return {};
   const c = CATEGORIES[category];
-  return pageMeta({ title: c.name, description: c.lede, path: `/resources/${category}` });
+  const n = docsForCategory(category as DocCategory).length;
+  return pageMeta({
+    title: c.name,
+    description: n ? `${n} published ASPIS documents. ${c.lede}` : c.lede,
+    path: `/resources/${category}`,
+  });
 }
 
 export default async function ResourceCategory({
@@ -74,7 +77,7 @@ export default async function ResourceCategory({
   const { category } = await params;
   if (!isCategory(category)) notFound();
   const c = CATEGORIES[category];
-  const items = PAGES.resourceItems.filter((i) => i.kind === c.kind);
+  const docs = docsForCategory(category as DocCategory);
 
   return (
     <main id="main" style={{ ['--ghost-hover' as string]: c.accent } as React.CSSProperties}>
@@ -96,59 +99,35 @@ export default async function ResourceCategory({
       <section>
         <div className="container pad-standard">
           <ChapterHeader
-            eyebrow={`${items.length} AVAILABLE`}
+            eyebrow={docs.length ? `${docs.length} AVAILABLE` : 'NONE PUBLISHED YET'}
             accent={c.accent}
             caption={c.name.toUpperCase()}
           />
 
-          {items.length > 0 && (
+          {docs.length > 0 ? (
+            <div className="doc-grid" style={{ marginBottom: 'clamp(32px,3.6vw,50px)' }}>
+              {docs.map((d) => (
+                <DocumentCard key={d.slug} doc={d} />
+              ))}
+            </div>
+          ) : (
             <div
               style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit,minmax(min(300px,100%),1fr))',
-                gap: 'clamp(16px,1.8vw,22px)',
-                marginBottom: 'clamp(36px,4vw,56px)',
+                border: '1px solid var(--line)',
+                background: 'rgba(16,23,51,.35)',
+                padding: 'clamp(26px,3vw,40px)',
+                maxWidth: 760,
+                marginBottom: 'clamp(28px,3vw,40px)',
               }}
             >
-              {items.map((i) => (
-                <article
-                  key={i.t}
-                  className="card-hover"
-                  style={{
-                    border: '1px solid var(--line)',
-                    borderTop: `2px solid ${i.c}`,
-                    background: 'rgba(16,23,51,.45)',
-                    padding: 'clamp(22px,2.2vw,30px)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 12,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10,
-                      letterSpacing: '.16em',
-                      color: i.c,
-                    }}
-                  >
-                    {i.kind}
-                  </span>
-                  <h2 className="h3" style={{ fontSize: 19 }}>
-                    {i.t}
-                  </h2>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 10.5,
-                      color: 'var(--text-muted)',
-                      marginTop: 'auto',
-                    }}
-                  >
-                    {i.meta}
-                  </span>
-                </article>
-              ))}
+              <p className="lede" style={{ marginBottom: 14 }}>
+                Nothing is published under {c.name.toLowerCase()} yet.
+              </p>
+              <p className="body">
+                Rather than list material that does not exist, this page stays empty until it does.
+                The published library — {docsForCategory('white-papers').length} white papers and{' '}
+                {docsForCategory('solution-briefs').length} industry use cases — is available now.
+              </p>
             </div>
           )}
 
@@ -157,7 +136,7 @@ export default async function ResourceCategory({
               border: '1px solid var(--line)',
               background: 'rgba(16,23,51,.35)',
               padding: 'clamp(24px,2.6vw,36px)',
-              maxWidth: 720,
+              maxWidth: 760,
             }}
           >
             <div
@@ -169,7 +148,7 @@ export default async function ResourceCategory({
                 marginBottom: 12,
               }}
             >
-              MORE {c.name.toUpperCase()} COMING SOON
+              REQUEST SOMETHING SPECIFIC
             </div>
             <p className="body" style={{ marginBottom: 20 }}>
               ASPIS publishes new material as it clears technical and legal review. To be notified,
