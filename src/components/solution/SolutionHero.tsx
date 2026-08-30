@@ -14,16 +14,11 @@ export default function SolutionHero({ sol }: { sol: Solution }) {
   return (
     <section style={{ position: 'relative', overflow: 'hidden', backgroundImage: BAND_WASH_IMAGE }}>
       <div aria-hidden style={{ position: 'absolute', inset: 0, backgroundImage: sol.heroGlow }} />
-      <div
-        className="container pad-standard"
-        style={{
-          position: 'relative',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit,minmax(min(360px,100%),1fr))',
-          gap: 'clamp(36px,5vw,72px)',
-          alignItems: 'center',
-        }}
-      >
+      {/* Two columns, stated rather than inferred. `auto-fit` with a 360px
+          minimum fitted THREE tracks in the 1328px container, so the copy was
+          squeezed into 395px and 522px of the row sat empty — the hero read as
+          shoved against the left edge. See .hero-split in globals.css. */}
+      <div className="container pad-standard hero-split" style={{ position: 'relative' }}>
           <Breadcrumbs span trail={[{ name: 'Solutions', href: '/solutions' }, { name: sol.name }]} />
         <div>
           <div
