@@ -334,9 +334,12 @@ export default function Header() {
               {...(isClosing
                 ? { 'aria-hidden': true as const, inert: '' as unknown as boolean }
                 : { onMouseEnter: () => openPanel(k), onMouseLeave: scheduleClose })}
+              // Overlays the page rather than sitting in the header's flow.
+              // In flow it grew the sticky header's box, so opening a menu
+              // shoved every page below it down and closing it snapped back —
+              // the panel has to float over the content instead.
+              className="mega-panel"
               style={{
-                borderTop: '1px solid var(--line)',
-                background: 'var(--mega)',
                 animation: isClosing ? 'menuOut .16s ease-in both' : 'menuIn .18s ease-out both',
                 pointerEvents: isClosing ? 'none' : undefined,
               }}
@@ -527,14 +530,10 @@ export default function Header() {
           id="mobile-drawer"
           ref={drawerRef}
           aria-label="Primary"
-          style={{
-            borderTop: '1px solid var(--line)',
-            background: 'var(--surface-0)',
-            maxHeight: 'calc(100vh - 64px)',
-            overflowY: 'auto',
-            padding: '16px clamp(20px,5vw,32px) 30px',
-            animation: 'drawerIn .24s cubic-bezier(.22,.7,.3,1) both',
-          }}
+          // Same reason as the desktop panel: in the header's flow the drawer
+          // pushed the whole page down as it opened.
+          className="mobile-drawer"
+          style={{ animation: 'drawerIn .24s cubic-bezier(.22,.7,.3,1) both' }}
         >
           {!drawerGroup && (
             <div style={{ display: 'grid', gap: 0, animation: 'drawerPush .2s ease-out both' }}>

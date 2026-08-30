@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { UTILITY_LINKS } from '@/data/nav';
+import { UTILITY_LINKS, ROUTES } from '@/data/nav';
 import { DOCUMENTS } from '@/data/documents';
 
 /**
@@ -7,14 +7,17 @@ import { DOCUMENTS } from '@/data/documents';
  * including the red-dotted "Experiencing an incident?".
  *
  * The announcement used to name a paper that did not exist ("Encryption Is Not
- * Enough"), and pointed at the resources index. It now names the first real
- * document in the library and links straight to it — if the library is
- * reordered the announcement follows, so it can never advertise something that
- * is not published.
+ * Enough"). It now names the first real document in the library — if the
+ * library is reordered the announcement follows, so it can never advertise
+ * something that is not published.
+ *
+ * It links to the featured block on the resources page rather than to the file:
+ * the documents are gated and have no public URL, and a modal firing from the
+ * top bar would be a jarring way to meet the form.
  */
 const PROMO = {
   text: `${DOCUMENTS[0].title} — ${DOCUMENTS[0].subtitle}`,
-  href: DOCUMENTS[0].file,
+  href: `${ROUTES.resources}#featured`,
 };
 export default function UtilityBar() {
   return (
@@ -32,11 +35,8 @@ export default function UtilityBar() {
           gap: 20,
         }}
       >
-        <a
+        <Link
           href={PROMO.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          type="application/pdf"
           className="lnk-bright"
           style={{
             display: 'flex',
@@ -80,7 +80,7 @@ export default function UtilityBar() {
           >
             READ →
           </span>
-        </a>
+        </Link>
 
         <nav
           aria-label="Utility"
