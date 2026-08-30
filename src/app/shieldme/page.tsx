@@ -150,7 +150,7 @@ export default function ShieldMePage() {
             <a
               href={EXTERNAL.shieldMe}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn-primary"
               style={{ fontSize: 15, padding: '15px 28px' }}
             >
