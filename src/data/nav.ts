@@ -25,7 +25,14 @@ export const ROUTES = {
   "partners": "/partners",
   "shieldme": "/shieldme",
   "dealreg": "/partners/deal-registration",
-  "deal-registration": "/partners/deal-registration"
+  "deal-registration": "/partners/deal-registration",
+  "newsroom": "/newsroom",
+  "whitePapers": "/resources/white-papers",
+  "solutionBriefs": "/resources/solution-briefs",
+  "threatResearch": "/resources/threat-research",
+  "deploymentGuides": "/resources/deployment-guides",
+  "complianceResources": "/resources/compliance",
+  "platformArchitecture": "/capabilities/platform-architecture"
 } as const;
 
 export const NAV_GROUPS: Record<string, NavGroup> = {
@@ -98,7 +105,7 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
         "title": "PLATFORM OVERVIEW",
         "items": [
           {
-            "name": "ShieldiT Platform",
+            "name": "ShieldiT",
             "desc": "The complete secure communications and mobile security architecture.",
             "href": "/platform",
             "page": "platform",
@@ -106,10 +113,10 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           },
           {
             "name": "Platform Architecture",
-            "desc": "How communications, endpoint security, policy, governance, and intelligence connect.",
-            "href": "/why-aspis",
-            "page": "why",
-            "key": null
+            "desc": "How identity, device posture, communication, policy, governance and intelligence connect.",
+            "href": "/capabilities/platform-architecture",
+            "page": "capability",
+            "key": "platform-architecture"
           }
         ]
       }
@@ -153,7 +160,7 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Financial Services",
             "desc": "Regulated communications, mobile security, supervision, and compliance.",
-            "href": "/solutions/financial-services",
+            "href": "/contact#financial-services",
             "page": "solution",
             "key": "financial-services"
           },
@@ -335,9 +342,16 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Platform Architecture",
             "desc": "How ShieldiT, ManageiT, and SentinelIQ work together.",
-            "href": "/why-aspis",
-            "page": "why",
-            "key": null
+            "href": "/capabilities/platform-architecture",
+            "page": "capability",
+            "key": "platform-architecture"
+          },
+          {
+            "name": "Compliance & Governance",
+            "desc": "Recording, retention, supervision, policy, and communications governance.",
+            "href": "/capabilities/regulated-communications",
+            "page": "capability",
+            "key": "regulated-communications"
           },
           {
             "name": "Deployment & Sovereignty",
@@ -355,7 +369,7 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           },
           {
             "name": "Security & Compliance",
-            "desc": "Security architecture and support for regulated environments.",
+            "desc": "Security architecture, data protection, and compliance support.",
             "href": "/security-and-trust",
             "page": "trust",
             "key": null
@@ -377,8 +391,8 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
         "title": "RESEARCH & INSIGHTS",
         "items": [
           {
-            "name": "Threat Research",
-            "desc": "Research into mobile, communications, phishing, fraud, and emerging threats.",
+            "name": "Resource Center",
+            "desc": "Every ASPIS paper, brief and guide in one place.",
             "href": "/resources",
             "page": "resources",
             "key": null
@@ -386,16 +400,16 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "White Papers",
             "desc": "Technical and strategic research for enterprise and government security leaders.",
-            "href": "/resources",
+            "href": "/resources/white-papers",
             "page": "resources",
-            "key": null
+            "key": "white-papers"
           },
           {
-            "name": "Industry Insights",
-            "desc": "Security guidance for regulated and high-security environments.",
-            "href": "/resources",
+            "name": "Threat Research",
+            "desc": "Research into mobile, communications, phishing, fraud, and emerging threats.",
+            "href": "/resources/threat-research",
             "page": "resources",
-            "key": null
+            "key": "threat-research"
           }
         ]
       },
@@ -405,30 +419,23 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Solution Briefs",
             "desc": "Product and industry-specific solution documents.",
-            "href": "/resources",
+            "href": "/resources/solution-briefs",
             "page": "resources",
-            "key": null
+            "key": "solution-briefs"
           },
           {
-            "name": "Deployment Resources",
+            "name": "Deployment Guides",
             "desc": "Architecture and deployment guidance.",
-            "href": "/capabilities/deployment",
-            "page": "capability",
-            "key": "deployment"
-          },
-          {
-            "name": "Security & Compliance",
-            "desc": "Security architecture and compliance resources.",
-            "href": "/security-and-trust",
-            "page": "trust",
-            "key": null
-          },
-          {
-            "name": "Case Studies",
-            "desc": "How ASPIS technologies address real-world security requirements.",
-            "href": "/resources",
+            "href": "/resources/deployment-guides",
             "page": "resources",
-            "key": null
+            "key": "deployment-guides"
+          },
+          {
+            "name": "Compliance Resources",
+            "desc": "Security architecture and compliance material.",
+            "href": "/resources/compliance",
+            "page": "resources",
+            "key": "compliance"
           }
         ]
       },
@@ -438,8 +445,8 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Newsroom",
             "desc": "ASPIS announcements and company news.",
-            "href": "/resources",
-            "page": "resources",
+            "href": "/newsroom",
+            "page": "newsroom",
             "key": null
           },
           {
@@ -507,21 +514,21 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Enterprise Sales",
             "desc": "Talk to ASPIS about enterprise requirements.",
-            "href": "/contact",
+            "href": "/contact#enterprise-sales",
             "page": "contact",
             "key": null
           },
           {
             "name": "Government & Defense",
             "desc": "Government and mission-specific inquiries.",
-            "href": "/contact",
+            "href": "/contact#government-and-defense",
             "page": "contact",
             "key": null
           },
           {
             "name": "Financial Services",
             "desc": "Financial-services security and compliance inquiries.",
-            "href": "/contact",
+            "href": "/contact#financial-services",
             "page": "contact",
             "key": null
           },
@@ -540,7 +547,7 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Support",
             "desc": "Existing customer support.",
-            "href": "/contact",
+            "href": "/contact#support",
             "page": "contact",
             "key": null
           },
@@ -594,7 +601,7 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'Executive & Board Security': '/solutions/executive-board-security',
   'MSP / MSSP': '/solutions/msp-mssp',
   // Why ASPIS
-  'Platform Architecture': '/why-aspis',
+  'Platform Architecture': '/capabilities/platform-architecture',
   'Mobile Threat Defense': '/capabilities/mobile-threat-defense',
   'Secure Communications': '/capabilities/secure-communications',
   'Compliance & Governance': '/capabilities/regulated-communications',
@@ -603,10 +610,10 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'Security & Compliance': '/security-and-trust',
   // Resources
   'Resource Center': '/resources',
-  'White Papers': '/resources',
-  'Solution Briefs': '/resources',
-  'Threat Research': '/resources',
-  'Newsroom': '/resources',
+  'White Papers': '/resources/white-papers',
+  'Solution Briefs': '/resources/solution-briefs',
+  'Threat Research': '/resources/threat-research',
+  'Newsroom': '/newsroom',
   // Company
   'About ASPIS': '/about',
   'Leadership': '/leadership',
