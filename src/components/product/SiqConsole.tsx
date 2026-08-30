@@ -74,6 +74,9 @@ export default function SiqConsole() {
       </div>
 
       <div
+        data-mock
+        role="img"
+        aria-label={`Mock-up of the SentinelIQ console, ${SWITCHER.find((s) => s.id === active)!.label.toLowerCase()} view.`}
         style={{
           border: '1px solid rgba(139,92,246,.28)',
           borderRadius: 10,

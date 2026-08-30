@@ -3,6 +3,7 @@ import { ROUTES } from '@/data/nav';
 import { bandWash } from '@/lib/theme';
 import ProductPhone from './ProductPhone';
 import type { ProductRecord } from './derive';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 /**
  * Product hero. First section on the route, so no top hairline — the
@@ -48,6 +49,7 @@ export default function ProductHero({
           alignItems: 'center',
         }}
       >
+          <Breadcrumbs span trail={[{ name: 'Platform', href: ROUTES.platform }, { name: product.name }]} />
         <div>
           <div
             style={{

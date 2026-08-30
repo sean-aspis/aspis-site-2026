@@ -19,6 +19,13 @@ export default function ProductPhone({
 }) {
   return (
     <div
+      data-mock
+      role="img"
+      aria-label={
+        consoleVariant
+          ? `Mock-up of the ${product.name} control plane on a handset: KPI tiles, a world map, a threat sparkline and an AI insight card.`
+          : `Mock-up of the ${product.name} app showing a secure conversation.`
+      }
       style={{
         position: 'relative',
         width: 'min(300px,86%)',
