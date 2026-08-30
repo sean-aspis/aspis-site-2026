@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import Header from '@/components/shell/Header';
 import UtilityBar from '@/components/shell/UtilityBar';
 import Footer from '@/components/shell/Footer';
+import BackToTop from '@/components/shell/BackToTop';
 import RouteFocus from '@/components/shell/RouteFocus';
 import { SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION } from '@/lib/seo';
 import './globals.css';
@@ -61,7 +62,16 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
-  icons: { icon: '/favicon.svg' },
+  icons: {
+    // .ico is what a browser requests unprompted; the SVG is what it uses when
+    // it can. apple-touch-icon covers "add to home screen" on iOS. All three
+    // are rendered from the same favicon.svg, so they cannot drift.
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '48x48' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
@@ -100,6 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

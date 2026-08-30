@@ -27,8 +27,8 @@
   --text-bright: #dde4f2;
   --text-label: #afbbd6;
   --text-muted: #8b98b8;
-  --text-dim: #6e7c9e;
-  --text-faint: #5e6c90;
+  --text-dim: #717fa0; /* lifted from #6e7c9e — 4.38:1 on --surface-1 failed AA */
+  --text-faint: #737f9e; /* lifted from #5e6c90 — 3.49:1 on --surface-1 failed AA */
   --text-desc: #7a88a8; /* mega-menu descriptions */
 
   /* Hairlines */
@@ -83,6 +83,11 @@
 
 html {
   scroll-behavior: smooth;
+  /* The header is sticky, so anything the browser scrolls into view — an
+     in-page anchor, a focused control reached by keyboard, a find-in-page
+     match — lands underneath it unless the scroll container reserves room.
+     `:target` below covers explicit anchors; this covers everything else. */
+  scroll-padding-top: 110px;
 }
 
 body {
@@ -164,7 +169,9 @@ img {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* Small type takes the AA-safe variant; it falls back to --accent on routes
+     that do not set one, and on most accents the two are the same colour. */
+  color: var(--accent-text, var(--accent));
 }
 .h1 {
   font-family: var(--font-display);
@@ -424,7 +431,7 @@ img {
   transition: color 0.15s ease;
 }
 .crumb:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 
@@ -728,6 +735,46 @@ textarea.field-input {
     transform: translateY(0);
   }
 }
+/* Mega-panel exit. Shorter and eased-in against menuIn's ease-out, so the
+   panel leaves a little faster than it arrives — the standard asymmetry that
+   keeps a menu feeling responsive rather than sticky. */
+@keyframes menuOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* Mobile drawer entrance. It expands from under the header rather than sliding
+   in from a side, because it is part of the header, not an overlay. */
+@keyframes drawerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Drill-down inside the drawer: the group list arrives from the right, the
+   way a stack push reads on a phone. */
+@keyframes drawerPush {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -800,5 +847,259 @@ textarea.field-input {
 @media (max-width: 860px) {
   .utility-links {
     display: none !important;
+  }
+}
+
+/* ── Document library ─────────────────────────────────────────────────────
+   A document card is a whole-card anchor. The card keeps the collapsed-grid
+   discipline used elsewhere: ground tint on hover, never a transform, and the
+   coloured top edge is set inline so it survives the border-colour change. */
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: clamp(22px, 2.2vw, 30px);
+  border: 1px solid var(--line);
+  background: rgba(16, 23, 51, 0.45);
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+.doc-card:hover {
+  background-color: var(--doc-wash);
+  border-color: var(--doc-accent);
+}
+.doc-card:focus-visible {
+  outline: 2px solid var(--doc-accent);
+  outline-offset: 3px;
+}
+.doc-kind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+.doc-title {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.5vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  color: var(--text-bright);
+}
+.doc-sub {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+.doc-summary {
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--text-muted);
+}
+.doc-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+.doc-topic {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #9fb4e6;
+  border: 1px solid rgba(122, 160, 255, 0.22);
+  padding: 5px 9px;
+}
+.doc-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+}
+.doc-meta {
+  color: var(--text-muted);
+}
+.doc-action {
+  color: var(--doc-accent-text, var(--doc-accent));
+  transition: transform 0.18s ease;
+}
+.doc-card:hover .doc-action {
+  transform: translateX(3px);
+}
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+  gap: clamp(16px, 1.8vw, 22px);
+}
+.doc-featured {
+  border: 1px solid rgba(122, 160, 255, 0.18);
+  background-image: linear-gradient(160deg, rgba(245, 196, 81, 0.09), rgba(5, 7, 14, 0) 62%);
+  padding: clamp(28px, 3.2vw, 52px);
+}
+
+/* ── Industry page: capability groups ─────────────────────────────────────
+   Two columns on wide viewports, one below. The list is the content, so the
+   rules between items carry the structure rather than boxes around them. */
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: clamp(28px, 3vw, 48px) clamp(32px, 4vw, 64px);
+}
+.cap-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--accent-line);
+}
+.cap-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--accent-text, var(--accent));
+}
+.cap-title {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.7vw, 23px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--text-bright);
+}
+.cap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0;
+}
+.cap-list li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  padding: 11px 0 11px 20px;
+  position: relative;
+  border-bottom: 1px solid var(--line-soft);
+}
+.cap-list li:last-child {
+  border-bottom: 0;
+}
+.cap-list li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 20px;
+  width: 7px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* Related-industry tiles are whole-tile anchors. */
+.related-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(22px, 2.2vw, 30px);
+  min-height: 172px;
+  text-decoration: none;
+  color: inherit;
+}
+.related-tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+/* Shared-hairline card grid with a deliberate column count (see
+   solution/styles.ts gridCols): one column on phones, two on tablets, and the
+   chosen count on desktop, so a six-card grid never strands a short row. */
+.auto-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+@media (min-width: 700px) {
+  .auto-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1060px) {
+  .auto-grid {
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  }
+}
+
+/* ── Back to top ──────────────────────────────────────────────────────────
+   Bottom-right, clear of the footer (the component hides it before it would
+   overlap). Kept in the DOM and faded out rather than unmounted so the fade
+   works in both directions; `visibility` and tabIndex keep the hidden state out
+   of the tab order and off the accessibility tree. */
+.back-to-top {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 34px);
+  bottom: clamp(16px, 2.4vw, 34px);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: var(--text-bright);
+  background: rgba(10, 15, 30, 0.86);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(122, 160, 255, 0.28);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+.back-to-top[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.back-to-top:hover {
+  background: rgba(16, 23, 51, 0.94);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.back-to-top:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+.back-to-top svg {
+  display: block;
+  flex: none;
+}
+/* On phones the label is dropped: the arrow is unambiguous and the square
+   target stays out of the way of a page's own bottom call to action. */
+@media (max-width: 560px) {
+  .back-to-top {
+    gap: 0;
+    padding: 0;
+    width: 44px;
+    justify-content: center;
+  }
+  .back-to-top-label {
+    display: none;
   }
 }

@@ -3,6 +3,7 @@ import { SITE_URL } from '@/lib/seo';
 import { PRODUCT_KEYS } from '@/data/products';
 import { SOLUTION_KEYS } from '@/data/solutions';
 import { CAPABILITY_KEYS } from '@/data/capabilities';
+import { DOCUMENTS } from '@/data/documents';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -36,5 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...SOLUTION_KEYS.map((k) => entry(`/solutions/${k}`, 0.8, 'monthly')),
     entry('/capabilities/platform-architecture', 0.9, 'monthly'),
     ...CAPABILITY_KEYS.map((k) => entry(`/capabilities/${k}`, 0.7, 'monthly')),
+    // The published PDFs. They are indexable content in their own right and
+    // are the deepest technical material on the site.
+    ...DOCUMENTS.map((d) => entry(d.file, 0.6, 'monthly')),
   ];
 }
