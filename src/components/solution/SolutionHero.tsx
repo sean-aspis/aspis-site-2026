@@ -31,7 +31,7 @@ export default function SolutionHero({ sol }: { sol: Solution }) {
               fontFamily: 'var(--font-mono)',
               fontSize: 11,
               letterSpacing: '.2em',
-              color: 'var(--accent)',
+              color: 'var(--accent-text, var(--accent))',
               marginBottom: 24,
             }}
           >
@@ -56,7 +56,7 @@ export default function SolutionHero({ sol }: { sol: Solution }) {
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(17px,1.4vw,22px)',
               lineHeight: 1.35,
-              color: 'var(--accent)',
+              color: 'var(--accent-text, var(--accent))',
               margin: '0 0 24px',
               maxWidth: 620,
               fontWeight: 500,

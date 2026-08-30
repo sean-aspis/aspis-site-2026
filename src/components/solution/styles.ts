@@ -29,3 +29,20 @@ export const FOOTNOTE: CSSProperties = {
   margin: '22px 0 0',
   maxWidth: 680,
 };
+
+/**
+ * Column count for a shared-hairline card grid.
+ *
+ * `auto-fit` with a min track fills the row and then leaves whatever is left
+ * over stranded — six cards at 1440px come out 4 + 2, which reads as an
+ * unfinished row rather than a grid. Choosing the column count from the item
+ * count keeps every row full: six go 3 + 3, five go 3 + 2, four sit in one row.
+ *
+ * Returned as a custom property; the `.auto-grid` rule in globals.css collapses
+ * to two columns and then one below the desktop breakpoints, so this only
+ * decides the widest layout.
+ */
+export function gridCols(n: number): CSSProperties {
+  const cols = n <= 4 ? n : n === 5 || n === 6 ? 3 : 4;
+  return { ['--cols' as string]: String(cols) } as CSSProperties;
+}

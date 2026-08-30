@@ -67,7 +67,7 @@ export default function SolutionShift({ sol }: { sol: Solution }) {
                 fontFamily: 'var(--font-mono)',
                 fontSize: 10.5,
                 letterSpacing: '.16em',
-                color: 'var(--accent)',
+                color: 'var(--accent-text, var(--accent))',
                 paddingBottom: 12,
                 borderBottom: '1px solid var(--accent-line)',
                 marginBottom: 14,

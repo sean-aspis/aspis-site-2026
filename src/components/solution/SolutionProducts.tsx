@@ -54,7 +54,7 @@ export default function SolutionProducts({ sol }: { sol: Solution }) {
                   fontFamily: 'var(--font-mono)',
                   fontSize: 11,
                   letterSpacing: '.08em',
-                  color: 'var(--accent)',
+                  color: 'var(--accent-text, var(--accent))',
                 }}
               >
                 EXPLORE →

@@ -72,7 +72,7 @@ export default function SolutionPipeline({ sol }: { sol: Solution }) {
               fontFamily: 'var(--font-mono)',
               fontSize: 10.5,
               letterSpacing: '.14em',
-              color: 'var(--accent)',
+              color: 'var(--accent-text, var(--accent))',
             }}
           >
             {sol.boundary}

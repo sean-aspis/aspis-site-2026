@@ -1,5 +1,5 @@
 import { BAND_WASH_IMAGE, type Solution } from './derive';
-import { GRID_CELL, SECTION_H2 } from './styles';
+import { GRID_CELL, SECTION_H2, gridCols } from './styles';
 
 /**
  * "What ASPIS Protects" card grid — design file lines 1646–1660.
@@ -25,13 +25,7 @@ export default function SolutionProtect({ sol }: { sol: Solution }) {
             {sol.protectNote}
           </p>
         )}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(min(280px,100%),1fr))',
-            gap: 0,
-          }}
-        >
+        <div className="auto-grid" style={gridCols(sol.protect.length)}>
           {sol.protect.map((p) => (
             <div
               key={p.n}
@@ -49,7 +43,7 @@ export default function SolutionProtect({ sol }: { sol: Solution }) {
                   fontFamily: 'var(--font-mono)',
                   fontSize: 10.5,
                   letterSpacing: '.14em',
-                  color: 'var(--accent)',
+                  color: 'var(--accent-text, var(--accent))',
                 }}
               >
                 {p.n}
