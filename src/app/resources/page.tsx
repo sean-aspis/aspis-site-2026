@@ -2,72 +2,170 @@ import Link from 'next/link';
 import { PAGES } from '@/data/pages';
 import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
+import { DOCUMENTS, fileSize } from '@/data/documents';
+import DocumentCard from '@/components/ui/DocumentCard';
+import { ChapterHeader } from '@/components/ui/Primitives';
 
 /**
- * Resources — design file lines 1798–1853.
+ * Resources — design file lines 1798–1853, now backed by a real library.
  *
- * Two sections, both direct children of <main>; the design's inline
- * `border-bottom` is dropped so the nth-of-type(n+2) rule owns the hairline.
- *
- * There is no CMS (README §8): the type index, the featured white paper and
- * the "also available" list are static content straight out of the design
- * file. Nothing here is a real download — the featured paper's only action is
- * "Request the paper", which routes to contact exactly as the design's
- * `goContact` handler did.
+ * The design file had no CMS and no documents: it carried a placeholder
+ * featured paper whose only action was "Request the paper". Nine published
+ * ASPIS PDFs were supplied on 30 Aug 2026 and are served from
+ * /public/documents; every card below points at a file that exists, with its
+ * measured page count and file size. See src/data/documents.ts.
  */
 
 const LEDE =
   'Technical depth and enterprise credibility, organized by what security, compliance, and procurement teams actually need to evaluate.';
 
+const CATEGORY_LINKS = [
+  { name: 'White Papers', href: ROUTES.whitePapers, accent: 'var(--cyan)' },
+  { name: 'Solution Briefs', href: ROUTES.solutionBriefs, accent: 'var(--blue)' },
+  { name: 'Compliance', href: ROUTES.complianceResources, accent: 'var(--amber)' },
+  { name: 'Threat Research', href: ROUTES.threatResearch, accent: 'var(--coral)' },
+  { name: 'Deployment Guides', href: ROUTES.deploymentGuides, accent: 'var(--teal)' },
+];
+
 export const metadata = pageMeta({
   title: 'Resources',
-  description: LEDE,
+  description: `${DOCUMENTS.length} published ASPIS white papers and industry use cases covering secure communications, mobile threat defense, governance and deployment.`,
   path: ROUTES.resources,
 });
+
+const featured = DOCUMENTS[0];
+const rest = DOCUMENTS.slice(1);
+const totalPages = DOCUMENTS.reduce((n, d) => n + d.pages, 0);
 
 export default function ResourcesPage() {
   return (
     <main id="main" style={{ ['--ghost-hover' as string]: 'var(--amber)' } as React.CSSProperties}>
-      {/* 1 — resource types + featured topics */}
+      {/* 1 — hero + library index */}
       <section>
-        <div className="container pad-standard">
-          <div
+        <div className="container pad-chapter">
+          <div className="eyebrow" style={{ color: 'var(--amber)', marginBottom: 22 }}>
+            RESOURCES
+          </div>
+          <h1 className="h1" style={{ maxWidth: 860, marginBottom: 20 }}>
+            Security intelligence for the mobile enterprise.
+          </h1>
+          <p className="lede" style={{ maxWidth: 680, marginBottom: 30 }}>
+            {LEDE}
+          </p>
+          <p
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: 11,
-              letterSpacing: '.2em',
-              color: 'var(--amber)',
-              marginBottom: 24,
+              letterSpacing: '.14em',
+              color: 'var(--text-muted)',
+              margin: '0 0 clamp(30px,3.4vw,44px)',
             }}
           >
-            RESOURCES
-          </div>
-          <h1
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(36px,4.6vw,66px)',
-              lineHeight: 1.03,
-              letterSpacing: '-.035em',
-              fontWeight: 700,
-              margin: '0 0 20px',
-              maxWidth: 860,
-              textWrap: 'balance',
-            }}
-          >
-            Security intelligence for the mobile enterprise.
-          </h1>
-          <p
-            style={{
-              fontSize: 17,
-              lineHeight: 1.62,
-              color: 'var(--text-body)',
-              margin: '0 0 clamp(40px,5vw,60px)',
-              maxWidth: 680,
-            }}
-          >
-            {LEDE}
+            {DOCUMENTS.length} DOCUMENTS · {totalPages} PAGES · FREE, NO REGISTRATION
           </p>
 
+          <nav aria-label="Resource categories" style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+            {CATEGORY_LINKS.map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                className="btn-ghost"
+                style={{ fontSize: 13.5, padding: '11px 18px' }}
+              >
+                {c.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </section>
+
+      {/* 2 — featured document */}
+      <section>
+        <div className="container pad-standard">
+          <ChapterHeader eyebrow="01 / FEATURED" accent="var(--amber)" caption="MOST DETAILED" />
+          <div className="doc-featured">
+            <div className="doc-featured-body">
+              <span
+                className="doc-kind"
+                style={{ color: featured.accent, display: 'block', marginBottom: 14 }}
+              >
+                {featured.kind}
+              </span>
+              <h2
+                className="h2"
+                style={{ maxWidth: 640, marginBottom: 16, fontSize: 'clamp(26px,3vw,42px)' }}
+              >
+                {featured.title}
+              </h2>
+              <p className="lede" style={{ maxWidth: 620, marginBottom: 18 }}>
+                {featured.subtitle}
+              </p>
+              <p className="body" style={{ maxWidth: 620, marginBottom: 22 }}>
+                {featured.summary}
+              </p>
+              <div className="doc-topics" style={{ marginBottom: 26 }}>
+                {featured.topics.map((t) => (
+                  <span key={t} className="doc-topic">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={featured.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                type="application/pdf"
+                className="btn-primary"
+                style={{ fontSize: 15, padding: '14px 26px' }}
+              >
+                Read the white paper
+              </a>
+              <span
+                style={{
+                  display: 'block',
+                  marginTop: 14,
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10.5,
+                  letterSpacing: '.1em',
+                  color: 'var(--text-faint)',
+                }}
+              >
+                PDF · {featured.pages} PAGES · {fileSize(featured.bytes)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3 — the rest of the library */}
+      <section>
+        <div className="container pad-standard">
+          <ChapterHeader eyebrow="02 / THE LIBRARY" accent="var(--cyan)" caption="ALL DOCUMENTS" />
+          <div className="doc-grid">
+            {rest.map((d) => (
+              <DocumentCard key={d.slug} doc={d} />
+            ))}
+          </div>
+          <p
+            style={{
+              fontSize: 13,
+              lineHeight: 1.6,
+              color: 'var(--text-faint)',
+              margin: '26px 0 0',
+              maxWidth: 720,
+            }}
+          >
+            Additional material — including deployment guides and threat research — is published as
+            it clears technical and legal review. Some documents are provided under NDA or to
+            qualified enterprise and government evaluators.
+          </p>
+        </div>
+      </section>
+
+      {/* 4 — resource types + topics (design file) */}
+      <section>
+        <div className="container pad-standard">
+          <ChapterHeader eyebrow="03 / WHAT WE PUBLISH" accent="var(--violet)" caption="BY TYPE" />
           <div
             style={{
               display: 'grid',
@@ -78,6 +176,7 @@ export default function ResourcesPage() {
             {PAGES.resourceTypes.map((r) => (
               <div
                 key={r.t}
+                className="tile-hover"
                 style={{
                   border: '1px solid var(--line)',
                   margin: '0 -1px -1px 0',
@@ -85,7 +184,6 @@ export default function ResourcesPage() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 10,
-                  minHeight: 170,
                 }}
               >
                 <span
@@ -105,7 +203,7 @@ export default function ResourcesPage() {
             ))}
           </div>
 
-          <div style={{ marginTop: 'clamp(36px,4vw,56px)' }}>
+          <div style={{ marginTop: 'clamp(32px,3.6vw,48px)' }}>
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -117,19 +215,9 @@ export default function ResourcesPage() {
             >
               FEATURED TOPICS
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <div className="doc-topics">
               {PAGES.resourceTopics.map((t) => (
-                <span
-                  key={t}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    letterSpacing: '.04em',
-                    color: '#9FB4E6',
-                    border: '1px solid rgba(122,160,255,.22)',
-                    padding: '8px 12px',
-                  }}
-                >
+                <span key={t} className="doc-topic">
                   {t}
                 </span>
               ))}
@@ -138,171 +226,24 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* 2 — featured paper + listing */}
+      {/* 5 — CTA */}
       <section>
         <div className="container pad-standard">
-          <div
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-              letterSpacing: '.2em',
-              color: 'var(--amber)',
-              marginBottom: 22,
-            }}
-          >
-            FEATURED
-          </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))',
-              gap: 0,
-            }}
-          >
-            <div
-              style={{
-                border: '1px solid rgba(122,160,255,.16)',
-                margin: '0 -1px -1px 0',
-                padding: 'clamp(28px,3vw,44px)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 16,
-                backgroundImage: 'linear-gradient(160deg,rgba(63,107,255,.10),#05070E)',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 10.5,
-                  letterSpacing: '.16em',
-                  color: 'var(--amber)',
-                }}
-              >
-                WHITE PAPER
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(22px,2.2vw,32px)',
-                  lineHeight: 1.12,
-                  letterSpacing: '-.025em',
-                  fontWeight: 700,
-                }}
-              >
-                Encryption Is Not Enough: Closing the Gap Between Secure Messaging and Device
-                Security
-              </span>
-              <span style={{ fontSize: 15.5, lineHeight: 1.6, color: 'var(--text-body)' }}>
-                Why communication security and endpoint security have to be evaluated together, and
-                what an architecture that connects them looks like in practice.
-              </span>
-              <span
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 16,
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 10.5,
-                  letterSpacing: '.08em',
-                  color: 'var(--text-dim)',
-                  marginTop: 4,
-                }}
-              >
-                <span>28 PAGES</span>
-                <span>ENTERPRISE &amp; GOVERNMENT SECURITY LEADERS</span>
-              </span>
-              <Link
-                href={ROUTES.contact}
-                className="btn-ghost"
-                style={{ alignSelf: 'flex-start', marginTop: 6, fontSize: 14.5, padding: '13px 22px' }}
-              >
-                Request the paper
-              </Link>
-            </div>
-
-            <div
-              style={{
-                border: '1px solid rgba(122,160,255,.16)',
-                margin: '0 -1px -1px 0',
-                padding: 'clamp(26px,2.6vw,36px)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 0,
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 10.5,
-                  letterSpacing: '.16em',
-                  color: 'var(--text-dim)',
-                  paddingBottom: 14,
-                  borderBottom: '1px solid rgba(122,160,255,.16)',
-                }}
-              >
-                ALSO AVAILABLE
-              </span>
-              {PAGES.resourceItems.map((r) => (
-                <span
-                  key={r.t}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 6,
-                    padding: '16px 0',
-                    borderBottom: '1px solid rgba(122,160,255,.08)',
-                  }}
-                >
-                  <span
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'baseline',
-                      gap: 12,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 9.5,
-                        letterSpacing: '.12em',
-                        color: r.c,
-                      }}
-                    >
-                      {r.kind}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 9.5,
-                        color: 'var(--text-faint)',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {r.meta}
-                    </span>
-                  </span>
-                  <span
-                    style={{ fontSize: 15, lineHeight: 1.45, color: '#E4E9F5', fontWeight: 500 }}
-                  >
-                    {r.t}
-                  </span>
-                </span>
-              ))}
-            </div>
-          </div>
-          <p
-            style={{
-              fontSize: 13,
-              lineHeight: 1.6,
-              color: 'var(--text-faint)',
-              margin: '18px 0 0',
-              maxWidth: 720,
-            }}
-          >
-            Resource availability varies. Some documents are provided under NDA or to qualified
-            enterprise and government evaluators.
+          <h2 className="h2" style={{ maxWidth: 700, marginBottom: 16 }}>
+            Need something that isn&rsquo;t here?
+          </h2>
+          <p className="lede" style={{ maxWidth: 620, marginBottom: 28 }}>
+            Architecture documentation, deployment detail and compliance mapping are available to
+            teams running an evaluation.
           </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            <Link href={ROUTES.contact} className="btn-primary" style={{ fontSize: 15, padding: '14px 26px' }}>
+              Request a document
+            </Link>
+            <Link href={ROUTES.platform} className="btn-ghost" style={{ fontSize: 15, padding: '14px 26px' }}>
+              Explore the platform
+            </Link>
+          </div>
         </div>
       </section>
     </main>
