@@ -105,3 +105,25 @@ optimizer cheaper. Worth re-exporting.
 `headshot-candice-c1.png` is 368×460 while the other nine portraits are
 900×1125 — same 4:5 ratio, so it upscales slightly in the leadership grid.
 Worth re-exporting at 900px for parity.
+
+## Framework version
+
+The port originally pinned Next.js 15.5.4. Vercel refused to build it —
+"Vulnerable version of Next.js detected" — so the project is now on **Next
+16.3.3**, which is the first line where the bundled `postcss` advisories are
+resolved; `npm audit --omit=dev` reports zero vulnerabilities there, while
+15.5.24 (the newest 15.x patch) still carries them.
+
+Two changes came with the upgrade:
+
+- `eslint.config.mjs` uses `eslint-config-next`'s native flat config
+  (`eslint-config-next/core-web-vitals` and `/typescript`) instead of the
+  `FlatCompat` wrapper, which v16 breaks. `@eslint/eslintrc` was dropped.
+- `Header.tsx` closed the menus on navigation inside a `useEffect` keyed on
+  `pathname`. Next 16's React Compiler lint rejects `setState` in an effect,
+  and rightly — it lets the menu paint open for a frame on the new route. It
+  now adjusts state during render against a tracked `lastPath`, which is
+  React's documented pattern for this and produces no intermediate frame.
+
+Nothing else changed. All 38 routes still prerender, and the interaction and
+overflow checks pass unchanged.
