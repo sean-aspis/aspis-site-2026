@@ -12,8 +12,9 @@ Everything in `src/data/nav.ts`, `pages.ts`, `products.ts`, `solutions.ts`,
 `capabilities.ts`, `site.ts`, `console.ts` and `sentineliq.ts` is verbatim from
 it. Those files are generated; do not hand-edit them.
 
-**2. Nine ASPIS-published PDFs**, supplied by the client on 30 Aug 2026 and
-served from `public/documents/`:
+**2. Nine ASPIS-published PDFs**, supplied by the client on 30 Aug 2026. They
+are **gated** — see the section at the end of this file — and live in
+`private/documents/`, outside the public directory:
 
 | Document | Pages | Primary category |
 | --- | --- | --- |
@@ -29,7 +30,8 @@ served from `public/documents/`:
 
 Metadata lives in `src/data/documents.ts`. `pages` and `bytes` are measured
 from the files. **If a PDF is ever replaced, re-measure both** — they are shown
-to the reader as download metadata and must not drift.
+to the reader as download metadata and must not drift. `file` there is a
+filename, not a URL: there is no public path to any of these.
 
 The industry-page expansion content in `src/data/solutionContent.ts` is drawn
 from these PDFs. Every capability bullet traces to a statement in the document
@@ -81,3 +83,53 @@ listed so a reader can see which regime the page speaks to. Rules:
 3. Keep the qualifiers: "where configured", "where applicable", "depending on
    deployment", "availability varies by edition".
 4. Note the source in a comment at the top of the data you add.
+
+
+## The download gate
+
+Nothing reaches a PDF without first submitting **name, business email,
+organization and job title**.
+
+How it holds:
+
+- The files are in `private/documents/`, not `public/`. There is no CDN URL, so
+  there is nothing to share, bookmark or index. `/documents/*.pdf` 404s.
+- `GET /api/documents/[slug]` is the only way in, and it requires the access
+  cookie. Without one it returns 401. The slug is matched against the document
+  registry rather than joined into a path, so traversal resolves to nothing.
+- `POST /api/documents/access` validates the four fields **on the server** —
+  the browser's own validation is a convenience, not the control — forwards the
+  lead to the same Formspree endpoint the site's other forms use, and sets the
+  cookie. It is HttpOnly, SameSite=Lax, Secure in production, 30 days.
+- A second, readable cookie (`aspis_doc_ok`) exists only so the UI knows not to
+  re-prompt a returning visitor. It grants nothing; the download route never
+  looks at it.
+- `robots.ts` disallows `/api/`, the responses carry `X-Robots-Tag: noindex`
+  and `Cache-Control: private, no-store`, and the PDFs are no longer in the
+  sitemap.
+
+### Two things to keep in mind
+
+**Set `DOC_ACCESS_SECRET` in the Vercel project.** The access cookie is
+HMAC-signed so its contents can be trusted. Without that variable the signature
+falls back to a constant that is visible in this public repository, which makes
+the token forgeable by someone who reads the source. Everything else about the
+gate holds either way — the files are not public, not linkable and not
+indexable, and no ordinary visitor reaches one without submitting the form —
+but the signature only means something once the secret is set. Any value works;
+a long random string is the point.
+
+**Access is granted even if Formspree is unreachable.** A visitor who filled
+the form in good faith should not be refused a white paper because a third
+party is down. The response carries `delivered: false` when that happens, so
+the failure is visible rather than silent — but the lead is lost. If lead
+capture ever has to be guaranteed, that is the thing to change.
+
+### If a document is added or replaced
+
+1. Put the file in `private/documents/`.
+2. Add or update its entry in `src/data/documents.ts` — `file` is the bare
+   filename; re-measure `pages` and `bytes`.
+3. Nothing else. `outputFileTracingIncludes` in `next.config.ts` ships whatever
+   is in that directory alongside the download function. If a download 404s in
+   production, check that entry first.
