@@ -2,7 +2,9 @@
 
 import { PAGES } from '@/data/pages';
 import FormShell, { SuccessPanel } from './FormShell';
-import { RequiredNote, TextAreaField, TextField } from './Fields';
+import { useEffect, useState } from 'react';
+import { RequiredNote, SelectField, TextAreaField, TextField } from './Fields';
+import { AREA_OPTIONS, CONTACT_AREAS } from '@/lib/contact';
 
 /**
  * Demo request — design file lines 2044–2075.
@@ -11,6 +13,22 @@ import { RequiredNote, TextAreaField, TextField } from './Fields';
  * Consultation" (`formState('demo', …)`, design file line 3537).
  */
 export default function DemoForm() {
+  // The five contact routes are separate destinations in the navigation
+  // (/contact#government-and-defense and so on). Reading the hash preselects
+  // the matching option so a visitor who chose a path does not have to choose
+  // it again, and so the enquiry arrives already routed.
+  const [area, setArea] = useState('');
+  useEffect(() => {
+    const apply = () => {
+      const slug = window.location.hash.replace('#', '');
+      const match = CONTACT_AREAS.find((c) => c.slug === slug);
+      if (match) setArea(match.t);
+    };
+    apply();
+    window.addEventListener('hashchange', apply);
+    return () => window.removeEventListener('hashchange', apply);
+  }, []);
+
   return (
     <FormShell
       subject="Demo request"
@@ -30,7 +48,7 @@ export default function DemoForm() {
           style={{
             fontSize: 13,
             lineHeight: 1.6,
-            color: 'var(--text-dim)',
+            color: 'var(--text-muted)',
             margin: 0,
             maxWidth: 520,
           }}
@@ -49,9 +67,20 @@ export default function DemoForm() {
           gap: 14,
         }}
       >
-        {PAGES.formFields.map((f) => (
-          <TextField key={f.name} field={f} />
-        ))}
+        {PAGES.formFields
+          .filter((f) => f.name !== 'area_of_interest')
+          .map((f) => (
+            <TextField key={f.name} field={f} />
+          ))}
+        <SelectField
+          label="AREA OF INTEREST*"
+          name="area_of_interest"
+          required
+          options={AREA_OPTIONS}
+          placeholder="Select an area…"
+          value={area}
+          onChange={setArea}
+        />
       </div>
 
       <TextAreaField label="TELL US ABOUT YOUR REQUIREMENTS" name="requirements" rows={4} />

@@ -40,14 +40,31 @@ export function SelectField({
   options,
   multiple,
   size,
+  required,
+  placeholder,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   options: readonly string[];
   multiple?: boolean;
   size?: number;
+  required?: boolean;
+  /**
+   * A disabled first option. Without one a select silently submits its first
+   * entry when the visitor never touches it, which produces enquiries and deal
+   * registrations that quietly claim a value nobody chose.
+   */
+  placeholder?: string;
+  /** Controlled mode. Omit both to leave the select uncontrolled. */
+  value?: string;
+  onChange?: (v: string) => void;
 }) {
   const id = controlId(name);
+  const controlled = value !== undefined && onChange !== undefined;
+  const usePlaceholder = !multiple && placeholder !== undefined;
+
   return (
     <div>
       <label className="field-label" htmlFor={id}>
@@ -59,14 +76,34 @@ export function SelectField({
         name={name}
         multiple={multiple}
         size={size}
-        defaultValue={multiple ? [] : options[0]}
+        required={required}
+        {...(controlled
+          ? { value, onChange: (e) => onChange(e.target.value) }
+          : { defaultValue: multiple ? [] : usePlaceholder ? '' : options[0] })}
       >
+        {usePlaceholder && (
+          <option value="" disabled>
+            {placeholder}
+          </option>
+        )}
         {options.map((o) => (
           <option key={o} value={o}>
             {o}
           </option>
         ))}
       </select>
+      {multiple && (
+        <span
+          style={{
+            display: 'block',
+            marginTop: 6,
+            fontSize: 12,
+            color: 'var(--text-muted)',
+          }}
+        >
+          Hold Ctrl (Cmd on Mac) to select more than one.
+        </span>
+      )}
     </div>
   );
 }
@@ -130,7 +167,7 @@ export function RequiredNote({ style }: { style?: React.CSSProperties }) {
       style={{
         fontSize: 13,
         lineHeight: 1.6,
-        color: 'var(--text-dim)',
+        color: 'var(--text-muted)',
         margin: 0,
         ...style,
       }}

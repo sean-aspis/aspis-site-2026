@@ -120,7 +120,8 @@ export default function DealRegistrationForm() {
           {PAGES.dealPartnerFields.map((f) => (
             <TextField key={f.name} field={f} />
           ))}
-          <SelectField label="PARTNER TYPE" name="partner_type" options={PARTNER_TYPES} />
+          <SelectField label="PARTNER TYPE" name="partner_type" options={PARTNER_TYPES}
+              placeholder="Select…" />
         </div>
       </fieldset>
 
@@ -130,11 +131,13 @@ export default function DealRegistrationForm() {
           {PAGES.dealCustomerFields.map((f) => (
             <TextField key={f.name} field={f} />
           ))}
-          <SelectField label="INDUSTRY" name="customer_industry" options={CUSTOMER_INDUSTRIES} />
+          <SelectField label="INDUSTRY" name="customer_industry" options={CUSTOMER_INDUSTRIES}
+              placeholder="Select…" />
           <SelectField
             label="ORGANIZATION SIZE"
             name="organization_size"
             options={ORGANIZATION_SIZES}
+              placeholder="Select…"
           />
         </div>
       </fieldset>
@@ -153,6 +156,7 @@ export default function DealRegistrationForm() {
             label="DEPLOYMENT REQUIREMENT"
             name="deployment_requirement"
             options={DEPLOYMENT_REQUIREMENTS}
+              placeholder="Select…"
           />
           <TextField
             field={{
@@ -176,11 +180,13 @@ export default function DealRegistrationForm() {
             label="OPPORTUNITY STAGE"
             name="opportunity_stage"
             options={OPPORTUNITY_STAGES}
+              placeholder="Select…"
           />
           <SelectField
             label="ASPIS SUPPORT REQUESTED"
             name="aspis_support_requested"
             options={SUPPORT_REQUESTED}
+              placeholder="Select…"
           />
         </div>
         <TextAreaField label="OPPORTUNITY DETAILS" name="opportunity_details" rows={4} />
