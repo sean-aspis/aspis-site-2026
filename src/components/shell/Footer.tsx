@@ -95,7 +95,7 @@ export default function Footer() {
                 key={l.label}
                 href={l.href}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="lnk-soft"
                 style={{
                   fontFamily: 'var(--font-mono)',

@@ -15,6 +15,12 @@ export default function Header() {
   const [drawerGroup, setDrawerGroup] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
+  // The panel that is currently animating out. React unmounts a closed panel
+  // on the same frame, so without this the mega menu vanished instantly while
+  // opening was animated — the asymmetry read as a glitch. `lastOpen` mirrors
+  // `open` so the transition to null can be detected during render.
+  const [lastOpen, setLastOpen] = useState<string | null>(null);
+  const [closing, setClosing] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const openedBy = useRef<'hover' | 'click' | null>(null);
   const suppressHoverUntil = useRef(0);
@@ -37,7 +43,28 @@ export default function Header() {
     setOpen(null);
     setDrawer(false);
     setDrawerGroup(null);
+    // On navigation the menu should simply be gone; suppress the exit
+    // animation so a panel does not linger over the incoming page.
+    setLastOpen(null);
+    setClosing(null);
+  } else if (open !== lastOpen) {
+    // Adjusted during render for the same reason as the navigation reset
+    // above: the exiting panel must be in the very first commit after the
+    // panel closes, or there is a frame with nothing on screen to animate.
+    setLastOpen(open);
+    if (open === null) setClosing(lastOpen);
+    else setClosing(null);
   }
+
+  // Retire the exiting panel once its animation has run. A timer rather than
+  // an animationend listener: animationend does not fire when the visitor has
+  // reduced motion on and the animation is suppressed, which would leave a
+  // dead panel mounted over the page.
+  useEffect(() => {
+    if (!closing) return;
+    const t = setTimeout(() => setClosing(null), 170);
+    return () => clearTimeout(t);
+  }, [closing]);
 
   // Body scroll lock while the mobile drawer is open.
   useEffect(() => {
@@ -194,7 +221,15 @@ export default function Header() {
           transition: 'height .18s ease',
         }}
       >
-        <Link href="/" onClick={closeAll} style={{ display: 'flex', alignItems: 'center', flex: '0 0 auto' }}>
+        <Link
+          href="/"
+          onClick={closeAll}
+          // The link's only content is the logo image, so its accessible name
+          // comes from the alt text. Naming the link explicitly says where it
+          // goes rather than what the picture is.
+          aria-label="ASPIS Cyber — home"
+          style={{ display: 'flex', alignItems: 'center', flex: '0 0 auto' }}
+        >
           <Image
             src="/assets/aspis-logo-horizontal-electric.png"
             alt="ASPIS Cyber Security"
@@ -237,7 +272,7 @@ export default function Header() {
             <a
               href={EXTERNAL.shieldMe}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="lnk-soft nav-shieldme"
               style={{
                 fontFamily: 'var(--font-mono)',
@@ -248,7 +283,7 @@ export default function Header() {
             >
               ShieldMe ↗
             </a>
-            <a href={EXTERNAL.manageIt} target="_blank" rel="noreferrer" className="btn-ghost">
+            <a href={EXTERNAL.manageIt} target="_blank" rel="noopener noreferrer" className="btn-ghost">
               Log In
             </a>
             <Link href={ROUTES.contact} className="btn-primary" onClick={closeAll}>
@@ -285,17 +320,25 @@ export default function Header() {
       {/* Desktop mega panels */}
       {NAV_ORDER.map((k) => {
           const g = NAV_GROUPS[k];
-          if (open !== k) return null;
+          const isOpen = open === k;
+          const isClosing = !isOpen && closing === k;
+          if (!isOpen && !isClosing) return null;
           return (
             <div
               key={k}
               id={g.panelId}
-              onMouseEnter={() => openPanel(k)}
-              onMouseLeave={scheduleClose}
+              // An exiting panel is inert: it takes no pointer events, is out
+              // of the accessibility tree, and carries no handlers, so it can
+              // neither be clicked through nor re-opened by the cursor sitting
+              // where it used to be.
+              {...(isClosing
+                ? { 'aria-hidden': true as const, inert: '' as unknown as boolean }
+                : { onMouseEnter: () => openPanel(k), onMouseLeave: scheduleClose })}
               style={{
                 borderTop: '1px solid var(--line)',
                 background: 'var(--mega)',
-                animation: 'menuIn .18s ease-out both',
+                animation: isClosing ? 'menuOut .16s ease-in both' : 'menuIn .18s ease-out both',
+                pointerEvents: isClosing ? 'none' : undefined,
               }}
             >
               <div
@@ -490,10 +533,11 @@ export default function Header() {
             maxHeight: 'calc(100vh - 64px)',
             overflowY: 'auto',
             padding: '16px clamp(20px,5vw,32px) 30px',
+            animation: 'drawerIn .24s cubic-bezier(.22,.7,.3,1) both',
           }}
         >
           {!drawerGroup && (
-            <div style={{ display: 'grid', gap: 0 }}>
+            <div style={{ display: 'grid', gap: 0, animation: 'drawerPush .2s ease-out both' }}>
               {NAV_ORDER.map((k) => (
                 <button
                   key={k}
@@ -523,7 +567,10 @@ export default function Header() {
           )}
 
           {drawerGroup && (
-            <div style={{ display: 'grid', gap: 0 }}>
+            <div
+              key={drawerGroup}
+              style={{ display: 'grid', gap: 0, animation: 'drawerPush .2s ease-out both' }}
+            >
               <button
                 type="button"
                 onClick={() => setDrawerGroup(null)}
@@ -619,7 +666,7 @@ export default function Header() {
             <a
               href={EXTERNAL.manageIt}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               style={{
                 border: '1px solid var(--line-strong)',
                 color: 'var(--text-primary)',
@@ -635,7 +682,7 @@ export default function Header() {
             <a
               href={EXTERNAL.shieldMe}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               style={{
                 color: 'var(--text-muted)',
                 fontFamily: 'var(--font-mono)',
