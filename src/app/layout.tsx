@@ -4,6 +4,7 @@ import Header from '@/components/shell/Header';
 import UtilityBar from '@/components/shell/UtilityBar';
 import Footer from '@/components/shell/Footer';
 import BackToTop from '@/components/shell/BackToTop';
+import { DocumentGateProvider } from '@/components/documents/DocumentGate';
 import RouteFocus from '@/components/shell/RouteFocus';
 import { SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION } from '@/lib/seo';
 import './globals.css';
@@ -106,11 +107,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <RouteFocus />
-        <UtilityBar />
-        <Header />
-        {children}
-        <Footer />
-        <BackToTop />
+        <DocumentGateProvider>
+          <UtilityBar />
+          <Header />
+          {children}
+          <Footer />
+          <BackToTop />
+        </DocumentGateProvider>
       </body>
     </html>
   );

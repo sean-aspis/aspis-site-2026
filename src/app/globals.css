@@ -1047,7 +1047,8 @@ textarea.field-input {
   position: fixed;
   right: clamp(16px, 2.4vw, 34px);
   bottom: clamp(16px, 2.4vw, 34px);
-  z-index: 60;
+  /* Below the header (60) so an open menu panel is never underneath it. */
+  z-index: 55;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1102,4 +1103,203 @@ textarea.field-input {
   .back-to-top-label {
     display: none;
   }
+}
+
+/* ── Menus overlay the page ───────────────────────────────────────────────
+   Both the desktop mega panel and the mobile drawer used to sit in the sticky
+   header's normal flow. Opening one grew the header's box, which pushed every
+   section below it down and snapped it back on close — the page visibly
+   jumped. They are absolutely positioned against the header instead, so they
+   float over the content.
+
+   `top: 100%` lands on the header's own bottom border; each panel draws its
+   own 1px top border in the same colour, so the two coincide rather than
+   doubling up. */
+.mega-panel,
+.mobile-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 26px 54px rgba(0, 0, 0, 0.55);
+}
+.mega-panel {
+  background: var(--mega);
+}
+.mobile-drawer {
+  background: var(--surface-0);
+  /* The header is 64px at its most compact; the drawer scrolls inside
+     whatever is left of the viewport rather than growing past it. */
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px clamp(20px, 5vw, 32px) 30px;
+}
+
+/* ── Document access gate ─────────────────────────────────────────────────
+   The dialog shown before a PDF opens. Deliberately short: four fields, one
+   sentence of explanation, and the document's own title so it is obvious what
+   the form is for. */
+.gate-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  background: rgba(3, 5, 10, 0.78);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: gateFade 0.16s ease-out both;
+  overflow-y: auto;
+}
+.gate-dialog {
+  position: relative;
+  width: min(560px, 100%);
+  margin: auto;
+  background: var(--surface-1);
+  border: 1px solid rgba(122, 160, 255, 0.22);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6);
+  padding: clamp(26px, 3.4vw, 40px);
+  animation: gateIn 0.2s cubic-bezier(0.22, 0.7, 0.3, 1) both;
+}
+.gate-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.gate-close:hover {
+  color: var(--text-bright);
+}
+.gate-close:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: -2px;
+}
+.gate-title {
+  font-family: var(--font-display);
+  font-size: clamp(23px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+  margin: 12px 0 14px;
+  color: var(--text-bright);
+}
+.gate-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0 0 12px;
+}
+.gate-meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 0 0 22px;
+}
+.gate-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 16px;
+}
+.gate-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+.gate-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-label);
+}
+.gate-field input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: rgba(10, 15, 30, 0.7);
+  border: 1px solid rgba(122, 160, 255, 0.24);
+  border-radius: 0;
+}
+.gate-field input:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 1px;
+  border-color: var(--cyan);
+}
+.gate-field input[aria-invalid='true'] {
+  border-color: var(--coral);
+}
+.gate-field input:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.gate-error {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--coral);
+}
+.gate-status {
+  min-height: 20px;
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--coral);
+}
+.gate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.gate-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@keyframes gateFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes gateIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* The document card is a button now, not an anchor: reset the UA styling the
+   button element brings with it and keep the card's own layout. */
+button.doc-card {
+  font: inherit;
+  text-align: left;
+  border-radius: 0;
+  cursor: pointer;
+  width: 100%;
 }
