@@ -9,7 +9,16 @@ import { EXPERIENCE_TITLE, shotVals, type ProductRecord, type ShotVals } from '.
  * two-column caption underneath, everything else alternates media/text by
  * position.
  */
-export default function ProductExperience({ product }: { product: ProductRecord }) {
+export default function ProductExperience({
+  product,
+  eyebrow = 'PRODUCT EXPERIENCE',
+  title = EXPERIENCE_TITLE,
+}: {
+  /** Only `shots` and `accent` are read, so an industry page can pass its own. */
+  product: Pick<ProductRecord, 'shots' | 'accent'>;
+  eyebrow?: string;
+  title?: string;
+}) {
   const shots = product.shots.map(shotVals);
   return (
     <section style={{ backgroundImage: bandWash(product.accent) }}>
@@ -23,7 +32,7 @@ export default function ProductExperience({ product }: { product: ProductRecord 
             marginBottom: 22,
           }}
         >
-          PRODUCT EXPERIENCE
+          {eyebrow}
         </div>
         <h2
           style={{
@@ -37,7 +46,7 @@ export default function ProductExperience({ product }: { product: ProductRecord 
             textWrap: 'balance',
           }}
         >
-          {EXPERIENCE_TITLE}
+          {title}
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(40px,5vw,80px)' }}>
