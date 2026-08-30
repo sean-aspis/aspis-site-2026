@@ -14,6 +14,7 @@ export default function Header() {
   const [drawer, setDrawer] = useState(false);
   const [drawerGroup, setDrawerGroup] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [lastPath, setLastPath] = useState(pathname);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
@@ -26,12 +27,15 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close everything on navigation.
-  useEffect(() => {
+  // Close everything on navigation. Adjusted during render rather than in an
+  // effect: the menus must not paint open for a frame on the new route, and
+  // React re-runs this render before committing anything to the DOM.
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setOpen(null);
     setDrawer(false);
     setDrawerGroup(null);
-  }, [pathname]);
+  }
 
   // Body scroll lock while the mobile drawer is open.
   useEffect(() => {
