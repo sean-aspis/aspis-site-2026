@@ -1,0 +1,685 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   ASPIS design tokens — verbatim from the v1.4 handoff (README §2).
+   Colour carries meaning, not decoration. Do not tint section backgrounds
+   with accent hues.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* Base surfaces */
+  --surface-0: #05070e; /* page base (odd sections) */
+  --surface-1: #0e1524; /* raised band (even sections) */
+  --panel: #141c30; /* console / panel interior */
+  --panel-2: #161f35; /* nested panel */
+  --field: #1b2440; /* form control surface */
+  --chrome: #121a2e; /* console top bar */
+  --utility-bar: #03050b; /* thin bar above the nav */
+  --mega: #060a16; /* mega-menu panel */
+  --hairline: rgba(140, 176, 255, 0.13); /* section boundary */
+
+  /* Text */
+  --text-primary: #f2f5fc;
+  --text-strong: #ffffff;
+  --text-body: #97a3bf;
+  --text-bright: #dde4f2;
+  --text-label: #afbbd6;
+  --text-muted: #8b98b8;
+  --text-dim: #6e7c9e;
+  --text-faint: #5e6c90;
+  --text-desc: #7a88a8; /* mega-menu descriptions */
+
+  /* Hairlines */
+  --line: rgba(122, 160, 255, 0.14);
+  --line-soft: rgba(122, 160, 255, 0.1);
+  --line-strong: rgba(122, 160, 255, 0.3);
+  --field-border: rgba(140, 176, 255, 0.42);
+  --field-focus: #7fb4ff;
+  --field-focus-ring: rgba(95, 168, 255, 0.22);
+
+  /* Semantic accents — seven hues, each with a fixed job */
+  --cyan: #67e8f9; /* platform architecture, ManageiT / GOVERN */
+  --blue: #4c7dff; /* ShieldiT / PROTECT */
+  --coral: #ff7a5c; /* threat, risk, incident, "the gap" */
+  --teal: #2fd4a7; /* deployment, verified state, integrations */
+  --amber: #f5c451; /* compliance, governance, regulated */
+  --violet: #a78bfa; /* intelligence, SentinelIQ / UNDERSTAND */
+  --periwinkle: #8b9bff; /* industries, cross-cutting */
+
+  /* Severity scale */
+  --sev-critical: #f0452a;
+  --sev-high: #ff8a6e;
+  --sev-medium: #f5c451;
+  --sev-low: #7fa0ff;
+  --sev-ok: #22c55e;
+  --sev-ai: #c4b5fd;
+
+  /* Layout rhythm — never vary the horizontal padding */
+  --container: 1440px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --pad-chapter-top: clamp(76px, 9vw, 140px);
+  --pad-chapter-bottom: clamp(52px, 6.5vw, 100px);
+  --pad-standard: clamp(56px, 7vw, 110px);
+  --pad-continuation-top: clamp(40px, 5vw, 76px);
+  --pad-continuation-bottom: clamp(52px, 6.5vw, 100px);
+
+  /* Type */
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-body: var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Per-route accent. Product and solution templates override this on <main>. */
+  --accent: var(--blue);
+  --accent-soft: rgba(76, 125, 255, 0.16);
+  --accent-ink: #ffffff; /* on-accent ink, chosen by luminance not family */
+  --band-wash: rgba(76, 125, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Section alternation.
+   Driven by these three rules alone — NEVER by a source-order index.
+   Several sections are conditionally rendered; assigning surfaces by index
+   inverts the phase whenever a gated section is absent and produces adjacent
+   identical surfaces. nth-of-type resolves against actually-rendered
+   siblings, so the rhythm self-corrects. This failed review once.
+   nth-of-type(n+2) also gives hero exemption for free: the first section on
+   every route sits directly under the sticky header with no top hairline.
+   -------------------------------------------------------------------------- */
+main > section {
+  background-color: var(--surface-0);
+}
+main > section:nth-of-type(even) {
+  background-color: var(--surface-1);
+}
+main > section:nth-of-type(n + 2) {
+  border-top: 1px solid var(--hairline);
+}
+
+a {
+  color: #8fb0ff;
+  text-decoration: none;
+}
+a:hover {
+  color: #c9dbff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------------------------- */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* The three vertical tiers — these are the only three. */
+.pad-chapter {
+  padding-top: var(--pad-chapter-top);
+  padding-bottom: var(--pad-chapter-bottom);
+}
+.pad-standard {
+  padding-top: var(--pad-standard);
+  padding-bottom: var(--pad-standard);
+}
+.pad-continuation {
+  padding-top: var(--pad-continuation-top);
+  padding-bottom: var(--pad-continuation-bottom);
+}
+
+/* --------------------------------------------------------------------------
+   Type primitives
+   -------------------------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.6vw, 66px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  margin: 0;
+}
+.h2 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
+  margin: 0;
+}
+.h3 {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.5vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.22;
+  margin: 0;
+}
+.lede {
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0;
+}
+.body {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-body);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Hover / focus states.
+   The design file expresses these as style-hover / style-focus attributes;
+   they become real CSS here so they survive server rendering.
+   -------------------------------------------------------------------------- */
+.lnk-soft {
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+.lnk-soft:hover {
+  color: #ffffff;
+}
+
+.lnk-bright {
+  color: #c0cbe4;
+  transition: color 0.15s ease;
+}
+.lnk-bright:hover {
+  color: #ffffff;
+}
+
+.nav-trigger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #dce4f5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.nav-trigger:hover {
+  color: #ffffff;
+}
+.nav-trigger[data-open='true'] {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+}
+.nav-trigger:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: -2px;
+}
+
+.mega-item {
+  display: block;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(122, 160, 255, 0.09);
+}
+.mega-item .mega-name {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.005em;
+  transition: color 0.15s ease;
+}
+.mega-item[aria-current='page'] .mega-name {
+  color: var(--cyan);
+}
+.mega-item:hover .mega-name {
+  color: var(--cyan);
+}
+.mega-item .mega-desc {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-desc);
+  margin-top: 2px;
+}
+
+.btn-primary {
+  background: linear-gradient(100deg, #3f6bff, #5fa8ff);
+  color: #04060e;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 18px;
+  white-space: nowrap;
+  display: inline-block;
+  transition: filter 0.15s ease;
+}
+.btn-primary:hover {
+  filter: brightness(1.12);
+  color: #04060e;
+}
+
+/* Accent-driven CTA. --accent-ink is set per product by luminance, never by
+   hue family: dark ink on FSX / Executive / ManageiT / SentinelIQ, white on
+   Enterprise and Defense. Ported code must keep this or CTAs lose contrast. */
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 13px 22px;
+  display: inline-block;
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+}
+.btn-accent:hover {
+  filter: brightness(1.12);
+  color: var(--accent-ink);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+  white-space: nowrap;
+  display: inline-block;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+/* Ghost buttons hover to a page-local hue. Pages that are not cyan set
+   --ghost-hover on <main>; everything else falls back to cyan. */
+.btn-ghost:hover {
+  border-color: var(--ghost-hover, var(--cyan));
+  color: var(--ghost-hover, var(--cyan));
+}
+
+
+/* --------------------------------------------------------------------------
+   Header responsiveness.
+   Driven by media queries, not by measuring window.innerWidth in JS: the
+   server has no viewport, so a measured header renders the desktop nav into
+   the HTML and swaps it after hydration — a visible flash on mobile, plus a
+   horizontal overflow for anyone whose JS has not run yet.
+   Breakpoints from the handoff (README §4): desktop nav at 1180px, nav
+   padding tightens below 1320px, the ShieldMe link hides below 1280px.
+   -------------------------------------------------------------------------- */
+.nav-desktop {
+  display: contents;
+}
+.nav-mobile {
+  display: none;
+}
+
+@media (max-width: 1179.98px) {
+  .nav-desktop {
+    display: none;
+  }
+  .nav-mobile {
+    display: block;
+  }
+}
+
+.nav-trigger {
+  padding: 10px 15px;
+}
+@media (max-width: 1319.98px) {
+  .nav-trigger {
+    padding: 10px 10px;
+  }
+}
+
+@media (max-width: 1279.98px) {
+  .nav-shieldme {
+    display: none;
+  }
+}
+
+
+/* Wide content (console mocks, tables, diagrams) scrolls inside its own
+   container; the page body never scrolls horizontally. */
+.console-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.console-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.console-scroll::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+}
+.console-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Card and tile hovers.
+   The design file hovers to a lighter ground, not a lift — a lift pulls a cell
+   out of a collapsed-border grid and breaks the shared hairline. Border colour
+   is set with individual side properties so a card's coloured top edge
+   survives the hover. */
+.card-hover {
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+.card-hover:hover {
+  background-color: rgba(16, 23, 51, 0.7);
+  border-color: rgba(103, 232, 249, 0.4);
+}
+
+/* Collapsed-border tile grids: ground tint only — no transform, no border
+   change, or the shared 1px line between tiles breaks. */
+.tile-hover {
+  transition: background-color 0.18s ease;
+}
+.tile-hover:hover {
+  background-color: rgba(16, 23, 51, 0.7);
+}
+
+/* Ruled cells (deployment rows). */
+.cell-hover {
+  transition: background-color 0.18s ease;
+}
+.cell-hover:hover {
+  background-color: rgba(16, 23, 51, 0.6);
+}
+
+/* Industry cards carry a coloured top edge — recolour only the other three
+   sides so the edge is preserved. */
+.industry-card {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+.industry-card:hover {
+  background-color: rgba(16, 23, 51, 0.7);
+  border-right-color: rgba(103, 232, 249, 0.4);
+  border-bottom-color: rgba(103, 232, 249, 0.4);
+  border-left-color: rgba(103, 232, 249, 0.4);
+}
+
+/* Solution index cards — same treatment as industry cards. */
+.solution-card {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+.solution-card:hover {
+  background-color: rgba(16, 23, 51, 0.7);
+  border-right-color: rgba(103, 232, 249, 0.4);
+  border-bottom-color: rgba(103, 232, 249, 0.4);
+  border-left-color: rgba(103, 232, 249, 0.4);
+}
+
+/* Non-interactive panels that still lift slightly on hover. */
+.protect-card {
+  transition: background-color 0.18s ease;
+}
+.protect-card:hover {
+  background-color: rgba(122, 160, 255, 0.04);
+}
+
+.product-card {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+.product-card:hover {
+  background-color: rgba(122, 160, 255, 0.05);
+  border-color: var(--accent-line, rgba(122, 160, 255, 0.3));
+}
+
+/* --------------------------------------------------------------------------
+   Form controls
+   -------------------------------------------------------------------------- */
+.field-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-label);
+  margin-bottom: 7px;
+}
+.field-input {
+  width: 100%;
+  background: var(--field);
+  border: 1px solid var(--field-border);
+  color: var(--text-strong);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px 14px;
+  border-radius: 0;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.field-input::placeholder {
+  color: var(--text-faint);
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--field-focus);
+  box-shadow: 0 0 0 3px var(--field-focus-ring);
+}
+select.field-input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% + 2px),
+    calc(100% - 13px) calc(50% + 2px);
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+textarea.field-input {
+  min-height: 128px;
+  resize: vertical;
+}
+
+/* --------------------------------------------------------------------------
+   Animations (README §5). Stagger per node index so pulses don't sync.
+   -------------------------------------------------------------------------- */
+@keyframes signal {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -320;
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinback {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+@keyframes floatA {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes floatB {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+@keyframes sweep {
+  0% {
+    transform: translateY(-8%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(520%);
+    opacity: 0;
+  }
+}
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+@keyframes flowRight {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 220px 0;
+  }
+}
+
+
+/* The design file references `blip` for the typing indicator but never defines
+   it in the helmet block. Defined here. */
+@keyframes blip {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 720px) {
+  .chapter-caption {
+    display: none;
+  }
+  .hero-chips {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.skip-link:focus {
+  left: 12px !important;
+  top: 12px !important;
+}
+
+@media (max-width: 860px) {
+  .utility-links {
+    display: none !important;
+  }
+}
