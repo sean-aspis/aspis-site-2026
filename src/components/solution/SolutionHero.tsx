@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ROUTES } from '@/data/nav';
 import SolutionTopology from './SolutionTopology';
 import { BAND_WASH_IMAGE, type Solution } from './derive';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 /**
  * Solution hero — design file lines 1593–1619.
@@ -23,6 +24,7 @@ export default function SolutionHero({ sol }: { sol: Solution }) {
           alignItems: 'center',
         }}
       >
+          <Breadcrumbs span trail={[{ name: 'Solutions', href: '/solutions' }, { name: sol.name }]} />
         <div>
           <div
             style={{
