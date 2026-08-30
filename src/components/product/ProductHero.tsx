@@ -39,16 +39,9 @@ export default function ProductHero({
         }}
       />
 
-      <div
-        className="container pad-standard"
-        style={{
-          position: 'relative',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
-          gap: 'clamp(32px,5vw,72px)',
-          alignItems: 'center',
-        }}
-      >
+      {/* Two columns, stated rather than inferred — `auto-fit` fitted three
+          tracks here and stranded the last one. See .hero-split. */}
+      <div className="container pad-standard hero-split" style={{ position: 'relative' }}>
           <Breadcrumbs span trail={[{ name: 'Platform', href: ROUTES.platform }, { name: product.name }]} />
         <div>
           <div
