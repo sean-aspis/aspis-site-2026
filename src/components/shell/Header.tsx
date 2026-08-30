@@ -200,16 +200,15 @@ export default function Header() {
     <header
       ref={headerRef}
       onMouseLeave={scheduleClose}
-      style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 60,
-        background: 'rgba(5,7,14,.90)',
-        backdropFilter: 'blur(20px) saturate(1.3)',
-        WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
-        borderBottom: '1px solid var(--line)',
-      }}
+      // The frosted treatment lives on the bar inside, NOT on <header>.
+      // backdrop-filter makes its element a backdrop root, and Chrome then
+      // composites absolutely-positioned descendants that overflow that
+      // element — which is exactly what the mega panel is — without their own
+      // background, so the panel rendered see-through over the page. Keeping
+      // the filter on an inner bar that the panel is not inside of avoids it.
+      style={{ position: 'sticky', top: 0, zIndex: 60 }}
     >
+      <div className="header-bar">
       <div
         className="container"
         style={{
@@ -315,6 +314,8 @@ export default function Header() {
             {drawer ? 'CLOSE' : 'MENU'}
           </button>
         </div>
+      </div>
+
       </div>
 
       {/* Desktop mega panels */}
