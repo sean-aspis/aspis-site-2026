@@ -51,6 +51,10 @@ const railHead: React.CSSProperties = {
 export default function ManageItConsole() {
   return (
     <div
+      data-mock
+      role="img"
+      aria-label="Mock-up of the ManageiT security operations console: an icon rail, integration pills, seven KPI tiles, a dotted world map with regional threat counts, a threat timeline, top attack types, and top attack sources and destinations."
+
       style={{
         border: '1px solid rgba(122,160,255,.22)',
         background: '#070B18',

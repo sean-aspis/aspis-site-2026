@@ -128,8 +128,11 @@ export default function HeroPhone({ motion }: { motion: boolean }) {
         </g>
       </svg>
 
-      {/* Handset */}
+      {/* Handset — an illustration of the ShieldiT app, not real UI. */}
       <div
+        data-mock
+        role="img"
+        aria-label="Mock-up of the ShieldiT mobile app, cycling through its Chat, Security, Calls and Contacts screens."
         style={{
           position: 'relative',
           width: 'min(276px,48%)',
