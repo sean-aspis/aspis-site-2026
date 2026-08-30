@@ -340,7 +340,7 @@ export default function PlatformTabs() {
               <a
                 href={tab.href2}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn-ghost"
                 style={{ fontSize: 14.5, padding: '14px 24px' }}
               >

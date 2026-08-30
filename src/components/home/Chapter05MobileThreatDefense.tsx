@@ -137,7 +137,14 @@ export default function Chapter05MobileThreatDefense() {
 
         {/* ShieldiT security screen — light in-phone UI on a dark bezel */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {/* An illustration of the ShieldiT security screen, not real UI —
+              exposed as a single image the way every other mock on the site
+              is, so a screen reader gets one description instead of reading
+              out the simulated threat log line by line. */}
           <div
+            data-mock
+            role="img"
+            aria-label="Mock-up of the ShieldiT mobile app security screen: a protection status header, a scan summary, action buttons, and a threat log listing network, application and device findings with their severity and status."
             style={{
               position: 'relative',
               width: 'min(300px,100%)',

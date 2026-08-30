@@ -60,7 +60,7 @@ export default function ShieldMeBridge() {
             <a
               href={EXTERNAL.shieldMe}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn-ghost"
               style={{ fontSize: 15, padding: '14px 26px' }}
             >
