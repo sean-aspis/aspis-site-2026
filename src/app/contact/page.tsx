@@ -3,7 +3,7 @@ import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
 import DemoForm from '@/components/forms/DemoForm';
 import Link from 'next/link';
-import { CONTACT_AREAS } from '@/lib/contact';
+import { CONTACT_AREAS, DIRECT_ROUTES, WHAT_HAPPENS_NEXT } from '@/lib/contact';
 
 /**
  * Contact — design file lines 2019–2078.
@@ -126,8 +126,9 @@ export default function ContactPage() {
           className="container pad-standard"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
             gap: 'clamp(32px,5vw,64px)',
+            alignItems: 'start',
           }}
         >
           <div>
@@ -162,13 +163,111 @@ export default function ContactPage() {
                 fontSize: 14.5,
                 lineHeight: 1.6,
                 color: 'var(--text-dim)',
-                margin: 0,
+                margin: '0 0 clamp(30px,3.4vw,44px)',
                 maxWidth: 460,
               }}
             >
               ASPIS engages commercially through consultation. There is no public pricing,
               self-service checkout, or trial signup.
             </p>
+
+            {/* What the left column used to be was white space beside a tall
+                form. These two blocks answer the questions a visitor has at the
+                moment they are deciding whether to fill it in: what happens
+                next, and whether they can just send an email instead. */}
+            <div style={{ maxWidth: 460, marginBottom: 'clamp(28px,3vw,40px)' }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10.5,
+                  letterSpacing: '.16em',
+                  color: 'var(--text-dim)',
+                  paddingBottom: 12,
+                  marginBottom: 4,
+                  borderBottom: '1px solid var(--line)',
+                }}
+              >
+                WHAT HAPPENS NEXT
+              </div>
+              <ol style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 0 }}>
+                {WHAT_HAPPENS_NEXT.map((s, i) => (
+                  <li
+                    key={s.t}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'auto 1fr',
+                      gap: 14,
+                      padding: '16px 0',
+                      borderBottom: '1px solid var(--line-soft)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 10.5,
+                        letterSpacing: '.14em',
+                        color: 'var(--coral)',
+                        paddingTop: 3,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ display: 'grid', gap: 5 }}>
+                      <span
+                        style={{
+                          fontSize: 15.5,
+                          fontWeight: 600,
+                          color: 'var(--text-bright)',
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {s.t}
+                      </span>
+                      <span style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--text-body)' }}>
+                        {s.d}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div style={{ maxWidth: 460 }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: 10.5,
+                  letterSpacing: '.16em',
+                  color: 'var(--text-dim)',
+                  paddingBottom: 12,
+                  marginBottom: 4,
+                  borderBottom: '1px solid var(--line)',
+                }}
+              >
+                OR EMAIL DIRECTLY
+              </div>
+              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'grid', gap: 0 }}>
+                {DIRECT_ROUTES.map((r) => (
+                  <li
+                    key={r.email}
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      alignItems: 'baseline',
+                      justifyContent: 'space-between',
+                      gap: 12,
+                      padding: '13px 0',
+                      borderBottom: '1px solid var(--line-soft)',
+                    }}
+                  >
+                    <span style={{ fontSize: 14.5, color: 'var(--text-body)' }}>{r.label}</span>
+                    <a href={`mailto:${r.email}`} className="lnk-inline" style={{ fontSize: 14 }}>
+                      {r.email}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <DemoForm />
