@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { PAGES } from '@/data/pages';
 import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
-import { DOCUMENTS, fileSize } from '@/data/documents';
+import { DOCUMENTS } from '@/data/documents';
 import DocumentCard from '@/components/ui/DocumentCard';
+import FeaturedDocumentButton from '@/components/documents/FeaturedDocumentButton';
 import { ChapterHeader } from '@/components/ui/Primitives';
 
 /**
@@ -61,7 +62,7 @@ export default function ResourcesPage() {
               margin: '0 0 clamp(30px,3.4vw,44px)',
             }}
           >
-            {DOCUMENTS.length} DOCUMENTS · {totalPages} PAGES · FREE, NO REGISTRATION
+            {DOCUMENTS.length} DOCUMENTS · {totalPages} PAGES · FREE, WITH YOUR DETAILS
           </p>
 
           <nav aria-label="Resource categories" style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
@@ -83,6 +84,7 @@ export default function ResourcesPage() {
       <section>
         <div className="container pad-standard">
           <ChapterHeader eyebrow="01 / FEATURED" accent="var(--amber)" caption="MOST DETAILED" />
+          <span id="featured" style={{ display: 'block' }} />
           <div className="doc-featured">
             <div className="doc-featured-body">
               <span
@@ -110,28 +112,7 @@ export default function ResourcesPage() {
                   </span>
                 ))}
               </div>
-              <a
-                href={featured.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                type="application/pdf"
-                className="btn-primary"
-                style={{ fontSize: 15, padding: '14px 26px' }}
-              >
-                Read the white paper
-              </a>
-              <span
-                style={{
-                  display: 'block',
-                  marginTop: 14,
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 10.5,
-                  letterSpacing: '.1em',
-                  color: 'var(--text-faint)',
-                }}
-              >
-                PDF · {featured.pages} PAGES · {fileSize(featured.bytes)}
-              </span>
+              <FeaturedDocumentButton doc={featured} />
             </div>
           </div>
         </div>
