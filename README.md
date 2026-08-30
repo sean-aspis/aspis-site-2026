@@ -1,6 +1,6 @@
 # ASPIS Cyber — website
 
-Next.js 15 (App Router) port of the v1.4 design handoff
+Next.js 16 (App Router) port of the v1.4 design handoff
 (`ASPIS Website v2.dc.html`), built to deploy on Vercel.
 
 19 screens, all statically prerendered. Dark institutional aesthetic with a
@@ -23,7 +23,7 @@ npm run dev          # http://localhost:3000
 | `npm run lint` | ESLint (next/core-web-vitals + typescript) |
 | `npm run typecheck` | `tsc --noEmit` |
 
-Node 20 or newer.
+Node 20.9 or newer (Next 16's minimum).
 
 ---
 
