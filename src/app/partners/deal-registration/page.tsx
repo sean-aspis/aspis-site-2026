@@ -125,7 +125,7 @@ export default function DealRegistrationPage() {
             }}
           >
             Not yet a partner?{' '}
-            <Link href={ROUTES.partners} style={{ color: 'var(--amber)' }}>
+            <Link href={ROUTES.partners} className="lnk-inline" style={{ color: 'var(--amber)' }}>
               Apply to the ASPIS partner program
             </Link>
             . Existing partners can also reach channel operations through the contact page.
