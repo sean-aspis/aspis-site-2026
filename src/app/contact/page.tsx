@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { PAGES } from '@/data/pages';
 import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
 import DemoForm from '@/components/forms/DemoForm';
+import Link from 'next/link';
+import { CONTACT_AREAS } from '@/lib/contact';
 
 /**
  * Contact — design file lines 2019–2078.
@@ -72,10 +73,14 @@ export default function ContactPage() {
               gap: 0,
             }}
           >
-            {PAGES.contactRoutes.map((c) => (
-              <div
+            {CONTACT_AREAS.map((c) => (
+              <Link
                 key={c.t}
+                id={c.slug}
+                href={`#${c.slug}`}
+                className="tile-hover"
                 style={{
+                  color: 'inherit',
                   border: '1px solid rgba(122,160,255,.14)',
                   margin: '0 -1px -1px 0',
                   padding: '26px 22px',
@@ -109,7 +114,7 @@ export default function ContactPage() {
                 >
                   {c.cta} →
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
