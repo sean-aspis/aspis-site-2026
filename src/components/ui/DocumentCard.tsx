@@ -1,21 +1,27 @@
+'use client';
+
 import { type Doc, fileSize } from '@/data/documents';
 import { rgba, readableAccent } from '@/lib/theme';
+import { useDocumentGate } from '@/components/documents/DocumentGate';
 
 /**
- * One downloadable document.
+ * One gated document.
  *
- * The whole card is an anchor to the PDF. `download` is deliberately absent —
- * these are readable in-browser and forcing a save is worse for evaluation —
- * but `type` and the visible size/page metadata tell the reader exactly what
- * they are opening before they open it.
+ * A button rather than an anchor: there is no URL to put in an href — the PDFs
+ * are not public, and the route that serves them requires the access cookie.
+ * Clicking opens the gate, or goes straight to the document if this visitor has
+ * already been through it.
+ *
+ * The card says so before the click ("Requires your details"), so nobody is
+ * surprised by a form appearing.
  */
 export default function DocumentCard({ doc, compact = false }: { doc: Doc; compact?: boolean }) {
+  const { open, unlocked } = useDocumentGate();
+
   return (
-    <a
-      href={doc.file}
-      target="_blank"
-      rel="noopener noreferrer"
-      type="application/pdf"
+    <button
+      type="button"
+      onClick={() => open(doc)}
       className="doc-card card-hover"
       style={{
         borderTop: `2px solid ${doc.accent}`,
@@ -48,11 +54,12 @@ export default function DocumentCard({ doc, compact = false }: { doc: Doc; compa
       <span className="doc-foot">
         <span className="doc-meta">
           PDF · {doc.pages} {doc.pages === 1 ? 'PAGE' : 'PAGES'} · {fileSize(doc.bytes)}
+          {!unlocked && ' · REQUIRES YOUR DETAILS'}
         </span>
         <span className="doc-action" aria-hidden>
           READ →
         </span>
       </span>
-    </a>
+    </button>
   );
 }
