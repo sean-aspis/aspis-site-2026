@@ -12,6 +12,11 @@
  * `bytes` and `pages` are measured from the files themselves. Re-measure them
  * if a document is ever replaced — they are shown to the user as download
  * metadata and must not drift.
+ *
+ * GATED: the files live in /private/documents, outside the public directory, so
+ * none of them has a public URL. They are reachable only through
+ * /api/documents/<slug>, which requires the access cookie issued once a visitor
+ * has submitted name, email, company and position. See src/lib/docAccess.ts.
  */
 
 export type DocCategory =
@@ -32,6 +37,11 @@ export type Doc = {
   category: DocCategory;
   /** Additional categories this document is surfaced under. */
   also: DocCategory[];
+  /**
+   * Filename inside /private/documents. NOT a URL: the PDFs are gated, so they
+   * are served through /api/documents/<slug> and there is no public path to
+   * them. Use `docHref()` for the link.
+   */
   file: string;
   pages: number;
   bytes: number;
@@ -55,7 +65,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'WHITE PAPER',
     category: 'white-papers',
     also: ['compliance'],
-    file: '/documents/aspis-shieldit-fsx-white-paper.pdf',
+    file: 'aspis-shieldit-fsx-white-paper.pdf',
     pages: 17,
     bytes: 358711,
     summary:
@@ -79,7 +89,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'WHITE PAPER',
     category: 'white-papers',
     also: [],
-    file: '/documents/aspis-shieldit-enterprise-white-paper.pdf',
+    file: 'aspis-shieldit-enterprise-white-paper.pdf',
     pages: 7,
     bytes: 1503504,
     summary:
@@ -102,7 +112,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'WHITE PAPER',
     category: 'white-papers',
     also: [],
-    file: '/documents/aspis-shieldit-protect-white-paper.pdf',
+    file: 'aspis-shieldit-protect-white-paper.pdf',
     pages: 7,
     bytes: 1001516,
     summary:
@@ -126,7 +136,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'WHITE PAPER',
     category: 'white-papers',
     also: [],
-    file: '/documents/aspis-shieldit-defense-white-paper.pdf',
+    file: 'aspis-shieldit-defense-white-paper.pdf',
     pages: 7,
     bytes: 1037189,
     summary:
@@ -150,7 +160,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'WHITE PAPER',
     category: 'white-papers',
     also: ['solution-briefs'],
-    file: '/documents/aspis-shieldit-enterprise-for-msps-mssps.pdf',
+    file: 'aspis-shieldit-enterprise-for-msps-mssps.pdf',
     pages: 6,
     bytes: 1159265,
     summary:
@@ -173,7 +183,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'USE CASE',
     category: 'solution-briefs',
     also: ['compliance'],
-    file: '/documents/aspis-shieldit-financial-services-use-case.pdf',
+    file: 'aspis-shieldit-financial-services-use-case.pdf',
     pages: 6,
     bytes: 555184,
     summary:
@@ -196,7 +206,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'USE CASE',
     category: 'solution-briefs',
     also: ['compliance'],
-    file: '/documents/aspis-shieldit-sled-federal-government-use-case.pdf',
+    file: 'aspis-shieldit-sled-federal-government-use-case.pdf',
     pages: 7,
     bytes: 1142856,
     summary:
@@ -219,7 +229,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'USE CASE',
     category: 'solution-briefs',
     also: ['compliance'],
-    file: '/documents/aspis-shieldit-healthcare-use-case.pdf',
+    file: 'aspis-shieldit-healthcare-use-case.pdf',
     pages: 5,
     bytes: 301798,
     summary:
@@ -242,7 +252,7 @@ export const DOCUMENTS: Doc[] = [
     kind: 'USE CASE',
     category: 'solution-briefs',
     also: [],
-    file: '/documents/aspis-shieldit-retail-consumer-goods-use-case.pdf',
+    file: 'aspis-shieldit-retail-consumer-goods-use-case.pdf',
     pages: 7,
     bytes: 623716,
     summary:
@@ -260,7 +270,12 @@ export const DOCUMENTS: Doc[] = [
   },
 ];
 
-export const DOC_BY_SLUG = Object.fromEntries(DOCUMENTS.map((d) => [d.slug, d]));
+export const DOC_BY_SLUG: Record<string, Doc | undefined> = Object.fromEntries(
+  DOCUMENTS.map((d) => [d.slug, d])
+);
+
+/** The gated route for a document. There is no direct path to the file. */
+export const docHref = (slug: string) => `/api/documents/${slug}`;
 
 /** Documents surfaced under a resource category, primary listings first. */
 export function docsForCategory(category: DocCategory): Doc[] {
