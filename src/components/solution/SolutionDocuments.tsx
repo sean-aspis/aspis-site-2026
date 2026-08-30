@@ -23,7 +23,7 @@ export default function SolutionDocuments({ solutionKey }: { solutionKey: string
           {docs.length === 1 ? 'The document behind this page.' : 'The documents behind this page.'}
         </h2>
         <p className="lede" style={{ maxWidth: 640, margin: '0 0 clamp(28px,3.2vw,42px)' }}>
-          Published ASPIS material, free and without registration.
+          Published ASPIS material. Tell us who you are once and every document opens.
         </p>
 
         <div className="doc-grid">
