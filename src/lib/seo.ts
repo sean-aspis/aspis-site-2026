@@ -1,17 +1,31 @@
 import type { Metadata } from 'next';
 
 /**
- * Set NEXT_PUBLIC_SITE_URL in Vercel (Project → Settings → Environment
- * Variables) to the production domain. Preview deployments fall back to the
- * Vercel-provided URL so canonical tags and the sitemap stay coherent.
+ * The canonical production origin.
+ *
+ * Canonicals, the sitemap and OG tags must always point at the final
+ * production domain — never at `new.aspiscyber.com` or a Vercel hostname.
+ * Pointing them at a staging host teaches search engines to index the staging
+ * copy and splits ranking signal between two origins, which is painful to
+ * unwind after cutover.
+ *
+ * So production is hard-defaulted to aspiscyber.com and only an explicit
+ * NEXT_PUBLIC_SITE_URL overrides it. Non-production deploys fall back to their
+ * own Vercel URL, and robots.ts blocks them from indexing entirely, so a
+ * preview never competes with production.
  */
+export const PRODUCTION_ORIGIN = 'https://aspiscyber.com';
+
+const isProduction =
+  process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === undefined;
+
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_ENV === 'production' && process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  (isProduction
+    ? PRODUCTION_ORIGIN
     : process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'https://www.aspiscyber.com');
+      : PRODUCTION_ORIGIN);
 
 export const SITE_NAME = 'ASPIS Cyber';
 
