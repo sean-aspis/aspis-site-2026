@@ -44,11 +44,22 @@ export default function Footer() {
                 {col.title}
               </div>
               {col.links.map((l) => (
-                <div key={l} style={{ padding: '5px 0' }}>
+                <div key={l}>
                   <Link
                     href={FOOTER_LINK_MAP[l] ?? '/contact'}
                     className="lnk-soft"
-                    style={{ fontSize: 14.5, lineHeight: 1.5, color: 'var(--text-body)' }}
+                    style={{
+                      // Inline links here measured 16px tall — under the 24px
+                      // WCAG 2.2 target minimum, in a six-column grid where a
+                      // mis-tap lands on the wrong destination. Block display
+                      // turns the existing padding into real target area.
+                      display: 'block',
+                      padding: '6px 0',
+                      minHeight: 24,
+                      fontSize: 14.5,
+                      lineHeight: 1.5,
+                      color: 'var(--text-body)',
+                    }}
                   >
                     {l}
                   </Link>

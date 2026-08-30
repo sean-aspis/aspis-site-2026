@@ -16,6 +16,8 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openedBy = useRef<'hover' | 'click' | null>(null);
+  const suppressHoverUntil = useRef(0);
   const headerRef = useRef<HTMLElement>(null);
   const drawerRef = useRef<HTMLElement>(null);
 
@@ -51,9 +53,21 @@ export default function Header() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        const wasOpen = open;
         setOpen(null);
         setDrawer(false);
         setDrawerGroup(null);
+        openedBy.current = null;
+        if (wasOpen) {
+          // Returning focus to the trigger fires its onFocus, which would
+          // re-open the panel Escape just closed. The same suppression window
+          // that stops hover re-opening after a link click covers this.
+          suppressHoverUntil.current = Date.now() + 400;
+          const i = NAV_ORDER.indexOf(wasOpen as (typeof NAV_ORDER)[number]);
+          headerRef.current
+            ?.querySelector<HTMLElement>(`[data-nav-index="${i}"]`)
+            ?.focus();
+        }
         return;
       }
       if (e.key !== 'Tab' || !drawer || !drawerRef.current) return;
@@ -73,17 +87,60 @@ export default function Header() {
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [drawer]);
+  }, [drawer, open]);
 
   const scheduleClose = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setOpen(null), CLOSE_DELAY);
+    closeTimer.current = setTimeout(() => {
+      setOpen(null);
+      openedBy.current = null;
+    }, CLOSE_DELAY);
   }, []);
 
+  /**
+   * Hover opens — but not in the moment right after a link was clicked. The
+   * panel unmounts under a stationary cursor, which fires a fresh mouseenter
+   * on whatever lands beneath it; without this guard the menu springs back
+   * open on the page you just navigated to.
+   */
   const openPanel = useCallback((k: string) => {
+    if (Date.now() < suppressHoverUntil.current) return;
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpen(k);
+    setOpen((cur) => {
+      if (cur !== k) openedBy.current = 'hover';
+      return k;
+    });
   }, []);
+
+  /** Every link inside the menu calls this so navigation is never blocked. */
+  const closeAll = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    suppressHoverUntil.current = Date.now() + 400;
+    openedBy.current = null;
+    setOpen(null);
+    setDrawer(false);
+    setDrawerGroup(null);
+  }, []);
+
+  /**
+   * Click on a trigger. Hover has usually already opened the panel by the time
+   * the click lands, so a plain toggle would close it again the instant a
+   * mouse user clicks. Only a click on a panel that a *click* opened closes it;
+   * that also gives touch devices (no hover) a correct open/close tap.
+   */
+  const onTriggerClick = useCallback(
+    (k: string) => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+      if (open === k && openedBy.current === 'click') {
+        setOpen(null);
+        openedBy.current = null;
+        return;
+      }
+      openedBy.current = 'click';
+      setOpen(k);
+    },
+    [open]
+  );
 
   // Keyboard nav across the five triggers.
   const onNavKey = (e: React.KeyboardEvent, index: number) => {
@@ -137,7 +194,7 @@ export default function Header() {
           transition: 'height .18s ease',
         }}
       >
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', flex: '0 0 auto' }}>
+        <Link href="/" onClick={closeAll} style={{ display: 'flex', alignItems: 'center', flex: '0 0 auto' }}>
           <Image
             src="/assets/aspis-logo-horizontal-electric.png"
             alt="ASPIS Cyber Security"
@@ -161,7 +218,7 @@ export default function Header() {
                     data-open={isOpen || activeGroup(g)}
                     aria-expanded={isOpen}
                     aria-controls={g.panelId}
-                    onClick={() => setOpen(isOpen ? null : k)}
+                    onClick={() => onTriggerClick(k)}
                     onMouseEnter={() => openPanel(k)}
                     onFocus={() => openPanel(k)}
                     onKeyDown={(e) => onNavKey(e, i)}
@@ -194,7 +251,7 @@ export default function Header() {
             <a href={EXTERNAL.manageIt} target="_blank" rel="noreferrer" className="btn-ghost">
               Log In
             </a>
-            <Link href={ROUTES.contact} className="btn-primary">
+            <Link href={ROUTES.contact} className="btn-primary" onClick={closeAll}>
               Request a Demo
             </Link>
           </div>
@@ -271,6 +328,7 @@ export default function Header() {
                         key={i.name}
                         href={i.href}
                         className="mega-item"
+                        onClick={closeAll}
                         aria-current={pathname === i.href ? 'page' : undefined}
                       >
                         <span className="mega-name">{i.name}</span>
@@ -381,6 +439,7 @@ export default function Header() {
                     </span>
                     <Link
                       href={ROUTES.why}
+                      onClick={closeAll}
                       style={{
                         fontFamily: 'var(--font-mono)',
                         fontSize: 10.5,
@@ -403,6 +462,7 @@ export default function Header() {
                 <div className="container" style={{ paddingTop: 14, paddingBottom: 14 }}>
                   <Link
                     href={g.footer.href}
+                    onClick={closeAll}
                     style={{
                       fontFamily: 'var(--font-mono)',
                       fontSize: 11,
@@ -514,6 +574,8 @@ export default function Header() {
                     <Link
                       key={i.name}
                       href={i.href}
+                      onClick={closeAll}
+                      aria-current={pathname === i.href ? 'page' : undefined}
                       style={{
                         display: 'block',
                         padding: '11px 0',
@@ -541,6 +603,7 @@ export default function Header() {
           >
             <Link
               href={ROUTES.contact}
+              onClick={closeAll}
               style={{
                 background: 'linear-gradient(100deg,#3F6BFF,#5FA8FF)',
                 color: '#04060E',

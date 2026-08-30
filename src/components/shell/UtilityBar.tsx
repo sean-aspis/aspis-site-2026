@@ -7,7 +7,10 @@ import { UTILITY_LINKS, ROUTES } from '@/data/nav';
  */
 export default function UtilityBar() {
   return (
-    <div style={{ background: 'var(--utility-bar)', borderBottom: '1px solid var(--line-soft)' }}>
+    <aside
+      aria-label="Announcement and utility links"
+      style={{ background: 'var(--utility-bar)', borderBottom: '1px solid var(--line-soft)' }}
+    >
       <div
         className="container"
         style={{
@@ -21,7 +24,14 @@ export default function UtilityBar() {
         <Link
           href={ROUTES.resources}
           className="lnk-bright"
-          style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            minWidth: 0,
+            height: '100%',
+            paddingRight: 12,
+          }}
         >
           <span
             style={{
@@ -74,6 +84,8 @@ export default function UtilityBar() {
                 gap: 6,
                 fontSize: 12,
                 whiteSpace: 'nowrap',
+                height: '100%',
+                padding: '0 2px',
                 ...(l.incident ? { color: 'var(--sev-high)' } : {}),
               }}
             >
@@ -93,6 +105,6 @@ export default function UtilityBar() {
           ))}
         </nav>
       </div>
-    </div>
+    </aside>
   );
 }
