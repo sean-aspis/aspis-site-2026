@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { CAPABILITIES, CAPABILITY_KEYS, type CapabilityKey } from '@/data/capabilities';
 import { ROUTES } from '@/data/nav';
 import { pageMeta } from '@/lib/seo';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 /**
  * Capability detail — design file lines 2342–2377. Eight routes off one file.
@@ -76,6 +77,7 @@ export default async function CapabilityPage({ params }: { params: Promise<{ key
           }}
         />
         <div className="container pad-standard" style={{ position: 'relative' }}>
+          <Breadcrumbs trail={[{ name: 'Why ASPIS', href: '/why-aspis' }, { name: c.name }]} />
           <div
             style={{
               fontFamily: 'var(--font-mono)',
