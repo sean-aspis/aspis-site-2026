@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { SOLUTIONS, SOLUTION_KEYS } from '@/data/solutions';
 import { pageMeta } from '@/lib/seo';
+import { readableAccent } from '@/lib/theme';
 
 const LEDE =
   'Each industry faces a different threat, a different regulator, and a different definition of acceptable risk. The architecture stays the same; the policy, deployment, and evidence requirements change.';
@@ -104,7 +105,11 @@ export default function SolutionsIndexPage() {
                       fontFamily: 'var(--font-mono)',
                       fontSize: 10.5,
                       letterSpacing: '.1em',
-                      color: s.accent,
+                      // Small mono text takes the AA-safe variant of the tile's
+                      // own accent, not the raw palette colour — the same rule
+                      // SolutionRelated already applies. Financial Services
+                      // #4776B9 is 4.37:1 on this ground untouched.
+                      color: readableAccent(s.accent),
                       marginTop: 'auto',
                     }}
                   >
