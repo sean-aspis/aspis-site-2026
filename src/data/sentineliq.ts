@@ -10,8 +10,11 @@ export const SIQ_VIEWS = {
     "asOf": "Data as of Aug 21, 2026",
     "kpis": [
       {
+        // The design file said 0 here while the panel beside it lists two
+        // CRITICAL flagged communications, so the mock contradicted itself.
+        // Read off that panel rather than invented.
         "label": "Open alerts",
-        "value": "0"
+        "value": "2"
       },
       {
         "label": "Open cases",
@@ -70,7 +73,7 @@ export const SIQ_VIEWS = {
       {
         "sev": "CRITICAL",
         "age": "36d",
-        "title": "Heard MRDN is getting acquired before it's public, might want to get ahead of th",
+        "title": "Heard MRDN is getting acquired before it's public, might want to get ahead of this.",
         "note": "High-confidence insider-trading finding referencing an unannounced M&A event."
       },
       {

@@ -622,7 +622,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -662,12 +662,12 @@ export const SITE = {
       }
     },
     {
-      "name": "Chat",
+      "name": "Chats",
       "icon": {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -702,7 +702,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -737,7 +737,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -786,7 +786,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -821,7 +821,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -861,7 +861,7 @@ export const SITE = {
       }
     },
     {
-      "name": "Chat",
+      "name": "Chats",
       "icon": {
         "__el": "span",
         "props": {
@@ -901,7 +901,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -936,7 +936,7 @@ export const SITE = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },

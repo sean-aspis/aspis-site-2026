@@ -1,59 +1,65 @@
 // AUTO-GENERATED from "ASPIS Website v2.dc.html" (v1.4 design handoff).
-// Content is verbatim from the design file — do not paraphrase.
+// Text content is verbatim from the design file — do not paraphrase.
+//
+// EXCEPTION: the "icon"/"i" fields. The design file used Unicode geometric
+// characters as icon placeholders. Most fonts don't carry them, so in a browser
+// they rendered as empty tofu boxes — and EDR's placeholder was the bare letter
+// "C". They now name an icon in components/mock/Icon.tsx. The ▲/▼ inside "delta"
+// strings are trend arrows, not icons, and stay as they are.
 
 export const CONSOLE = {
   "consoleNav": [
     {
       "label": "Dashboard",
-      "icon": "▦",
+      "icon": "grid",
       "color": "#F2F5FC",
       "bg": "rgba(63,107,255,.22)"
     },
     {
       "label": "Users & Tenants",
-      "icon": "◉",
+      "icon": "users",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Insights & Reports",
-      "icon": "▤",
+      "icon": "report",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Incident Response",
-      "icon": "△",
+      "icon": "alert",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Security Policies",
-      "icon": "⛨",
+      "icon": "shield",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Integrations",
-      "icon": "⧉",
+      "icon": "integrations",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Audit Logs",
-      "icon": "◷",
+      "icon": "history",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Ticketing & Support",
-      "icon": "◍",
+      "icon": "support",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "label": "Settings",
-      "icon": "⚙",
+      "icon": "settings",
       "color": "#5E6C90",
       "bg": "transparent"
     }
@@ -61,37 +67,37 @@ export const CONSOLE = {
   "consolePills": [
     {
       "l": "SSO",
-      "i": "⚿",
+      "i": "key",
       "c": "#8B9BFF",
       "bg": "rgba(76,125,255,.12)"
     },
     {
       "l": "EDR",
-      "i": "C",
+      "i": "endpoint",
       "c": "#F5C451",
       "bg": "rgba(245,196,81,.10)"
     },
     {
       "l": "MDM",
-      "i": "▯",
+      "i": "mobile",
       "c": "#22C55E",
       "bg": "rgba(34,197,94,.10)"
     },
     {
       "l": "SIEM/XDR",
-      "i": "⋏",
+      "i": "radar",
       "c": "#F0452A",
       "bg": "rgba(240,69,42,.12)"
     },
     {
       "l": "Ticketing",
-      "i": "⌸",
+      "i": "ticket",
       "c": "#EAB308",
       "bg": "rgba(234,179,8,.10)"
     },
     {
       "l": "Compl DB",
-      "i": "▤",
+      "i": "database",
       "c": "#4ADE80",
       "bg": "rgba(74,222,128,.10)"
     }
@@ -171,16 +177,22 @@ export const CONSOLE = {
   "consoleKpis": [
     {
       "label": "Active Threats",
+      "icon": "crosshair",
+      "valueColor": null,
+      "arrow": null,
       "value": "13,345",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
-      "bar": "linear-gradient(90deg,#3F6BFF,#67E8F9)",
+      "bar": "linear-gradient(90deg,#F0452A 0%,#FF8A6E 30%,#F5C451 62%,#5E6C90 100%)",
       "width": "72%",
       "delta": "3 critical",
       "deltaColor": "#FF8A6E"
     },
     {
       "label": "Risk Posture",
+      "icon": "gauge",
+      "valueColor": "#FF8A6E",
+      "arrow": "up",
       "value": "76",
       "border": "rgba(255,138,110,.45)",
       "bg": "linear-gradient(180deg,rgba(255,138,110,.14),#0A1024)",
@@ -191,6 +203,9 @@ export const CONSOLE = {
     },
     {
       "label": "Compl Score",
+      "icon": "check",
+      "valueColor": "#22C55E",
+      "arrow": "up",
       "value": "91%",
       "border": "rgba(34,197,94,.45)",
       "bg": "linear-gradient(180deg,rgba(34,197,94,.14),#0A1024)",
@@ -201,6 +216,9 @@ export const CONSOLE = {
     },
     {
       "label": "Auto Executed",
+      "icon": "bolt",
+      "arrow": "up",
+      "valueColor": null,
       "value": "26,456",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -211,6 +229,9 @@ export const CONSOLE = {
     },
     {
       "label": "Top Attack",
+      "icon": "alert",
+      "arrow": "up",
+      "valueColor": null,
       "value": "Phishing",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -221,6 +242,9 @@ export const CONSOLE = {
     },
     {
       "label": "License Usage",
+      "icon": "report",
+      "valueColor": null,
+      "arrow": null,
       "value": "78%",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -231,6 +255,9 @@ export const CONSOLE = {
     },
     {
       "label": "MTTR Avg",
+      "icon": "timer",
+      "arrow": "down",
+      "valueColor": null,
       "value": "3.2h",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -244,43 +271,47 @@ export const CONSOLE = {
     {
       "v": "14,568",
       "l": "Sources",
-      "i": "⚡",
+      "i": "bolt",
       "c": "#67E8F9"
     },
     {
       "v": "28,502",
       "l": "Targets",
-      "i": "◎",
+      "i": "target",
       "c": "#8B9BFF"
     },
     {
       "v": "100,947",
       "l": "Attacks",
-      "i": "◌",
+      "i": "crosshair",
       "c": "#FF8A6E"
     }
   ],
   "consoleSeverity": [
     {
       "l": "Critical",
+      "i": "burst",
       "c": "#F0452A",
       "bg": "rgba(240,69,42,.14)",
       "bd": "rgba(240,69,42,.42)"
     },
     {
       "l": "High",
+      "i": "arrow-up",
       "c": "#FF8A6E",
       "bg": "rgba(255,138,110,.13)",
       "bd": "rgba(255,138,110,.40)"
     },
     {
       "l": "Medium",
+      "i": "arrow-right",
       "c": "#F5C451",
       "bg": "rgba(245,196,81,.12)",
       "bd": "rgba(245,196,81,.40)"
     },
     {
       "l": "Low",
+      "i": "arrow-down",
       "c": "#7FA0FF",
       "bg": "rgba(76,125,255,.14)",
       "bd": "rgba(76,125,255,.42)"
@@ -430,28 +461,29 @@ export const CONSOLE = {
   "consoleTabs": [
     {
       "name": "Dashboard",
-      "icon": "▦",
+      "icon": "grid",
       "color": "#67E8F9"
     },
     {
       "name": "Alerts",
-      "icon": "▲",
+      "icon": "alert",
       "color": "#7E8CAE"
     },
     {
       "name": "Devices",
-      "icon": "▭",
+      "icon": "mobile",
       "color": "#7E8CAE"
     },
     {
       "name": "Policy",
-      "icon": "◈",
+      "icon": "shield",
       "color": "#7E8CAE"
     }
   ],
   "consoleKpiPhone": [
     {
       "label": "Active Threats",
+      "icon": "crosshair",
       "value": "13,345",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -460,6 +492,9 @@ export const CONSOLE = {
     },
     {
       "label": "Risk Posture",
+      "icon": "gauge",
+      "valueColor": "#FF8A6E",
+      "arrow": "up",
       "value": "76",
       "border": "rgba(255,138,110,.45)",
       "bg": "linear-gradient(180deg,rgba(255,138,110,.14),#0A1024)",
@@ -468,6 +503,9 @@ export const CONSOLE = {
     },
     {
       "label": "Compl Score",
+      "icon": "check",
+      "valueColor": "#22C55E",
+      "arrow": "up",
       "value": "91%",
       "border": "rgba(34,197,94,.45)",
       "bg": "linear-gradient(180deg,rgba(34,197,94,.14),#0A1024)",
@@ -476,6 +514,8 @@ export const CONSOLE = {
     },
     {
       "label": "MTTR Avg",
+      "icon": "timer",
+      "arrow": "down",
       "value": "3.2h",
       "border": "rgba(122,160,255,.16)",
       "bg": "#0A1024",
@@ -486,61 +526,61 @@ export const CONSOLE = {
   "siqRail": [
     {
       "name": "Dashboard",
-      "icon": "▦",
+      "icon": "grid",
       "color": "#04060E",
       "bg": "#8B5CF6"
     },
     {
       "name": "Search",
-      "icon": "⌕",
+      "icon": "search",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Communications",
-      "icon": "▭",
+      "icon": "message",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Meetings",
-      "icon": "▥",
+      "icon": "meeting",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Files",
-      "icon": "▯",
+      "icon": "file",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Alerts",
-      "icon": "△",
+      "icon": "alert",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Cases",
-      "icon": "▤",
+      "icon": "folder",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Investigations",
-      "icon": "⌖",
+      "icon": "crosshair",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "AI",
-      "icon": "✦",
+      "icon": "sparkle",
       "color": "#5E6C90",
       "bg": "transparent"
     },
     {
       "name": "Audit",
-      "icon": "▨",
+      "icon": "audit",
       "color": "#5E6C90",
       "bg": "transparent"
     }

@@ -793,7 +793,7 @@ export const PAGES = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -828,7 +828,7 @@ export const PAGES = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -868,7 +868,7 @@ export const PAGES = {
       }
     },
     {
-      "name": "Chat",
+      "name": "Chats",
       "icon": {
         "__el": "span",
         "props": {
@@ -908,7 +908,7 @@ export const PAGES = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
@@ -943,7 +943,7 @@ export const PAGES = {
         "__el": "span",
         "props": {
           "style": {
-            "color": "#8A8F9C",
+            "color": "#6A6E78",
             "display": "flex"
           }
         },
