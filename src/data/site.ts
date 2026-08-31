@@ -428,7 +428,8 @@ export const SITE = {
         "ShieldiT Defense",
         "ShieldiT Executive",
         "ManageiT",
-        "SentinelIQ"
+        "SentinelIQ",
+        "ShieldMe"
       ]
     },
     {
@@ -474,7 +475,8 @@ export const SITE = {
         "About ASPIS",
         "Leadership",
         "Partners",
-        "Contact"
+        "Contact",
+        "Support"
       ]
     },
     {

@@ -6,7 +6,7 @@
  * that actually exists in /public/documents — nothing here is a placeholder.
  *
  * Titles and subtitles are the documents' own cover text. Descriptions
- * summarise what is inside; they assert no capability the document does not
+ * summarize what is inside; they assert no capability the document does not
  * already assert, and no certification, customer or metric is introduced here.
  *
  * `bytes` and `pages` are measured from the files themselves. Re-measure them
@@ -140,7 +140,7 @@ export const DOCUMENTS: Doc[] = [
     pages: 7,
     bytes: 1037189,
     summary:
-      'Written for national security and mission-critical operations: isolated and air-gapped deployment, offline synchronisation and deferred communications, on-device threat defense in denied-network conditions, ShieldiT Black hardened devices, the ManageiT command console, and custom integration with legacy mission systems and CAC/PIV authentication.',
+      'Written for national security and mission-critical operations: isolated and air-gapped deployment, offline synchronization and deferred communications, on-device threat defense in denied-network conditions, ShieldiT Black hardened devices, the ManageiT command console, and custom integration with legacy mission systems and CAC/PIV authentication.',
     topics: [
       'Air-gapped deployment',
       'Offline sync',

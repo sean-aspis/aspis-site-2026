@@ -96,7 +96,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       {
         t: 'Mobile Threat Defense',
         points: [
-          'On-device AI analysis of device behaviour, applications, networks and phishing indicators.',
+          'On-device AI analysis of device behavior, applications, networks and phishing indicators.',
           'Phishing detection across SMS, email, in-app links and QR codes.',
           'Malicious and non-compliant application identification through on-device heuristics.',
           'Rogue access point, spoofed network and man-in-the-middle detection.',
@@ -106,7 +106,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       {
         t: 'Administration and governance',
         points: [
-          'Centralised administration of communications, device security and policy through the ManageiT console.',
+          'Centralized administration of communications, device security and policy through the ManageiT console.',
           'AuditBot logging of device events, user activity and policy enforcement.',
           'Policy enforcement and threat remediation issued directly from the console.',
         ],
@@ -115,7 +115,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         t: 'Fits the estate you already run',
         points: [
           'Identity: Entra ID / Azure AD, Okta, Google Workspace and SAML/OIDC for single sign-on and role-based access.',
-          'Endpoint management: coexistence and policy synchronisation with Intune, Workspace ONE and MobileIron.',
+          'Endpoint management: coexistence and policy synchronization with Intune, Workspace ONE and MobileIron.',
           'Security operations: telemetry and incident forwarding to SIEM and XDR platforms.',
           'Compliance: export into Microsoft Purview and comparable archives.',
         ],
@@ -147,7 +147,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       },
       {
         t: 'Deployment shaped to the organization',
-        d: 'Multi-tenant SaaS, private cloud or dedicated infrastructure, supporting centralised, decentralised and hybrid IT structures.',
+        d: 'Multi-tenant SaaS, private cloud or dedicated infrastructure, supporting centralized, decentralized and hybrid IT structures.',
       },
     ],
     frameworks: ['ISO 27001', 'SOC 2 Type II'],
@@ -277,7 +277,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
     challenges: [
       {
         t: 'Nation-state and ransomware campaigns',
-        d: 'Aimed at disrupting operations, compromising sensitive data and destabilising public infrastructure — not at extracting a payment from a single office.',
+        d: 'Aimed at disrupting operations, compromising sensitive data and destabilizing public infrastructure — not at extracting a payment from a single office.',
       },
       {
         t: 'Mobile espionage tradecraft',
@@ -413,7 +413,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         points: [
           'AES-256 encrypted chat, voice, video and file sharing using Olm and Megolm protocols with Double Ratchet key management.',
           'Forward and backward secrecy.',
-          'Offline synchronisation: messages securely queued and synchronised in denied-network conditions without compromising encryption integrity.',
+          'Offline synchronization: messages securely queued and synchronized in denied-network conditions without compromising encryption integrity.',
         ],
       },
       {
@@ -457,7 +457,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       },
       {
         t: 'Capability that survives the network',
-        d: 'Full operational capability in denied-network environments through secure offline synchronisation and on-device detection.',
+        d: 'Full operational capability in denied-network environments through secure offline synchronization and on-device detection.',
       },
       {
         t: 'Rapid mission deployment',
@@ -518,7 +518,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
           'Phishing detection across SMS, email, applications and QR codes.',
           'OS-level compromise, rooting and jailbreaking, and device tampering detection.',
           'Rogue Wi-Fi and man-in-the-middle detection and blocking.',
-          'Malicious application and behavioural anomaly detection in real time.',
+          'Malicious application and behavioral anomaly detection in real time.',
           'Continuous protection in low-bandwidth and offline conditions.',
         ],
       },
@@ -622,7 +622,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         t: 'Resilient secure communication',
         points: [
           'End-to-end encrypted voice, video, messaging and file exchange for operations, leadership and response teams.',
-          'Offline synchronisation and deferred delivery in low-bandwidth or disconnected conditions.',
+          'Offline synchronization and deferred delivery in low-bandwidth or disconnected conditions.',
           'Federation controls governing communication with contractors and external responders.',
         ],
       },
@@ -739,14 +739,14 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         t: 'Identity and access',
         points: [
           'Entra ID / Azure AD, Okta, Google Workspace and SAML/OIDC for single sign-on and role-based access.',
-          'Automated provisioning and deprovisioning via directory synchronisation, so access tracks employment status.',
+          'Automated provisioning and deprovisioning via directory synchronization, so access tracks employment status.',
           'Workspace isolation separating personal and corporate data on BYOD devices.',
         ],
       },
       {
         t: 'Operations and integration',
         points: [
-          'ManageiT console for centralised administration and policy enforcement.',
+          'ManageiT console for centralized administration and policy enforcement.',
           'AuditBot logging of device events, user activity and policy enforcement.',
           'Telemetry and incident forwarding to SIEM and XDR platforms.',
           'Coexistence with Intune, Workspace ONE and MobileIron.',
@@ -823,7 +823,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       {
         t: 'Delivered under the carrier brand',
         points: [
-          'White-labelled branding, domains and notifications aligned to the provider’s identity.',
+          'White-labeled branding, domains and notifications aligned to the provider’s identity.',
           'Branded and co-branded security services for consumer, family, business and enterprise subscribers.',
           'Positioned as a carrier service rather than a third-party application.',
         ],
@@ -832,7 +832,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         t: 'Protection on the subscriber device',
         points: [
           'On-device detection of phishing across SMS, email, applications and QR codes.',
-          'Malicious application identification through on-device heuristics and behavioural analysis.',
+          'Malicious application identification through on-device heuristics and behavioral analysis.',
           'Rogue access point, spoofed network and man-in-the-middle detection.',
           'Device risk posture monitoring including OS integrity.',
           'Detection processed on the device rather than depending on constant cloud connectivity.',
@@ -873,7 +873,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       },
       {
         t: 'Time to market without building it',
-        d: 'A platform to deliver under the carrier brand rather than a multi-year internal development programme.',
+        d: 'A platform to deliver under the carrier brand rather than a multi-year internal development program.',
       },
       {
         t: 'One console across the subscriber base',
@@ -943,7 +943,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
         points: [
           'On-device detection of SIM swaps, rogue applications, man-in-the-middle attacks and device compromise.',
           'Root and jailbreak detection with OS integrity monitoring.',
-          'Conditional access driven by device risk, OS integrity and behaviour.',
+          'Conditional access driven by device risk, OS integrity and behavior.',
           'Workspace isolation separating personal and organizational data on personal devices.',
         ],
       },
@@ -999,7 +999,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       },
       {
         t: 'MDM alone is no longer a differentiator',
-        d: 'Basic device management is commoditised. It does not detect a compromised device and it does not secure the conversation on it.',
+        d: 'Basic device management is commoditized. It does not detect a compromised device and it does not secure the conversation on it.',
       },
       {
         t: 'Multiple clients, multiple environments',
@@ -1034,7 +1034,7 @@ export const SOLUTION_CONTENT: Record<string, SolutionContent> = {
       {
         t: 'Full white-labelling',
         points: [
-          'Customised branding, domains and notifications aligned to partner identity.',
+          'Customized branding, domains and notifications aligned to partner identity.',
           'Delivered as the partner’s own service to corporate, government and high-risk clients.',
         ],
       },

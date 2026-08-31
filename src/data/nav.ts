@@ -27,6 +27,7 @@ export const ROUTES = {
   "dealreg": "/partners/deal-registration",
   "deal-registration": "/partners/deal-registration",
   "newsroom": "/newsroom",
+  "support": "/support",
   "whitePapers": "/resources/white-papers",
   "solutionBriefs": "/resources/solution-briefs",
   "threatResearch": "/resources/threat-research",
@@ -160,7 +161,7 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
           {
             "name": "Financial Services",
             "desc": "Regulated communications, mobile security, supervision, and compliance.",
-            "href": "/contact#financial-services",
+            "href": "/solutions/financial-services",
             "page": "solution",
             "key": "financial-services"
           },
@@ -519,14 +520,14 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
             "key": null
           },
           {
-            "name": "Government & Defense",
+            "name": "Government & Defense Sales",
             "desc": "Government and mission-specific inquiries.",
             "href": "/contact#government-and-defense",
             "page": "contact",
             "key": null
           },
           {
-            "name": "Financial Services",
+            "name": "Financial Services Sales",
             "desc": "Financial-services security and compliance inquiries.",
             "href": "/contact#financial-services",
             "page": "contact",
@@ -546,8 +547,8 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
         "items": [
           {
             "name": "Support",
-            "desc": "Existing customer support.",
-            "href": "/contact#support",
+            "desc": "Technical assistance for existing ASPIS customers.",
+            "href": "/support",
             "page": "contact",
             "key": null
           },
@@ -573,10 +574,23 @@ export const NAV_GROUPS: Record<string, NavGroup> = {
 
 export const NAV_ORDER = ['platform', 'solutions', 'why', 'resources', 'company'] as const;
 
+/*
+ * Utility bar. Three of these four pointed somewhere other than what the label
+ * promised:
+ *
+ *  - "Experiencing an incident?" is the most urgent link on the site and went
+ *    to the general contact page, between "Enterprise Sales" and "Partnerships".
+ *    It now goes to the incident section of the support page.
+ *  - "Threat Research" went to /resources, the index, even though
+ *    /resources/threat-research exists.
+ *  - "Partner Portal" named a portal. There is no partner portal — the
+ *    destination is the partner program page — so the label says that
+ *    instead of implying a log-in that does not exist.
+ */
 export const UTILITY_LINKS = [
-  { label: 'Experiencing an incident?', href: ROUTES.contact, incident: true },
-  { label: 'Threat Research', href: ROUTES.resources },
-  { label: 'Partner Portal', href: ROUTES.partners },
+  { label: 'Experiencing an incident?', href: `${ROUTES.support}#incident`, incident: true },
+  { label: 'Threat Research', href: ROUTES.threatResearch },
+  { label: 'Partner Program', href: ROUTES.partners },
   { label: 'Company', href: ROUTES.about },
 ];
 
@@ -589,6 +603,7 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'ShieldiT Executive': '/products/executive',
   'ManageiT': '/products/manageit',
   'SentinelIQ': '/products/sentineliq',
+  'ShieldMe': '/shieldme',
   // Solutions
   'Enterprise': '/solutions/enterprise',
   'Financial Services': '/solutions/financial-services',
@@ -619,6 +634,7 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'Leadership': '/leadership',
   'Partners': '/partners',
   'Contact': '/contact',
+  'Support': '/support',
   // Legal — no source content in the design file; these render as explicit
   // "not yet published" placeholders rather than invented policy text.
   'Privacy Policy': '/legal/privacy-policy',
