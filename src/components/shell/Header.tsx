@@ -282,8 +282,20 @@ export default function Header() {
             >
               ShieldMe ↗
             </a>
-            <a href={EXTERNAL.manageIt} target="_blank" rel="noopener noreferrer" className="btn-ghost">
-              Log In
+            {/* "Log In" alone did not say where it goes. It leaves the site for
+                ManageiT, the administration portal, so the label names it and
+                the accessible name spells out what it is and that it opens in a
+                new tab. Customers looking for a consumer sign-in are not sent
+                to an admin console by a generic button. */}
+            <a
+              href={EXTERNAL.manageIt}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost nav-login"
+              title="ManageiT is the ASPIS administration portal"
+              aria-label="Log in to ManageiT, the ASPIS administration portal (opens in a new tab)"
+            >
+              ManageiT Log In ↗
             </a>
             <Link href={ROUTES.contact} className="btn-primary" onClick={closeAll}>
               Request a Demo
@@ -678,6 +690,18 @@ export default function Header() {
               }}
             >
               Log In to ManageiT ↗
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 11.5,
+                  fontWeight: 400,
+                  color: 'var(--text-muted)',
+                  marginTop: 3,
+                }}
+              >
+                Administration portal
+              </span>
             </a>
             <a
               href={EXTERNAL.shieldMe}

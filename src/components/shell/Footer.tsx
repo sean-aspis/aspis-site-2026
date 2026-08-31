@@ -88,7 +88,7 @@ export default function Footer() {
               style={{ height: 30, width: 'auto', display: 'block', opacity: 0.9 }}
             />
             {[
-              { label: 'MANAGEIT LOGIN ↗', href: EXTERNAL.manageIt },
+              { label: 'MANAGEIT LOGIN — ADMIN PORTAL ↗', href: EXTERNAL.manageIt },
               { label: 'LINKEDIN ↗', href: LINKEDIN },
             ].map((l) => (
               <a
