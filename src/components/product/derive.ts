@@ -156,12 +156,12 @@ export function msgVals(msgs: readonly Msg[], ctaText: string): MsgVals[] {
     who: m.mine ? 'You' : m.who,
     text: m.text,
     align: m.mine ? 'flex-end' : 'flex-start',
-    bg: m.mine ? 'var(--accent)' : '#F1F2F6',
+    bg: m.mine ? 'var(--accent-fill)' : '#F1F2F6',
     fg: m.mine ? 'var(--accent-ink)' : '#0B0D12',
-    whoColor: m.mine
-      ? ink === '#ffffff'
-        ? 'rgba(255,255,255,.85)'
-        : 'rgba(4,6,14,.65)'
-      : '#7A8296',
+    // The sender name is 9.5px, so it gets no contrast headroom to give away.
+    // The previous values — white at 85% over the accent (3.69:1) and #7A8296
+    // over #F1F2F6 (3.43:1) — both failed AA at that size. Full-strength ink
+    // and a darker grey (4.63:1) fix it without changing the bubble colours.
+    whoColor: m.mine ? ink : '#666D7E',
   }));
 }

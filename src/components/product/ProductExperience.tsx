@@ -109,7 +109,7 @@ export default function ProductExperience({
                       fontSize: 12,
                       fontWeight: 600,
                       color: 'var(--accent-ink)',
-                      background: 'var(--accent)',
+                      background: 'var(--accent-fill)',
                       padding: '4px 8px',
                     }}
                   >

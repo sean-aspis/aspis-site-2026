@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { CONSOLE } from '@/data/console';
 import { PAGES } from '@/data/pages';
 import { initials as toInitials, msgVals, type ProductRecord } from './derive';
+import AspisMark from '@/components/brand/AspisMark';
 
 /**
  * The handset in the product hero. Two variants, exactly as the design file
@@ -75,7 +76,7 @@ function ChatScreen({ product }: { product: ProductRecord }) {
             height: 27,
             borderRadius: '50%',
             background: 'var(--accent-soft)',
-            color: 'var(--accent)',
+            color: 'var(--accent-on-light)',
             fontSize: 9,
             fontWeight: 700,
             display: 'flex',
@@ -90,19 +91,23 @@ function ChatScreen({ product }: { product: ProductRecord }) {
           <span style={{ display: 'block', fontSize: 12.5, fontWeight: 600, letterSpacing: '-.01em' }}>
             {product.app.title}
           </span>
-          <span style={{ display: 'block', fontSize: 9.5, color: '#8A8F9C' }}>{product.app.sub}</span>
+          <span style={{ display: 'block', fontSize: 9.5, color: '#6A6E78' }}>{product.app.sub}</span>
         </span>
         <span
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 8,
             letterSpacing: '.1em',
-            color: 'var(--accent)',
+            color: 'var(--accent-on-light)',
             border: '1px solid var(--accent)',
             padding: '3px 6px',
             borderRadius: 4,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
           }}
         >
+          <AspisMark size={9} />
           {product.app.badge}
         </span>
       </div>
@@ -113,6 +118,10 @@ function ChatScreen({ product }: { product: ProductRecord }) {
           minHeight: 0,
           overflow: 'hidden',
           padding: 11,
+          maskImage:
+            'linear-gradient(180deg, transparent 0, rgba(0,0,0,.35) 14px, #000 34px)',
+          WebkitMaskImage:
+            'linear-gradient(180deg, transparent 0, rgba(0,0,0,.35) 14px, #000 34px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
@@ -123,7 +132,7 @@ function ChatScreen({ product }: { product: ProductRecord }) {
           style={{
             alignSelf: 'center',
             fontSize: 9,
-            color: '#8A8F9C',
+            color: '#6A6E78',
             background: '#F1F2F6',
             padding: '3px 9px',
             borderRadius: 9,
@@ -138,7 +147,7 @@ function ChatScreen({ product }: { product: ProductRecord }) {
             alignItems: 'center',
             gap: 5,
             fontSize: 8.5,
-            color: '#8A8F9C',
+            color: '#6A6E78',
             textAlign: 'center',
             lineHeight: 1.4,
           }}
@@ -188,7 +197,7 @@ function ChatScreen({ product }: { product: ProductRecord }) {
             width: 24,
             height: 24,
             borderRadius: '50%',
-            background: 'var(--accent)',
+            background: 'var(--accent-fill)',
             color: 'var(--accent-ink)',
             display: 'flex',
             alignItems: 'center',
@@ -206,7 +215,7 @@ function ChatScreen({ product }: { product: ProductRecord }) {
             borderRadius: 13,
             padding: '7px 11px',
             fontSize: 11,
-            color: '#9AA0AE',
+            color: '#6A6E78',
           }}
         >
           Message…
@@ -230,10 +239,10 @@ function ChatScreen({ product }: { product: ProductRecord }) {
               alignItems: 'center',
               gap: 3,
               fontSize: 8.5,
-              color: '#8A8F9C',
+              color: '#6A6E78',
             }}
           >
-            <TabIcon name={t.name} active={t.name === 'Chat'} />
+            <TabIcon name={t.name} active={t.name === 'Chats'} />
             {t.name}
           </span>
         ))}
@@ -263,7 +272,7 @@ function ConsoleScreen({ product }: { product: ProductRecord }) {
             width: 20,
             height: 20,
             borderRadius: 5,
-            background: 'var(--accent)',
+            background: 'var(--accent-fill)',
             color: 'var(--accent-ink)',
             fontSize: 10,
             fontWeight: 700,
@@ -298,8 +307,12 @@ function ConsoleScreen({ product }: { product: ProductRecord }) {
             border: '1px solid var(--accent)',
             padding: '3px 5px',
             borderRadius: 4,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
           }}
         >
+          <AspisMark size={8.5} />
           {product.app.badge}
         </span>
       </div>
@@ -648,7 +661,7 @@ function TabIcon({ name, active }: { name: string; active: boolean }) {
         <path d="M3 13.6c.5-2.6 2.4-4 5-4s4.5 1.4 5 4" />
       </>
     ),
-    Chat: (
+    Chats: (
       <path d="M13.6 8.4c0 2.7-2.5 4.8-5.6 4.8-.7 0-1.4-.1-2-.3l-3 1 1-2.4c-.9-.8-1.6-2-1.6-3.1 0-2.7 2.5-4.8 5.6-4.8s5.6 2.1 5.6 4.8z" />
     ),
     Calls: (

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { CONSOLE } from '@/data/console';
+import Icon from '@/components/mock/Icon';
+import AspisMark from '@/components/brand/AspisMark';
 import { SIQ_VIEWS, type SiqView } from '@/data/sentineliq';
 
 /**
@@ -102,16 +104,16 @@ export default function SiqConsole() {
                 width: 24,
                 height: 24,
                 borderRadius: 6,
-                background: 'var(--accent)',
+                background: 'var(--accent-fill)',
                 color: 'var(--accent-ink)',
-                fontSize: 12,
-                fontWeight: 700,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              ◈
+              {/* The real ASPIS mark. accent-ink is already contrast-checked
+                  against the accent this chip sits on. */}
+              <AspisMark size={13} />
             </span>
             <span style={{ display: 'flex', flexDirection: 'column' }}>
               <span
@@ -122,7 +124,10 @@ export default function SiqConsole() {
                   letterSpacing: '-.01em',
                 }}
               >
-                {v.title}
+                {/* The brand slot names the product, as the real ManageiT
+                    console does. It carried the view title, which duplicated
+                    the page heading two lines below it. */}
+                ASPIS SentinelIQ
               </span>
               <span
                 style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--text-faint)' }}
@@ -208,7 +213,7 @@ export default function SiqConsole() {
                   background: r.bg,
                 }}
               >
-                {r.icon}
+                <Icon name={r.icon} size={16} />
               </span>
             ))}
           </div>
@@ -473,7 +478,12 @@ export default function SiqConsole() {
                       color: 'var(--sev-ai)',
                     }}
                   >
-                    ✦ {v.aiTitle}
+                    <Icon
+                      name="sparkle"
+                      size={13}
+                      style={{ display: 'inline-block', verticalAlign: '-1px', marginRight: 6 }}
+                    />
+                    {v.aiTitle}
                   </span>
                   <span
                     style={{
@@ -535,7 +545,9 @@ export default function SiqConsole() {
                     >
                       {v.sideTitle}
                     </span>
-                    <span style={{ fontSize: 10.5, color: 'var(--accent)' }}>View all</span>
+                    <span style={{ fontSize: 10.5, color: 'var(--accent-text, var(--accent))' }}>
+                      View all
+                    </span>
                   </span>
                   {v.side.map((s) => (
                     <span
@@ -645,29 +657,77 @@ function SiqChart({ chart }: { chart: string }) {
 
 function LineChart() {
   const W = 560;
-  const H = 180;
-  const pad = 26;
+  const H = 190;
+  const padL = 34;
+  const padR = 14;
+  const padT = 14;
+  const padB = 30;
+
+  /**
+   * Illustrative monthly review data for the mock.
+   *
+   * The previous series opened and closed on 0 and ran flat through the middle,
+   * so the chart drew three lines rising off the floor, going nowhere, then
+   * collapsing back to it — which reads as a data-loading fault rather than as
+   * a supervision queue. These values move like a real queue does and never
+   * touch either axis. They are illustration for a UI mock, not ASPIS
+   * performance data, and nothing on the page presents them as a metric.
+   */
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
   const series = [
-    { c: '#4C7DFF', pts: [0, 0.55, 0.62, 0.62, 0.62, 0.62, 0.62, 0.58, 0.04], name: 'Reviewed on time' },
-    { c: '#35C8F4', pts: [0, 0.3, 0.32, 0.32, 0.32, 0.32, 0.46, 0.4, 0.06], name: 'Escalated' },
-    { c: '#A855F7', pts: [0, 0.46, 0.47, 0.47, 0.47, 0.62, 0.92, 0.7, 0.1], name: 'AI-flagged' },
+    { c: '#4C7DFF', name: 'Reviewed on time', pts: [0.71, 0.68, 0.76, 0.73, 0.81, 0.78, 0.85, 0.83, 0.88] },
+    { c: '#35C8F4', name: 'Escalated', pts: [0.26, 0.31, 0.24, 0.29, 0.22, 0.27, 0.19, 0.23, 0.17] },
+    { c: '#A855F7', name: 'AI-flagged', pts: [0.42, 0.47, 0.44, 0.55, 0.51, 0.63, 0.58, 0.69, 0.64] },
   ];
-  const x = (i: number) => pad + (i / 8) * (W - pad * 2);
-  const y = (v: number) => H - pad - v * (H - pad * 2);
+
+  const x = (i: number) => padL + (i / (months.length - 1)) * (W - padL - padR);
+  const y = (v: number) => padT + (1 - v) * (H - padT - padB);
   const path = (pts: number[]) =>
     pts.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+  const ticks = [0, 0.25, 0.5, 0.75, 1];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', display: 'block' }} role="img" aria-label="Review throughput and SLA by month">
-        <line
-          x1={pad}
-          y1={H - pad}
-          x2={W - pad}
-          y2={H - pad}
-          stroke="rgba(122,160,255,.20)"
-          strokeWidth={1}
-        />
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        style={{ width: '100%', display: 'block' }}
+        role="img"
+        aria-label="Illustrative monthly review throughput: reviewed on time trending up from about 70 to 88 percent, escalations trending down, AI-flagged volume rising."
+      >
+        {/* Gridlines and a labelled scale, so the shape means something. */}
+        {ticks.map((t) => (
+          <g key={t}>
+            <line
+              x1={padL}
+              y1={y(t)}
+              x2={W - padR}
+              y2={y(t)}
+              stroke="rgba(122,160,255,.13)"
+              strokeWidth={1}
+            />
+            <text
+              x={padL - 7}
+              y={y(t) + 3.2}
+              textAnchor="end"
+              fill="#7E8CAE"
+              style={{ fontSize: 8, fontFamily: 'var(--font-mono)' }}
+            >
+              {Math.round(t * 100)}
+            </text>
+          </g>
+        ))}
+        {months.map((m, i) => (
+          <text
+            key={m}
+            x={x(i)}
+            y={H - padB + 15}
+            textAnchor="middle"
+            fill="#7E8CAE"
+            style={{ fontSize: 8, fontFamily: 'var(--font-mono)' }}
+          >
+            {m}
+          </text>
+        ))}
         {series.map((s) => (
           <path
             key={s.name}
@@ -680,7 +740,9 @@ function LineChart() {
           />
         ))}
         {series.flatMap((s) =>
-          s.pts.map((v, i) => <circle key={`${s.name}-${i}`} cx={x(i)} cy={y(v)} r={3} fill={s.c} />)
+          s.pts.map((v, i) => (
+            <circle key={`${s.name}-${i}`} cx={x(i)} cy={y(v)} r={2.6} fill={s.c} />
+          ))
         )}
       </svg>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
