@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { DeviceBezel } from '@/components/ui/Primitives';
 import { SITE } from '@/data/site';
 import { ROUTES, EXTERNAL } from '@/data/nav';
+import { bestInk, fillAccent } from '@/lib/theme';
 
 /**
  * Client leaf for the "THE PLATFORM IN USE" band. Owns nothing but the active
@@ -327,9 +328,15 @@ export default function PlatformTabs() {
             <Link
               href={tab.href1}
               className="btn-accent"
+              // --accent-fill has to be set alongside --accent-ink, not left to
+              // the root default: the default is computed for white ink, so a
+              // button that paints #04060E on it inherited a fill darkened for
+              // the wrong ink and came out at 4.36:1. bestInk measures which
+              // ink actually wins on this tab's accent rather than assuming.
               style={{
                 ['--accent' as string]: tab.accent,
-                ['--accent-ink' as string]: '#04060E',
+                ['--accent-ink' as string]: bestInk(tab.accent),
+                ['--accent-fill' as string]: fillAccent(tab.accent, bestInk(tab.accent)),
                 fontSize: 14.5,
                 padding: '14px 24px',
               }}

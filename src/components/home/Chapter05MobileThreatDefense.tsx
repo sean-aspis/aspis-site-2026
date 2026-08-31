@@ -2,6 +2,18 @@ import Link from 'next/link';
 import { ChapterHeader } from '@/components/ui/Primitives';
 import { SITE } from '@/data/site';
 import { ROUTES } from '@/data/nav';
+import Icon, { type IconName } from '@/components/mock/Icon';
+import AspisMark from '@/components/brand/AspisMark';
+
+/**
+ * The three actions the real ShieldiT security screen offers, in its order and
+ * with its icon-over-label treatment.
+ */
+const ACTIONS: { label: string; icon: IconName; solid?: boolean; ink: string }[] = [
+  { label: 'Start Scan', icon: 'search', solid: true, ink: '#ffffff' },
+  { label: 'Link Scanner', icon: 'grid', ink: '#0069DB' },
+  { label: 'SOS', icon: 'support', ink: '#F0452A' },
+];
 
 /**
  * 05 / MOBILE THREAT DEFENSE — coral. Copy and the eight-threat grid on the
@@ -210,6 +222,14 @@ export default function Chapter05MobileThreatDefense() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 10,
+                  // The threat log runs past the bottom of the handset. Left as
+                  // a hard cut it sliced the last card in half and left a blank
+                  // white box, which reads as a broken render; fading it says
+                  // "the list continues", which is what the real screen does.
+                  maskImage:
+                    'linear-gradient(180deg, #000 0, #000 calc(100% - 30px), transparent 100%)',
+                  WebkitMaskImage:
+                    'linear-gradient(180deg, #000 0, #000 calc(100% - 30px), transparent 100%)',
                 }}
               >
                 <div
@@ -221,19 +241,39 @@ export default function Chapter05MobileThreatDefense() {
                     paddingTop: 4,
                   }}
                 >
-                  <svg width="54" height="60" viewBox="0 0 54 60" fill="none" aria-hidden="true">
-                    <path d="M27 2 51 11v20c0 14-10.5 22.5-24 27C13.5 53.5 3 45 3 31V11z" fill="#F0452A" />
-                    <path
-                      d="M27 17v18M27 41.5v3.5"
-                      stroke="#ffffff"
-                      strokeWidth="4.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  {/* The real ASPIS mark carrying the risk state, rather than a
+                      generic shield outline. #F0452A on this near-white panel
+                      measures 4.0:1, and the state is also carried by the
+                      heading text, so it is not colour-only. */}
+                  <span style={{ position: 'relative', display: 'flex', color: '#F0452A' }}>
+                    <AspisMark size={52} />
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        right: -7,
+                        bottom: -3,
+                        width: 21,
+                        height: 21,
+                        borderRadius: '50%',
+                        background: '#F0452A',
+                        border: '2.5px solid #F4F5F8',
+                        color: '#ffffff',
+                        fontSize: 13,
+                        fontWeight: 800,
+                        lineHeight: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      !
+                    </span>
+                  </span>
                   <div style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-.02em' }}>
                     Device at High Risk
                   </div>
-                  <div style={{ fontSize: 11.5, color: '#8A8F9C' }}>Last scan today · 09:14</div>
+                  <div style={{ fontSize: 11.5, color: '#6A6E78' }}>Last scan today · 09:14</div>
                 </div>
 
                 <div style={{ background: '#ffffff', borderRadius: 14, padding: '11px 12px' }}>
@@ -247,16 +287,40 @@ export default function Chapter05MobileThreatDefense() {
                   </div>
                 </div>
 
+                {/* The real app lays these out as three equal actions with the
+                    icon inside a round button and the label underneath, so the
+                    mock matches that rather than using bare text pills. */}
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <span style={{ ...PILL, flex: 1, background: '#007AFF', color: '#ffffff' }}>
-                    Start Scan
-                  </span>
-                  <span style={{ ...PILL, flex: 1 }}>Link Scanner</span>
-                  <span
-                    style={{ ...PILL, flex: '0 0 auto', padding: '9px 14px', color: '#F0452A' }}
-                  >
-                    SOS
-                  </span>
+                  {ACTIONS.map((a) => (
+                    <span
+                      key={a.label}
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 5,
+                      }}
+                    >
+                      <span
+                        style={{
+                          ...PILL,
+                          width: '100%',
+                          padding: '9px 0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: a.solid ? '#0069DB' : '#ffffff',
+                          color: a.solid ? '#ffffff' : a.ink,
+                        }}
+                      >
+                        <Icon name={a.icon} size={17} strokeWidth={1.8} />
+                      </span>
+                      <span style={{ fontSize: 10.5, color: '#3C4250', fontWeight: 500 }}>
+                        {a.label}
+                      </span>
+                    </span>
+                  ))}
                 </div>
 
                 <div
@@ -270,7 +334,7 @@ export default function Chapter05MobileThreatDefense() {
                   <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-.01em' }}>
                     Threats Log
                   </span>
-                  <span style={{ fontSize: 11, color: '#8A8F9C' }}>View All</span>
+                  <span style={{ fontSize: 11, color: '#6A6E78' }}>View All</span>
                 </div>
 
                 <div style={{ display: 'grid', gap: 8 }}>
@@ -285,7 +349,7 @@ export default function Chapter05MobileThreatDefense() {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           fontSize: 10,
-                          color: '#8A8F9C',
+                          color: '#6A6E78',
                           marginBottom: 4,
                         }}
                       >
@@ -316,7 +380,7 @@ export default function Chapter05MobileThreatDefense() {
                       alignItems: 'center',
                       gap: 3,
                       fontSize: 8.5,
-                      color: '#8A8F9C',
+                      color: '#6A6E78',
                     }}
                   >
                     <svg
@@ -324,7 +388,7 @@ export default function Chapter05MobileThreatDefense() {
                       height="16"
                       viewBox="0 0 16 16"
                       fill="none"
-                      stroke={t.name === 'Security' ? '#007AFF' : '#8A8F9C'}
+                      stroke={t.name === 'Security' ? '#0069DB' : '#6A6E78'}
                       strokeWidth="1.4"
                       aria-hidden
                     >

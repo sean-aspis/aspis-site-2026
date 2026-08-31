@@ -2,10 +2,37 @@
 
 import { useEffect, useState } from 'react';
 import { SITE } from '@/data/site';
+import Icon, { type IconName } from '@/components/mock/Icon';
+import AspisMark from '@/components/brand/AspisMark';
 
 type Screen = 'chat' | 'security' | 'calls' | 'contacts';
 const SCREENS: Screen[] = ['chat', 'security', 'calls', 'contacts'];
 const CYCLE_MS = 6000;
+
+/*
+ * Secondary text inside the light phone screens is #6A6E78, not the iOS system
+ * grey #8A8F9C the design file used. #8A8F9C measures 3.24:1 on white and
+ * 2.92:1 on the #F2F3F7 panels — below AA for the 8.5-11.5px sizes these
+ * screens use. #6A6E78 is the same hue at 5.10:1 and 4.60:1. Apple's own grey
+ * fails the same check; matching it exactly is not worth an illegible mock.
+ */
+
+/** Tab-bar icons, by the label the design export uses. */
+const TAB_ICONS: Record<string, IconName> = {
+  Security: 'shield',
+  Contacts: 'contacts',
+  Chats: 'chat',
+  Calls: 'phone',
+  Settings: 'settings',
+};
+
+/** Which tab the currently-shown screen belongs to, so one reads as selected. */
+const TAB_FOR_SCREEN: Record<Screen, string> = {
+  chat: 'Chats',
+  security: 'Security',
+  calls: 'Calls',
+  contacts: 'Contacts',
+};
 
 const S = {
   row: {
@@ -33,14 +60,14 @@ const S = {
     borderRadius: 10,
     padding: '7px 10px',
     fontSize: 11,
-    color: '#9AA0AE',
+    color: '#6A6E78',
     display: 'flex',
     gap: 6,
     alignItems: 'center',
   } as React.CSSProperties,
 };
 
-const IconSearch = ({ c = '#9AA0AE' }: { c?: string }) => (
+const IconSearch = ({ c = '#6A6E78' }: { c?: string }) => (
   <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke={c} strokeWidth="1.5">
     <circle cx="7.2" cy="7.2" r="4.4" />
     <path d="M10.6 10.6 14 14" />
@@ -203,21 +230,30 @@ export default function HeroPhone({ motion }: { motion: boolean }) {
               borderTop: '1px solid #EDEEF2',
             }}
           >
-            {SITE.tabsActive.map((t) => (
-              <span
-                key={t.name}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 3,
-                  fontSize: 8.5,
-                  color: '#8A8F9C',
-                }}
-              >
-                {t.name}
-              </span>
-            ))}
+            {SITE.tabsActive.map((t) => {
+              // SITE.tabsActive carries its icon as a serialised element tree
+              // the design export produced; this mock only ever rendered the
+              // label, so the tab bar came out as five words with no icons
+              // while the other phone mocks had them. Draw the real icon.
+              const active = TAB_FOR_SCREEN[screen] === t.name;
+              return (
+                <span
+                  key={t.name}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 3,
+                    fontSize: 8.5,
+                    color: active ? '#0069DB' : '#6A6E78',
+                    fontWeight: active ? 600 : 400,
+                  }}
+                >
+                  <Icon name={TAB_ICONS[t.name] ?? 'grid'} size={15} strokeWidth={1.6} />
+                  {t.name}
+                </span>
+              );
+            })}
           </div>
         </div>
 
@@ -231,7 +267,7 @@ export default function HeroPhone({ motion }: { motion: boolean }) {
               top: 0,
               height: '16%',
               background:
-                'linear-gradient(180deg,rgba(103,232,249,0) 0%,rgba(103,232,249,.12) 60%,rgba(103,232,249,.34) 100%)',
+                'linear-gradient(180deg,rgba(103,232,249,0) 0%,rgba(103,232,249,.04) 60%,rgba(103,232,249,.11) 100%)',
               animation: 'sweep 5.5s ease-in-out infinite',
               pointerEvents: 'none',
             }}
@@ -344,7 +380,7 @@ function ChatScreen() {
           borderBottom: '1px solid #EDEEF2',
         }}
       >
-        <span style={{ color: '#8A8F9C', fontSize: 16, lineHeight: 1 }}>‹</span>
+        <span style={{ color: '#6A6E78', fontSize: 16, lineHeight: 1 }}>‹</span>
         <span style={{ position: 'relative', width: 27, height: 27, flex: '0 0 auto' }}>
           <span
             style={{
@@ -385,14 +421,16 @@ function ChatScreen() {
               alignItems: 'center',
               gap: 4,
               fontSize: 9.5,
-              color: '#8A8F9C',
+              color: '#6A6E78',
             }}
           >
-            <IconLock />
-            End-to-end encrypted · 6 members
+            <span style={{ color: '#2D449C', display: 'flex', flex: '0 0 auto' }}>
+              <AspisMark size={9} />
+            </span>
+            <span style={{ whiteSpace: 'nowrap' }}>ASPIS encrypted · 6 members</span>
           </span>
         </span>
-        <span style={{ display: 'flex', gap: 8, color: '#007AFF' }}>
+        <span style={{ display: 'flex', gap: 8, color: '#0069DB' }}>
           <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
             <rect x="1.5" y="4" width="9" height="8" rx="2" />
             <path d="M10.5 8l4-2.2v4.4z" />
@@ -409,6 +447,10 @@ function ChatScreen() {
           minHeight: 0,
           overflow: 'hidden',
           padding: '9px 10px',
+          maskImage:
+            'linear-gradient(180deg, transparent 0, rgba(0,0,0,.35) 14px, #000 34px)',
+          WebkitMaskImage:
+            'linear-gradient(180deg, transparent 0, rgba(0,0,0,.35) 14px, #000 34px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
@@ -422,13 +464,13 @@ function ChatScreen() {
             alignItems: 'center',
             gap: 5,
             fontSize: 9,
-            color: '#8A8F9C',
+            color: '#6A6E78',
             background: '#F1F2F6',
             padding: '3px 9px',
             borderRadius: 9,
           }}
         >
-          <IconLock c="#8A8F9C" />
+          <IconLock c="#6A6E78" />
           Messages are end-to-end encrypted
         </div>
 
@@ -477,7 +519,7 @@ function ChatScreen() {
               style={{
                 display: 'block',
                 fontSize: 9,
-                color: '#9AA0AE',
+                color: '#6A6E78',
                 textAlign: 'right',
                 marginTop: 2,
               }}
@@ -522,7 +564,7 @@ function ChatScreen() {
               <span style={{ display: 'block', fontSize: 11, fontWeight: 600 }}>
                 device-posture-report.pdf
               </span>
-              <span style={{ display: 'block', fontSize: 9, color: '#9AA0AE' }}>
+              <span style={{ display: 'block', fontSize: 9, color: '#6A6E78' }}>
                 PDF · 240 KB · scanned
               </span>
             </span>
@@ -602,10 +644,16 @@ function ChatScreen() {
               Policy applied. Logged to the compliance record as case IR-2291.
             </span>
             <span style={{ display: 'flex', gap: 4, marginTop: 5 }}>
-              {['👍 3', '✓ 2'].map((r) => (
+              {[
+                { icon: 'arrow-up' as const, n: 3 },
+                { icon: 'check' as const, n: 2 },
+              ].map((r) => (
                 <span
-                  key={r}
+                  key={r.icon}
                   style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 3,
                     fontSize: 9,
                     background: '#ffffff',
                     borderRadius: 9,
@@ -613,7 +661,8 @@ function ChatScreen() {
                     color: '#5C6270',
                   }}
                 >
-                  {r}
+                  <Icon name={r.icon} size={8} strokeWidth={2.4} />
+                  {r.n}
                 </span>
               ))}
             </span>
@@ -627,7 +676,8 @@ function ChatScreen() {
               height: 20,
               borderRadius: '50%',
               background: '#E7EEFB',
-              color: '#2F6BFF',
+              // 8.5px initials: #2F6BFF gives 3.86:1 on this tint, #2A60E6 4.60:1.
+              color: '#2A60E6',
               fontSize: 8.5,
               fontWeight: 700,
               display: 'flex',
@@ -678,7 +728,7 @@ function ChatScreen() {
             width: 25,
             height: 25,
             borderRadius: '50%',
-            background: '#007AFF',
+            background: '#0069DB',
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
@@ -696,12 +746,12 @@ function ChatScreen() {
             borderRadius: 13,
             padding: '7px 11px',
             fontSize: 11,
-            color: '#9AA0AE',
+            color: '#6A6E78',
           }}
         >
           Message…
         </span>
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#007AFF" strokeWidth="1.4">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#0069DB" strokeWidth="1.4">
           <rect x="5.6" y="1.8" width="4.8" height="8" rx="2.4" />
           <path d="M3.4 7.6a4.6 4.6 0 009.2 0M8 12.2V14" />
         </svg>
@@ -726,7 +776,7 @@ function SecurityScreen() {
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-.025em' }}>Security</span>
-        <span style={{ fontSize: 9.5, color: '#8A8F9C' }}>Last scan 09:41</span>
+        <span style={{ fontSize: 9.5, color: '#6A6E78' }}>Last scan 09:41</span>
       </div>
 
       <div
@@ -785,8 +835,8 @@ function SecurityScreen() {
 
       <div style={{ display: 'flex', gap: 6 }}>
         {[
-          { label: 'Scan', bg: '#007AFF', color: '#ffffff', stroke: 'currentColor' },
-          { label: 'Links', bg: '#ffffff', color: '#0B0D12', stroke: '#007AFF' },
+          { label: 'Scan', bg: '#0069DB', color: '#ffffff', stroke: 'currentColor' },
+          { label: 'Links', bg: '#ffffff', color: '#0B0D12', stroke: '#0069DB' },
           { label: 'SOS', bg: '#ffffff', color: '#F0452A', stroke: 'currentColor' },
         ].map((b) => (
           <span
@@ -849,14 +899,14 @@ function SecurityScreen() {
             }}
           >
             <span style={{ fontSize: 11, fontWeight: 600 }}>{c.t}</span>
-            <span style={{ fontSize: 9, color: '#8A8F9C' }}>{c.d}</span>
+            <span style={{ fontSize: 9, color: '#6A6E78' }}>{c.d}</span>
           </span>
         ))}
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: '-.01em' }}>Threats Log</span>
-        <span style={{ fontSize: 9.5, color: '#007AFF' }}>View All</span>
+        <span style={{ fontSize: 9.5, color: '#0069DB' }}>View All</span>
       </div>
 
       {SITE.heroThreatLog.map((l) => (
@@ -876,9 +926,9 @@ function SecurityScreen() {
           />
           <span style={{ flex: 1, minWidth: 0 }}>
             <span style={{ display: 'block', fontSize: 11.5, fontWeight: 600 }}>{l.title}</span>
-            <span style={{ display: 'block', fontSize: 9, color: '#8A8F9C' }}>{l.meta}</span>
+            <span style={{ display: 'block', fontSize: 9, color: '#6A6E78' }}>{l.meta}</span>
           </span>
-          <span style={{ fontSize: 9, color: '#9AA0AE' }}>{l.time}</span>
+          <span style={{ fontSize: 9, color: '#6A6E78' }}>{l.time}</span>
         </div>
       ))}
     </div>
@@ -900,7 +950,7 @@ function CallsScreen() {
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 21, fontWeight: 700, letterSpacing: '-.025em' }}>Calls</span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#007AFF" strokeWidth="1.5">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#0069DB" strokeWidth="1.5">
           <path d="M8 3v10M3 8h10" />
         </svg>
       </div>
@@ -921,8 +971,8 @@ function CallsScreen() {
           <span
             key={t}
             style={{
-              color: i === 0 ? '#007AFF' : '#9AA0AE',
-              borderBottom: i === 0 ? '2px solid #007AFF' : undefined,
+              color: i === 0 ? '#0069DB' : '#6A6E78',
+              borderBottom: i === 0 ? '2px solid #0069DB' : undefined,
               paddingBottom: 5,
             }}
           >
@@ -945,9 +995,9 @@ function CallsScreen() {
             >
               {c.name}
             </span>
-            <span style={{ display: 'block', fontSize: 9.5, color: '#8A8F9C' }}>{c.type}</span>
+            <span style={{ display: 'block', fontSize: 9.5, color: '#6A6E78' }}>{c.type}</span>
           </span>
-          <span style={{ fontSize: 9.5, color: '#9AA0AE' }}>{c.time}</span>
+          <span style={{ fontSize: 9.5, color: '#6A6E78' }}>{c.time}</span>
         </div>
       ))}
     </div>
@@ -981,8 +1031,8 @@ function ContactsScreen() {
           <span
             key={t}
             style={{
-              color: i === 0 ? '#007AFF' : '#9AA0AE',
-              borderBottom: i === 0 ? '2px solid #007AFF' : undefined,
+              color: i === 0 ? '#0069DB' : '#6A6E78',
+              borderBottom: i === 0 ? '2px solid #0069DB' : undefined,
               paddingBottom: 5,
             }}
           >
@@ -1001,7 +1051,7 @@ function ContactsScreen() {
             <span style={{ display: 'block', fontSize: 12, fontWeight: 600, letterSpacing: '-.01em' }}>
               {p.name}
             </span>
-            <span style={{ display: 'block', fontSize: 9.5, color: '#8A8F9C' }}>{p.role}</span>
+            <span style={{ display: 'block', fontSize: 9.5, color: '#6A6E78' }}>{p.role}</span>
           </span>
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#22C55E" strokeWidth="1.6">
             <path d="M2.6 8.4 6 11.8l7.4-8" />

@@ -1,4 +1,15 @@
 import { CONSOLE } from '@/data/console';
+import Icon from '@/components/mock/Icon';
+import AspisMark, { MARK_ON_DARK } from '@/components/brand/AspisMark';
+
+/**
+ * Dot offsets for a hotspot cluster, in map units at r=26. Deliberately a fixed
+ * lattice rather than Math.random(): a random layout would differ between the
+ * server render and hydration and trip a mismatch.
+ */
+const CLUSTER: [number, number][] = [
+  [0, 0], [7, -4], [-6, -5], [4, 6], [-8, 4], [12, 2], [-2, 10], [9, 9], [-12, -1], [2, -10],
+];
 
 /**
  * ManageiT security-operations console mock — icon rail, integration pills,
@@ -102,14 +113,32 @@ export default function ManageItConsole() {
             gap: 4,
           }}
         >
-          <svg width="20" height="22" viewBox="0 0 54 60" fill="none" style={{ marginBottom: 10 }} aria-hidden>
-            <path
-              d="M27 2 51 11v20c0 14-10.5 22.5-24 27C13.5 53.5 3 45 3 31V11z"
-              stroke="#4C7DFF"
-              strokeWidth="4"
-            />
-            <path d="M27 16v22" stroke="#67E8F9" strokeWidth="4" strokeLinecap="round" />
-          </svg>
+          {/* The real product puts the mark AND the ASPIS wordmark at the top of
+              this rail, so the mock does too. MARK_ON_DARK rather than the brand
+              hex: #2D449C measures 2.32:1 against this surface. */}
+          <span
+            style={{
+              color: MARK_ON_DARK,
+              marginBottom: 12,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 3,
+            }}
+          >
+            <AspisMark size={22} />
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 8.5,
+                fontWeight: 800,
+                letterSpacing: '.1em',
+                lineHeight: 1,
+              }}
+            >
+              ASPIS
+            </span>
+          </span>
           {CONSOLE.consoleNav.map((n) => (
             <span
               key={n.label}
@@ -126,7 +155,7 @@ export default function ManageItConsole() {
                 background: n.bg,
               }}
             >
-              {n.icon}
+              <Icon name={n.icon} size={15} />
             </span>
           ))}
         </div>
@@ -163,7 +192,8 @@ export default function ManageItConsole() {
                 whiteSpace: 'nowrap',
               }}
             >
-              ▤ This week
+              <Icon name="calendar" size={11} strokeWidth={2} />
+              This week
             </span>
             <span
               style={{
@@ -193,7 +223,9 @@ export default function ManageItConsole() {
                     lineHeight: 1.1,
                   }}
                 >
-                  <span style={{ fontSize: 8, color: p.c }}>{p.i}</span>
+                  <span style={{ color: p.c }}>
+                    <Icon name={p.i} size={10} strokeWidth={1.9} />
+                  </span>
                   <span
                     style={{
                       fontFamily: 'var(--font-mono)',
@@ -208,9 +240,11 @@ export default function ManageItConsole() {
               ))}
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: 11 }}>⌕</span>
-              <span style={{ position: 'relative', color: 'var(--text-muted)', fontSize: 11 }}>
-                △
+              <span style={{ color: 'var(--text-muted)' }}>
+                <Icon name="search" size={13} />
+              </span>
+              <span style={{ position: 'relative', color: 'var(--text-muted)', display: 'flex' }}>
+                <Icon name="bell" size={13} />
                 <span
                   style={{
                     position: 'absolute',
@@ -271,16 +305,29 @@ export default function ManageItConsole() {
                   gap: 5,
                 }}
               >
+                {/* Label row with its leading icon, as the real dashboard has. */}
                 <span
                   style={{
-                    fontSize: 9.5,
-                    color: 'var(--text-muted)',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 5,
+                    minWidth: 0,
                   }}
                 >
-                  {k.label}
+                  <span style={{ color: k.valueColor ?? 'var(--accent)', display: 'flex' }}>
+                    <Icon name={k.icon} size={11} strokeWidth={1.9} />
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 9.5,
+                      color: 'var(--text-muted)',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {k.label}
+                  </span>
                 </span>
                 <span
                   style={{
@@ -288,7 +335,7 @@ export default function ManageItConsole() {
                     fontSize: 17,
                     fontWeight: 700,
                     letterSpacing: '-.02em',
-                    color: 'var(--text-primary)',
+                    color: k.valueColor ?? 'var(--text-primary)',
                   }}
                 >
                   {k.value}
@@ -311,7 +358,39 @@ export default function ManageItConsole() {
                     }}
                   />
                 </span>
-                <span style={{ fontSize: 9, color: k.deltaColor }}>{k.delta}</span>
+                <span
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontSize: 9,
+                    color: k.deltaColor,
+                  }}
+                >
+                  {k.arrow && (
+                    <span
+                      style={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: `color-mix(in srgb, ${k.deltaColor} 22%, transparent)`,
+                        flex: '0 0 auto',
+                      }}
+                    >
+                      <Icon
+                        name={k.arrow === 'up' ? 'arrow-up' : 'arrow-down'}
+                        size={7}
+                        strokeWidth={2.6}
+                      />
+                    </span>
+                  )}
+                  {/* The design data carries ▲/▼ inside the string; the badge
+                      above now says the direction, so strip the duplicate. */}
+                  {k.delta.replace(/^[▲▼]\s*/, '')}
+                </span>
               </div>
             ))}
           </div>
@@ -363,6 +442,23 @@ export default function ManageItConsole() {
                     style={{ filter: 'blur(15px)' }}
                   />
                 ))}
+                {/* The real dashboard marks each hotspot with a tight cluster of
+                    lit map dots inside the glow, which is what makes it read as
+                    activity on a map rather than as coloured haze. The offsets
+                    are a fixed lattice, not random, so the mock is stable
+                    between renders and between server and client. */}
+                {CONSOLE.consoleBlobs.map((b, i) => (
+                  <g key={`c${i}`} fill={b.c} opacity={Math.min(1, b.o + 0.35)}>
+                    {CLUSTER.map(([dx, dy], j) => (
+                      <circle
+                        key={j}
+                        cx={b.x + dx * (b.r / 26)}
+                        cy={b.y + dy * (b.r / 26)}
+                        r={1.9}
+                      />
+                    ))}
+                  </g>
+                ))}
               </g>
             </svg>
             <div
@@ -374,7 +470,9 @@ export default function ManageItConsole() {
               }}
             />
 
-            <span style={{ ...chip, position: 'absolute', top: 10, left: 11, fontSize: 10 }}>▥</span>
+            <span style={{ ...chip, position: 'absolute', top: 10, left: 11, display: 'flex' }}>
+              <Icon name="layers" size={11} />
+            </span>
             <span
               style={{
                 position: 'absolute',
@@ -434,7 +532,9 @@ export default function ManageItConsole() {
                         color: 'var(--text-muted)',
                       }}
                     >
-                      <span style={{ color: m.c }}>{m.i}</span>
+                      <span style={{ color: m.c, display: 'flex' }}>
+                        <Icon name={m.i} size={11} strokeWidth={2} />
+                      </span>
                       {m.l}
                     </span>
                   </span>
@@ -491,7 +591,20 @@ export default function ManageItConsole() {
                     padding: '4px 9px',
                   }}
                 >
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.c }} />
+                  <span
+                    style={{
+                      width: 13,
+                      height: 13,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: `color-mix(in srgb, ${s.c} 26%, transparent)`,
+                      flex: '0 0 auto',
+                    }}
+                  >
+                    <Icon name={s.i} size={8} strokeWidth={2.4} />
+                  </span>
                   {s.l}
                 </span>
               ))}
