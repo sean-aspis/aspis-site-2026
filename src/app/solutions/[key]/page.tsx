@@ -85,13 +85,19 @@ export default async function SolutionPage({ params }: { params: Promise<Params>
   // them and never rendered them anywhere.
   const shots = (SOLUTIONS[key] as { shots?: ProductRecord['shots'] }).shots;
 
+  // The design file hard-codes CTA ink #04060E. It is measured per industry
+  // instead: it stays #04060E on nine of the ten, and flips to white on
+  // Financial Services, where the dark ink comes in at 4.39:1 — under AA.
+  //
+  // The ink is passed INTO accentVars rather than overridden after it. Both
+  // --accent-ink and --accent-fill are derived from the ink, and overriding one
+  // afterwards left them disagreeing: --accent-fill was computed for the ink
+  // onAccentInk() would have picked, while the button actually painted
+  // bestInk()'s. On Government that shipped #04060E on a fill darkened for
+  // white — 4.47:1, a failure this pairing was supposed to prevent.
   const mainStyle = {
-    ...accentVars(sol.accent),
+    ...accentVars(sol.accent, { ink: bestInk(sol.accent) }),
     ['--band-wash']: sol.bandWash,
-    // The design file hard-codes #04060E here. That is measured per industry
-    // instead: it stays #04060E on nine of the ten, and flips to white on
-    // Financial Services, where the dark ink comes in at 4.39:1 — under AA.
-    ['--accent-ink']: bestInk(sol.accent),
   } as CSSProperties;
 
   return (
