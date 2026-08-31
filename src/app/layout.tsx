@@ -46,6 +46,9 @@ const plexMono = localFont({
   fallback: ['ui-monospace', 'monospace'],
 });
 
+// Bump when any icon file changes, to force browsers past a cached favicon.
+const ICON_V = '3';
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -64,15 +67,34 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
   icons: {
-    // .ico is what a browser requests unprompted; the SVG is what it uses when
-    // it can. apple-touch-icon covers "add to home screen" on iOS. All three
-    // are rendered from the same favicon.svg, so they cannot drift.
+    // Every file here is rendered from the same favicon.svg, so they cannot
+    // drift from the mark.
+    //
+    // The set is deliberately wide. Chrome and Firefox take the SVG. Edge is
+    // Chromium but on Windows the icon also feeds the taskbar and pinned-site
+    // tiles, which want real rasters, so PNGs are declared explicitly at every
+    // size a browser might ask for rather than leaving it to pick apart the
+    // .ico. The bare .ico stays because a browser requests /favicon.ico
+    // unprompted, before it has parsed any of this.
+    //
+    // ICON_V is a cache-buster. Browsers cache favicons far more aggressively
+    // than page assets — Edge keeps them in a local store it does not
+    // revalidate — so a replaced icon at an unchanged URL can keep showing the
+    // old image for a long time. Bump ICON_V whenever the mark changes.
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '48x48' },
+      { url: `/favicon.svg?v=${ICON_V}`, type: 'image/svg+xml' },
+      { url: `/icon-16.png?v=${ICON_V}`, sizes: '16x16', type: 'image/png' },
+      { url: `/icon-32.png?v=${ICON_V}`, sizes: '32x32', type: 'image/png' },
+      { url: `/icon-48.png?v=${ICON_V}`, sizes: '48x48', type: 'image/png' },
+      { url: `/icon-96.png?v=${ICON_V}`, sizes: '96x96', type: 'image/png' },
+      { url: `/icon-192.png?v=${ICON_V}`, sizes: '192x192', type: 'image/png' },
+      { url: `/icon-512.png?v=${ICON_V}`, sizes: '512x512', type: 'image/png' },
+      { url: `/favicon.ico?v=${ICON_V}`, sizes: '16x16 32x32 48x48' },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: [{ url: `/apple-touch-icon.png?v=${ICON_V}`, sizes: '180x180' }],
+    shortcut: [`/favicon.ico?v=${ICON_V}`],
   },
+  manifest: `/site.webmanifest?v=${ICON_V}`,
 };
 
 export const viewport: Viewport = {

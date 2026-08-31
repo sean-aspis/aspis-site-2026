@@ -28,7 +28,16 @@
   --text-label: #afbbd6;
   --text-muted: #8b98b8;
   --text-dim: #717fa0; /* lifted from #6e7c9e — 4.38:1 on --surface-1 failed AA */
-  --text-faint: #737f9e; /* lifted from #5e6c90 — 3.49:1 on --surface-1 failed AA */
+  /* Lifted twice: from #5e6c90 (3.49:1 on --surface-1) to #737f9e, and then
+     again to #7b88a9. The first lift was measured against the page and the
+     darker panels and passed there, but this token is also used at 9-10.5px
+     inside the console mock's lighter #161f35 panels, where #737f9e reached
+     only 4.10:1. #7b88a9 clears AA on every surface it is used on:
+     and once more to #7f8cae, because the SentinelIQ console adds a lighter
+     purple-tinted #252234 panel where #7b88a9 reached only 4.37:1. Final:
+     6.01:1 on #05070e, 5.63:1 on #0a1024, 4.89:1 on #161f35, 4.62:1 on
+     #252234 — AA on every surface this token is used on. */
+  --text-faint: #7f8cae;
   --text-desc: #7a88a8; /* mega-menu descriptions */
 
   /* Hairlines */
@@ -49,7 +58,10 @@
   --periwinkle: #8b9bff; /* industries, cross-cutting */
 
   /* Severity scale */
-  --sev-critical: #f0452a;
+  /* Lifted from #f0452a: that reached only 4.12:1 as 9.5px text on the
+     SentinelIQ console's #252234 panel. #ff492d is the same hue at 4.60:1
+     there and higher on every darker surface. */
+  --sev-critical: #ff492d;
   --sev-high: #ff8a6e;
   --sev-medium: #f5c451;
   --sev-low: #7fa0ff;
@@ -74,6 +86,14 @@
   --accent: var(--blue);
   --accent-soft: rgba(76, 125, 255, 0.16);
   --accent-ink: #ffffff; /* on-accent ink, chosen by luminance not family */
+  /* Fill-safe accent — see fillAccent() in lib/theme.ts. --accent stays the
+     design's colour for borders, glows and large type; this is what gets
+     painted under --accent-ink, where AA has to hold. Routes override it via
+     accentVars(); this default covers the ones that do not. */
+  --accent-fill: #2e69fb;
+  /* Text-safe accent on a LIGHT ground — see accentOnLight() in lib/theme.ts.
+     Used by the light phone-screen mocks, where accent type sits on white. */
+  --accent-on-light: #2656cc;
   --band-wash: rgba(76, 125, 255, 0.1);
 }
 
@@ -307,7 +327,7 @@ img {
    hue family: dark ink on FSX / Executive / ManageiT / SentinelIQ, white on
    Enterprise and Defense. Ported code must keep this or CTAs lose contrast. */
 .btn-accent {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-family: var(--font-display);
   font-size: 15px;
