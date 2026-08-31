@@ -74,9 +74,16 @@ export function contrastRatio(a: string, b: string): number {
  *
  * Hue is preserved: this is a lightness lift in linear-ish RGB space, so
  * Defense stays green and Financial Services stays blue. An accent that
- * already passes is returned untouched, which is most of them.
+ * already passes is returned untouched.
+ *
+ * The reference is #161f35, the LIGHTEST dark surface an accent-coloured label
+ * actually lands on — the console mock's inner panels. It was #0e1524, one of
+ * the section grounds, which left the SentinelIQ purple passing on the page
+ * (4.6:1) and failing inside the console (4.18:1). Measuring against the
+ * lightest ground makes the darker ones pass for free; the cost is a slightly
+ * lighter accent on five of the seven palettes, around 3% of luminance.
  */
-export function readableAccent(accent: string, against = '#0e1524'): string {
+export function readableAccent(accent: string, against = '#161f35'): string {
   if (contrastRatio(accent, against) >= 4.5) return accent;
 
   const h = accent.replace('#', '');
@@ -91,19 +98,110 @@ export function readableAccent(accent: string, against = '#0e1524'): string {
   return '#ffffff';
 }
 
+/**
+ * A version of an accent safe to FILL with, given the ink that will sit on it.
+ *
+ * The mirror of `readableAccent`. That one lifts an accent so it can be read as
+ * text on the dark page; this one moves an accent so that text can be read on
+ * top of IT. Both are needed because a mid-tone accent cannot serve both roles
+ * at one value: `--accent` #2f6bff measures 4.50:1 against white and 4.48:1
+ * against the near-black page, so it is a hair under AA in both directions and
+ * moving it either way fixes one role by breaking the other.
+ *
+ * The step is deliberately small (2% toward the ink's opposite per iteration),
+ * because on most accents the shortfall is a rounding-edge miss — blue needs
+ * 0.7% of luminance to go from 4.50:1 to 4.64:1, which is invisible side by
+ * side. Hue is preserved, so Defense stays green. An accent whose ink already
+ * clears AA is returned untouched, which is most of them.
+ */
+export function fillAccent(accent: string, ink: string): string {
+  if (contrastRatio(ink, accent) >= 4.5) return accent;
+
+  const h = accent.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const rgb = [0, 2, 4].map((i) => parseInt(full.substr(i, 2), 16));
+  // White ink needs a darker fill; dark ink needs a lighter one.
+  const toward = luminance(ink) > 0.5 ? 0 : 255;
+
+  for (let t = 0.02; t <= 1; t += 0.02) {
+    const moved = rgb.map((c) => Math.round(c + (toward - c) * t));
+    const hex = '#' + moved.map((c) => c.toString(16).padStart(2, '0')).join('');
+    if (contrastRatio(ink, hex) >= 4.5) return hex;
+  }
+  return toward === 0 ? '#000000' : '#ffffff';
+}
+
+/**
+ * A readable version of an accent for TEXT on a LIGHT surface.
+ *
+ * The third of the three text roles. `readableAccent` lifts an accent so it can
+ * be read on the dark page; this darkens it so it can be read on white. Both
+ * exist because the phone mock-ups render a light app screen inside a dark
+ * page, so the same accent has to work as small type on both grounds — the
+ * avatar chip on `--accent-soft` and the product badge on white are 8-9px, and
+ * every blue in the palette lands in the 3-3.7:1 range there untouched.
+ *
+ * Darkens toward black in 2% steps, preserving hue, against the LIGHTEST
+ * surface it will meet (white). An accent that already passes is untouched.
+ */
+export function accentOnLight(accent: string, softAlpha = 0.26): string {
+  // The reference is NOT white. Accent type on a light screen mostly sits on
+  // --accent-soft, which is the accent tinted over white — darker than white,
+  // so it is the stricter of the two grounds. Targeting white left the result
+  // passing on white (4.50:1) and failing on the tint it actually sits on
+  // (3.75:1).
+  //
+  // The default alpha is 0.26, above every alpha the palette actually uses
+  // (.16 for most, .20 for Defense). Sizing the reference to the heaviest tint
+  // rather than the common one costs a little saturation and removes a class of
+  // near-miss: at .16 the Defense chip came out at 4.36:1 on its own .20 tint.
+  const against = compositeOverWhite(accent, softAlpha);
+  if (contrastRatio(accent, against) >= 4.5) return accent;
+
+  const h = accent.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const rgb = [0, 2, 4].map((i) => parseInt(full.substr(i, 2), 16));
+
+  for (let t = 0.02; t <= 1; t += 0.02) {
+    const darker = rgb.map((c) => Math.round(c * (1 - t)));
+    const hex = '#' + darker.map((c) => c.toString(16).padStart(2, '0')).join('');
+    if (contrastRatio(hex, against) >= 4.5) return hex;
+  }
+  return '#000000';
+}
+
+/** Flatten `hex` at `alpha` over white, as the browser would composite it. */
+export function compositeOverWhite(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const out = [0, 2, 4]
+    .map((i) => parseInt(full.substr(i, 2), 16))
+    .map((c) => Math.round(c * alpha + 255 * (1 - alpha)))
+    .map((c) => c.toString(16).padStart(2, '0'))
+    .join('');
+  return '#' + out;
+}
+
 /** CSS custom properties an accented route sets on its root element. */
 export function accentVars(
   accent: string,
   opts: { ink?: string; soft?: string } = {}
 ): React.CSSProperties {
+  const ink = opts.ink ?? onAccentInk(accent);
   return {
     ['--accent' as string]: accent,
+    // Fill-safe variant, for anything painted in the accent with `--accent-ink`
+    // on top: the primary CTA, product badges, outgoing message bubbles.
+    ['--accent-fill' as string]: fillAccent(accent, ink),
     // Text-safe variant. `--accent` stays the design's colour and is what
     // borders, fills, glows and large display type use; `--accent-text` is for
     // small type, where AA has to hold. On most accents they are identical.
     ['--accent-text' as string]: readableAccent(accent),
+    // Text-safe on a LIGHT ground — the light phone-screen mocks sit inside the
+    // dark page, so accent type needs a variant for each.
+    ['--accent-on-light' as string]: accentOnLight(accent),
     ['--accent-soft' as string]: opts.soft ?? rgba(accent, 0.16),
-    ['--accent-ink' as string]: opts.ink ?? onAccentInk(accent),
+    ['--accent-ink' as string]: ink,
     ['--accent-line' as string]: rgba(accent, 0.3),
     ['--accent-wash' as string]: rgba(accent, 0.1),
     ['--band-wash' as string]: rgba(accent, 0.05),
