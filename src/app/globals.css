@@ -2,7 +2,7 @@
 
 /* ==========================================================================
    ASPIS design tokens — verbatim from the v1.4 handoff (README §2).
-   Colour carries meaning, not decoration. Do not tint section backgrounds
+   Color carries meaning, not decoration. Do not tint section backgrounds
    with accent hues.
    ========================================================================== */
 
@@ -87,7 +87,7 @@
   --accent-soft: rgba(76, 125, 255, 0.16);
   --accent-ink: #ffffff; /* on-accent ink, chosen by luminance not family */
   /* Fill-safe accent — see fillAccent() in lib/theme.ts. --accent stays the
-     design's colour for borders, glows and large type; this is what gets
+     design's color for borders, glows and large type; this is what gets
      painted under --accent-ink, where AA has to hold. Routes override it via
      accentVars(); this default covers the ones that do not. */
   --accent-fill: #2e69fb;
@@ -190,7 +190,7 @@ img {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   /* Small type takes the AA-safe variant; it falls back to --accent on routes
-     that do not set one, and on most accents the two are the same colour. */
+     that do not set one, and on most accents the two are the same color. */
   color: var(--accent-text, var(--accent));
 }
 .h1 {
@@ -397,12 +397,6 @@ img {
   }
 }
 
-@media (max-width: 1279.98px) {
-  .nav-shieldme {
-    display: none;
-  }
-}
-
 
 /* Wide content (console mocks, tables, diagrams) scrolls inside its own
    container; the page body never scrolls horizontally. */
@@ -423,7 +417,7 @@ img {
 
 /* --------------------------------------------------------------------------
    Links inside running prose must be distinguishable without relying on
-   colour (WCAG 1.4.1), so they carry an underline the standalone nav and
+   color (WCAG 1.4.1), so they carry an underline the standalone nav and
    card links don't need.
    -------------------------------------------------------------------------- */
 .lnk-inline {
@@ -440,7 +434,7 @@ img {
   scroll-margin-top: 110px;
 }
 
-/* Decorative device and console mocks are exposed as a single labelled image
+/* Decorative device and console mocks are exposed as a single labeled image
    (role="img"), so nothing inside them should be focusable or announced. */
 [data-mock] * {
   user-select: none;
@@ -541,8 +535,8 @@ img {
 
 /* Card and tile hovers.
    The design file hovers to a lighter ground, not a lift — a lift pulls a cell
-   out of a collapsed-border grid and breaks the shared hairline. Border colour
-   is set with individual side properties so a card's coloured top edge
+   out of a collapsed-border grid and breaks the shared hairline. Border color
+   is set with individual side properties so a card's colored top edge
    survives the hover. */
 .card-hover {
   transition:
@@ -571,7 +565,7 @@ img {
   background-color: rgba(16, 23, 51, 0.6);
 }
 
-/* Industry cards carry a coloured top edge — recolour only the other three
+/* Industry cards carry a colored top edge — recolour only the other three
    sides so the edge is preserved. */
 .industry-card {
   transition:
@@ -873,7 +867,7 @@ textarea.field-input {
 /* ── Document library ─────────────────────────────────────────────────────
    A document card is a whole-card anchor. The card keeps the collapsed-grid
    discipline used elsewhere: ground tint on hover, never a transform, and the
-   coloured top edge is set inline so it survives the border-colour change. */
+   colored top edge is set inline so it survives the border-color change. */
 .doc-card {
   display: flex;
   flex-direction: column;
@@ -1133,7 +1127,7 @@ textarea.field-input {
    float over the content.
 
    `top: 100%` lands on the header's own bottom border; each panel draws its
-   own 1px top border in the same colour, so the two coincide rather than
+   own 1px top border in the same color, so the two coincide rather than
    doubling up. */
 .mega-panel,
 .mobile-drawer {

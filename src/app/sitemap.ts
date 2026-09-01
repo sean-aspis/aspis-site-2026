@@ -32,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry('/security-and-trust', 0.6, 'monthly'),
     entry('/shieldme', 0.5, 'monthly'),
     entry('/contact', 0.7, 'monthly'),
+    entry('/support', 0.6, 'monthly'),
     ...PRODUCT_KEYS.map((k) => entry(`/products/${k}`, 0.9, 'monthly')),
     ...SOLUTION_KEYS.map((k) => entry(`/solutions/${k}`, 0.8, 'monthly')),
     entry('/capabilities/platform-architecture', 0.9, 'monthly'),
