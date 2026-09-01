@@ -8,7 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
  * Solution hero — design file lines 1593–1619.
  * First section on the route, so no top hairline (nth-of-type(n+2) handles it).
  * The bloom and the glow are background-image only; the section's
- * background-colour still comes from the alternation rules in globals.css.
+ * background-color still comes from the alternation rules in globals.css.
  */
 export default function SolutionHero({ sol }: { sol: Solution }) {
   return (

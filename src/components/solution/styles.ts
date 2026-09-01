@@ -14,7 +14,7 @@ export const SECTION_H2: CSSProperties = {
 
 /**
  * The shared-hairline card grid: each cell pulls its right and bottom edges
- * one pixel back so neighbours overlap into a single-pixel rule.
+ * one pixel back so neighbors overlap into a single-pixel rule.
  */
 export const GRID_CELL: CSSProperties = {
   border: '1px solid rgba(122,160,255,.14)',

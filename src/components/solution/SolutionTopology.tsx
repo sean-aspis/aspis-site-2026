@@ -2,12 +2,12 @@
  * Radial topology diagram — ported from solutionDiagram(sol) in
  * "ASPIS Website v2.dc.html" (design file lines 2661–2697), which built the
  * same SVG through React.createElement. Geometry, radii, label placement and
- * animation timings are the design file's; only the colour source changed —
+ * animation timings are the design file's; only the color source changed —
  * the diagram reads the accent from the CSS custom properties the page sets
  * on <main>, so it stays palette-agnostic.
  *
  * Pulse and halo timings are staggered per node index (README §5) so the
- * signals never fire in unison. globals.css neutralises all of it under
+ * signals never fire in unison. globals.css neutralizes all of it under
  * prefers-reduced-motion.
  */
 
@@ -58,7 +58,7 @@ export default function SolutionTopology({
         />
       ))}
 
-      {/* Travelling pulse along each spoke, staggered per index. */}
+      {/* Traveling pulse along each spoke, staggered per index. */}
       {placed.map((nd) => (
         <line
           key={`p${nd.i}`}
@@ -109,7 +109,7 @@ export default function SolutionTopology({
       </text>
 
       {/* Node marks: dot, breathing halo, and a label that wraps after the
-          first word once it is long enough to collide with its neighbours. */}
+          first word once it is long enough to collide with its neighbors. */}
       {placed.map((nd) => {
         const anchor = Math.abs(nd.x - C) < 8 ? 'middle' : nd.x > C ? 'start' : 'end';
         const dx = anchor === 'middle' ? 0 : nd.x > C ? 16 : -16;

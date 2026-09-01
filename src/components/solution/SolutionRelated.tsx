@@ -9,7 +9,7 @@ import { GRID_CELL, SECTION_H2 } from './styles';
  *
  * An industry page used to end at its CTA, so the only way from one sector to
  * another was back through the mega menu. This closes that dead end: the four
- * neighbouring industries, in the data module's own order, wrapping around so
+ * neighboring industries, in the data module's own order, wrapping around so
  * every page shows four regardless of position.
  */
 export default function SolutionRelated({ solutionKey }: { solutionKey: SolutionKey }) {
@@ -64,7 +64,7 @@ export default function SolutionRelated({ solutionKey }: { solutionKey: Solution
                     fontSize: 10.5,
                     letterSpacing: '.14em',
                     // Small mono text takes the AA-safe variant of the tile's
-                    // own accent, not the raw palette colour.
+                    // own accent, not the raw palette color.
                     color: readableAccent(s.accent),
                   }}
                 >
