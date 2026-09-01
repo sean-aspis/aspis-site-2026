@@ -6,7 +6,7 @@
  * geometry the favicon uses, so the tab icon and the marks inside the product
  * mock-ups cannot drift apart.
  *
- * The path fills with `currentColor`, so a caller sets the colour by setting
+ * The path fills with `currentColor`, so a caller sets the color by setting
  * `color`. That matters here: the brand blue `#2D449C` measures 2.32:1 against
  * the site's near-black, so on the dark console mocks the mark has to be drawn
  * in a light tint (a near-white or the electric blue) rather than the literal
