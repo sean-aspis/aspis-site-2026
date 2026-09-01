@@ -11,7 +11,7 @@
  *
  * All icons share one geometry: a 24x24 box, stroke-only, 1.7 units wide, round
  * caps and joins, drawn in `currentColor`. That keeps them consistent at the
- * 11-16px sizes the mocks use, and lets a caller colour one by setting `color`.
+ * 11-16px sizes the mocks use, and lets a caller color one by setting `color`.
  */
 
 export type IconName =
