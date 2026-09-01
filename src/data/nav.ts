@@ -645,7 +645,8 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'Responsible Disclosure': '/security-and-trust#responsible-disclosure',
 };
 
-export const LEGAL_SLUGS = ['privacy-policy', 'terms-of-use', 'cookie-policy', 'accessibility'] as const;
+// LEGAL_SLUGS now lives in data/legal.ts, derived from the documents themselves
+// so the route list and the content cannot drift apart.
 
 export const EXTERNAL = {
   shieldMe: 'https://shieldme.com',
