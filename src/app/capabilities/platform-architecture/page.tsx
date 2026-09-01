@@ -102,7 +102,7 @@ export default function PlatformArchitecture() {
           </h2>
           <StackDiagram
             layers={LAYERS}
-            caption="LAYER BEHAVIOUR VARIES BY EDITION, DEPLOYMENT AND CONFIGURATION."
+            caption="LAYER BEHAVIOR VARIES BY EDITION, DEPLOYMENT AND CONFIGURATION."
           />
         </div>
       </section>
