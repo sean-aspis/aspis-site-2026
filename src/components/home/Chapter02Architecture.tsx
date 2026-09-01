@@ -8,7 +8,7 @@ import { ROUTES } from '@/data/nav';
  * six-layer stack table.
  *
  * The domain cards hover to a cyan border in the design. `.card-hover` drives
- * its border colour from `--accent`, so the card sets that variable locally
+ * its border color from `--accent`, so the card sets that variable locally
  * rather than reaching for a JS mouse handler.
  */
 export default function Chapter02Architecture() {

@@ -444,7 +444,7 @@ export default function ManageItConsole() {
                 ))}
                 {/* The real dashboard marks each hotspot with a tight cluster of
                     lit map dots inside the glow, which is what makes it read as
-                    activity on a map rather than as coloured haze. The offsets
+                    activity on a map rather than as colored haze. The offsets
                     are a fixed lattice, not random, so the mock is stable
                     between renders and between server and client. */}
                 {CONSOLE.consoleBlobs.map((b, i) => (

@@ -244,7 +244,7 @@ export default function Chapter05MobileThreatDefense() {
                   {/* The real ASPIS mark carrying the risk state, rather than a
                       generic shield outline. #F0452A on this near-white panel
                       measures 4.0:1, and the state is also carried by the
-                      heading text, so it is not colour-only. */}
+                      heading text, so it is not color-only. */}
                   <span style={{ position: 'relative', display: 'flex', color: '#F0452A' }}>
                     <AspisMark size={52} />
                     <span

@@ -11,9 +11,9 @@ const CYCLE_MS = 6000;
 
 /*
  * Secondary text inside the light phone screens is #6A6E78, not the iOS system
- * grey #8A8F9C the design file used. #8A8F9C measures 3.24:1 on white and
+ * gray #8A8F9C the design file used. #8A8F9C measures 3.24:1 on white and
  * 2.92:1 on the #F2F3F7 panels — below AA for the 8.5-11.5px sizes these
- * screens use. #6A6E78 is the same hue at 5.10:1 and 4.60:1. Apple's own grey
+ * screens use. #6A6E78 is the same hue at 5.10:1 and 4.60:1. Apple's own gray
  * fails the same check; matching it exactly is not worth an illegible mock.
  */
 
@@ -105,7 +105,7 @@ export default function HeroPhone({ motion }: { motion: boolean }) {
         justifyContent: 'center',
       }}
     >
-      {/* Orbit rings + travelling signal pulses */}
+      {/* Orbit rings + traveling signal pulses */}
       <svg
         viewBox="0 0 560 620"
         style={{
@@ -231,7 +231,7 @@ export default function HeroPhone({ motion }: { motion: boolean }) {
             }}
           >
             {SITE.tabsActive.map((t) => {
-              // SITE.tabsActive carries its icon as a serialised element tree
+              // SITE.tabsActive carries its icon as a serialized element tree
               // the design export produced; this mock only ever rendered the
               // label, so the tab bar came out as five words with no icons
               // while the other phone mocks had them. Draw the real icon.
