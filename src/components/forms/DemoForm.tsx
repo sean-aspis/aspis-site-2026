@@ -16,7 +16,7 @@ export default function DemoForm() {
   // The five contact routes are separate destinations in the navigation
   // (/contact#government-and-defense and so on). Reading the hash preselects
   // the matching option so a visitor who chose a path does not have to choose
-  // it again, and so the enquiry arrives already routed.
+  // it again, and so the inquiry arrives already routed.
   const [area, setArea] = useState('');
   useEffect(() => {
     const apply = () => {
@@ -53,7 +53,7 @@ export default function DemoForm() {
             maxWidth: 520,
           }}
         >
-          Submitted information is used to respond to your enquiry. ASPIS does not sell contact
+          Submitted information is used to respond to your inquiry. ASPIS does not sell contact
           data.
         </p>
       }

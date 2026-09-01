@@ -9,9 +9,9 @@ import { rgba } from '@/lib/theme';
  * `formState(id, label)` in "ASPIS Website v2.dc.html" (lines 3231–3270).
  *
  * The design file posts a `FormData` body; the porting brief specifies JSON, so
- * the form is serialised to a plain object first (repeated names — the
+ * the form is serialized to a plain object first (repeated names — the
  * multi-select on the deal registration — collapse into an array). Everything
- * else is the design's behaviour verbatim: preventDefault, manual
+ * else is the design's behavior verbatim: preventDefault, manual
  * checkValidity/reportValidity (the form carries noValidate), the four states,
  * the "Sending…" label with opacity .6 and cursor wait, `form.reset()` on
  * success, Formspree's own `errors[].message` joined with ". " ahead of the
@@ -193,7 +193,7 @@ export default function FormShell({
 }
 
 /**
- * The "received" panel that replaces a submitted form. Colours differ per form
+ * The "received" panel that replaces a submitted form. Colors differ per form
  * (teal on the demo request, amber on the deal registration) so the accent is a
  * prop rather than a token lookup.
  */

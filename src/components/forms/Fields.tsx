@@ -3,7 +3,7 @@
 import type { FieldSpec } from './FormShell';
 
 /**
- * Labelled controls for both forms.
+ * Labeled controls for both forms.
  *
  * The design file wraps each control in an implicit `<label>`; these use an
  * explicit `htmlFor`/`id` pair instead so the association survives however the
@@ -53,7 +53,7 @@ export function SelectField({
   required?: boolean;
   /**
    * A disabled first option. Without one a select silently submits its first
-   * entry when the visitor never touches it, which produces enquiries and deal
+   * entry when the visitor never touches it, which produces inquiries and deal
    * registrations that quietly claim a value nobody chose.
    */
   placeholder?: string;
@@ -159,7 +159,7 @@ export function CheckboxField({
 
 /**
  * Required fields are marked with "*" in the label text itself — shape, not
- * colour — and this legend says what the mark means.
+ * color — and this legend says what the mark means.
  */
 export function RequiredNote({ style }: { style?: React.CSSProperties }) {
   return (
