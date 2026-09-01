@@ -25,7 +25,7 @@ export default function DocumentCard({ doc, compact = false }: { doc: Doc; compa
       className="doc-card card-hover"
       style={{
         borderTop: `2px solid ${doc.accent}`,
-        // The card's rules and top edge use the document's own colour; its
+        // The card's rules and top edge use the document's own color; its
         // small mono text uses the AA-safe variant of it.
         ['--doc-accent' as string]: doc.accent,
         ['--doc-accent-text' as string]: readableAccent(doc.accent, '#0a0f1e'),
