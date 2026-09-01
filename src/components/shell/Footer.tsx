@@ -89,6 +89,10 @@ export default function Footer() {
             />
             {[
               { label: 'MANAGEIT LOGIN — ADMIN PORTAL ↗', href: EXTERNAL.manageIt },
+              // ShieldMe moved here from the header. It is the consumer product
+              // and it leaves the site, so it belongs with the other outbound
+              // links rather than in the enterprise header's action area.
+              { label: 'SHIELDME — FOR INDIVIDUALS ↗', href: EXTERNAL.shieldMe },
               { label: 'LINKEDIN ↗', href: LINKEDIN },
             ].map((l) => (
               <a

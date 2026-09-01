@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * pixels — so returning to the navigation was a scroll of its own. This is the
  * shortcut.
  *
- * Behaviour worth knowing about:
+ * Behavior worth knowing about:
  *
  *  · It appears after 1.4 viewports of scrolling. Below that the header is
  *    still close enough that the control would be noise.

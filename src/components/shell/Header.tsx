@@ -268,20 +268,12 @@ export default function Header() {
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: '0 0 auto' }}>
-            <a
-              href={EXTERNAL.shieldMe}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lnk-soft nav-shieldme"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12,
-                letterSpacing: '.04em',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              ShieldMe ↗
-            </a>
+            {/* ShieldMe used to sit here, between the nav and the admin log-in.
+                It is the consumer product and it leaves the site entirely, so in
+                the primary action area of an enterprise header it competed with
+                the two things a business visitor is actually there to do. It now
+                lives in the footer's external row, beside the ManageiT portal
+                and LinkedIn, and /shieldme carries it in the Platform column. */}
             {/* "Log In" alone did not say where it goes. It leaves the site for
                 ManageiT, the administration portal, so the label names it and
                 the accessible name spells out what it is and that it opens in a
@@ -702,21 +694,6 @@ export default function Header() {
               >
                 Administration portal
               </span>
-            </a>
-            <a
-              href={EXTERNAL.shieldMe}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: 'var(--text-muted)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 12.5,
-                letterSpacing: '.06em',
-                textAlign: 'center',
-                padding: '6px 0',
-              }}
-            >
-              ShieldMe ↗
             </a>
           </div>
         </nav>
