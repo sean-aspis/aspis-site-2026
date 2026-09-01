@@ -38,7 +38,7 @@ export async function GET(
     );
   }
 
-  const file = path.basename(doc.file); // registry value, but normalise anyway
+  const file = path.basename(doc.file); // registry value, but normalize anyway
   let bytes: Buffer;
   try {
     bytes = await readFile(path.join(process.cwd(), 'private', 'documents', file));
