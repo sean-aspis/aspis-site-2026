@@ -55,12 +55,12 @@ export default function Newsroom() {
               NO ANNOUNCEMENTS PUBLISHED YET
             </div>
             <p className="body" style={{ marginBottom: 20 }}>
-              Announcements will be posted here as they are released. For media enquiries,
+              Announcements will be posted here as they are released. For media inquiries,
               analyst briefings, or interview requests, contact ASPIS directly.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
               <Link href={ROUTES.contact} className="btn-ghost">
-                Media enquiries
+                Media inquiries
               </Link>
               <Link href={ROUTES.resources} className="btn-ghost">
                 Resource Center
