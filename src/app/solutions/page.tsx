@@ -106,7 +106,7 @@ export default function SolutionsIndexPage() {
                       fontSize: 10.5,
                       letterSpacing: '.1em',
                       // Small mono text takes the AA-safe variant of the tile's
-                      // own accent, not the raw palette colour — the same rule
+                      // own accent, not the raw palette color — the same rule
                       // SolutionRelated already applies. Financial Services
                       // #4776B9 is 4.37:1 on this ground untouched.
                       color: readableAccent(s.accent),
