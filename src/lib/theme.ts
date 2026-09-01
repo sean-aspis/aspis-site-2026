@@ -8,7 +8,7 @@
  * On-accent ink is chosen by LUMINANCE, not by hue family. The design file
  * carries the decision per product as `ctaText`; `onAccentInk` reproduces the
  * same rule for anything the data does not cover. ShieldiT Defense is
- * deliberately military green — never normalise it to blue.
+ * deliberately military green — never normalize it to blue.
  */
 
 export function rgba(hex: string, alpha: number | string): string {
@@ -55,7 +55,7 @@ export function bestInk(accent: string): string {
     : '#ffffff';
 }
 
-/** WCAG contrast ratio between two hex colours. */
+/** WCAG contrast ratio between two hex colors. */
 export function contrastRatio(a: string, b: string): number {
   const [l1, l2] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (l1 + 0.05) / (l2 + 0.05);
@@ -76,7 +76,7 @@ export function contrastRatio(a: string, b: string): number {
  * Defense stays green and Financial Services stays blue. An accent that
  * already passes is returned untouched.
  *
- * The reference is #161f35, the LIGHTEST dark surface an accent-coloured label
+ * The reference is #161f35, the LIGHTEST dark surface an accent-colored label
  * actually lands on — the console mock's inner panels. It was #0e1524, one of
  * the section grounds, which left the SentinelIQ purple passing on the page
  * (4.6:1) and failing inside the console (4.18:1). Measuring against the
@@ -193,7 +193,7 @@ export function accentVars(
     // Fill-safe variant, for anything painted in the accent with `--accent-ink`
     // on top: the primary CTA, product badges, outgoing message bubbles.
     ['--accent-fill' as string]: fillAccent(accent, ink),
-    // Text-safe variant. `--accent` stays the design's colour and is what
+    // Text-safe variant. `--accent` stays the design's color and is what
     // borders, fills, glows and large display type use; `--accent-text` is for
     // small type, where AA has to hold. On most accents they are identical.
     ['--accent-text' as string]: readableAccent(accent),

@@ -30,7 +30,7 @@ export const DIRECT_ROUTES = [
  */
 export const WHAT_HAPPENS_NEXT = [
   {
-    t: 'An ASPIS specialist reviews the enquiry',
+    t: 'An ASPIS specialist reviews the inquiry',
     d: 'Routed by the area of interest selected above, so the first conversation is with someone who works on it.',
   },
   {
