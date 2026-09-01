@@ -5,7 +5,7 @@ import type { ProductRecord } from './derive';
  * Capability blocks — a collapsed-border grid (each cell pulls one pixel of
  * margin so adjacent 1px borders overlap instead of doubling) followed by the
  * product's qualifying note. The note's rule is cyan: it is a platform-level
- * caveat, not accent-carried product colour.
+ * caveat, not accent-carried product color.
  */
 export default function ProductBlocks({ product }: { product: ProductRecord }) {
   return (

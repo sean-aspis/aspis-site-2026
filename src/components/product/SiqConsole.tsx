@@ -694,7 +694,7 @@ function LineChart() {
         role="img"
         aria-label="Illustrative monthly review throughput: reviewed on time trending up from about 70 to 88 percent, escalations trending down, AI-flagged volume rising."
       >
-        {/* Gridlines and a labelled scale, so the shape means something. */}
+        {/* Gridlines and a labeled scale, so the shape means something. */}
         {ticks.map((t) => (
           <g key={t}>
             <line

@@ -161,7 +161,7 @@ export function msgVals(msgs: readonly Msg[], ctaText: string): MsgVals[] {
     // The sender name is 9.5px, so it gets no contrast headroom to give away.
     // The previous values — white at 85% over the accent (3.69:1) and #7A8296
     // over #F1F2F6 (3.43:1) — both failed AA at that size. Full-strength ink
-    // and a darker grey (4.63:1) fix it without changing the bubble colours.
+    // and a darker gray (4.63:1) fix it without changing the bubble colors.
     whoColor: m.mine ? ink : '#666D7E',
   }));
 }
