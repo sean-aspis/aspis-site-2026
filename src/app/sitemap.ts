@@ -33,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry('/shieldme', 0.5, 'monthly'),
     entry('/contact', 0.7, 'monthly'),
     entry('/support', 0.6, 'monthly'),
+    // The published legal documents are indexable, so they belong here. The
+    // accessibility statement is still a placeholder and is left out until it
+    // has content — listing an empty page invites it to be indexed.
+    entry('/legal/privacy-policy', 0.4, 'monthly'),
+    entry('/legal/terms-of-use', 0.4, 'monthly'),
+    entry('/legal/cookie-policy', 0.4, 'monthly'),
     ...PRODUCT_KEYS.map((k) => entry(`/products/${k}`, 0.9, 'monthly')),
     ...SOLUTION_KEYS.map((k) => entry(`/solutions/${k}`, 0.8, 'monthly')),
     entry('/capabilities/platform-architecture', 0.9, 'monthly'),
