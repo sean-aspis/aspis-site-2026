@@ -637,7 +637,7 @@ export const FOOTER_LINK_MAP: Record<string, string> = {
   'Support': '/support',
   // Legal — no source content in the design file; these render as explicit
   // "not yet published" placeholders rather than invented policy text.
-  'Privacy Policy': '/legal/privacy-policy',
+  'Privacy Policy': '/privacy-policy',
   'Terms of Use': '/legal/terms-of-use',
   'Cookie Policy': '/legal/cookie-policy',
   'Accessibility': '/legal/accessibility',

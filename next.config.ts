@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [420, 640, 828, 1080, 1200, 1600, 1920, 2560],
   },
+  async redirects() {
+    return [
+      // The privacy policy's published address is /privacy-policy (it is the
+      // URL given to the app stores). The old /legal path forwards to it.
+      { source: '/legal/privacy-policy', destination: '/privacy-policy', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
