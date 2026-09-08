@@ -34,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry('/contact', 0.7, 'monthly'),
     entry('/support', 0.6, 'monthly'),
     entry('/privacy-policy', 0.4, 'monthly'),
+    entry('/account-deletion-request', 0.3, 'monthly'),
     // The published legal documents are indexable, so they belong here. The
     // accessibility statement is still a placeholder and is left out until it
     // has content — listing an empty page invites it to be indexed.
