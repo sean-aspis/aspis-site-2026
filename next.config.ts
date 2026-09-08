@@ -22,6 +22,13 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [420, 640, 828, 1080, 1200, 1600, 1920, 2560],
   },
+  async rewrites() {
+    return [
+      // The logo is referenced both with and without its extension; /logo
+      // serves the same transparent PNG as /logo.png.
+      { source: '/logo', destination: '/logo.png' },
+    ];
+  },
   async redirects() {
     return [
       // The privacy policy's published address is /privacy-policy (it is the
