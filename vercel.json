@@ -4,6 +4,5 @@
   "buildCommand": "next build",
   "installCommand": "npm ci",
   "regions": ["iad1"],
-  "cleanUrls": true,
-  "trailingSlash": false
+  "cleanUrls": true
 }

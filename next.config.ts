@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   /**
+   * Trailing-slash redirects are handled in src/proxy.ts instead of by Next,
+   * because two registered addresses must answer 200 with their trailing slash.
+   */
+  skipTrailingSlashRedirect: true,
+  /**
    * The gated PDFs live in /private/documents, outside the public directory, so
    * nothing serves them but the /api/documents/[slug] route. Nothing imports
    * them either — the route reads them from disk — so Next cannot infer the
