@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   /**
    * Trailing-slash redirects are handled in src/proxy.ts instead of by Next,
-   * because two registered addresses must answer 200 with their trailing slash.
+   * because several registered addresses must answer 200 with their trailing
+   * slash.
    */
   skipTrailingSlashRedirect: true,
   /**
@@ -27,6 +28,18 @@ const nextConfig: NextConfig = {
       // The logo is referenced both with and without its extension; /logo
       // serves the same transparent PNG as /logo.png.
       { source: '/logo', destination: '/logo.png' },
+      // The ShieldiT apps and their identity-provider registration carry the
+      // legal documents under these addresses. Each serves the same document
+      // as its published address (a rewrite, not a redirect, so it answers
+      // 200 as written); the rendered page's canonical still points at the
+      // published address. The trailing-slash forms are exempted from the
+      // site-wide redirect in src/proxy.ts. There is no separate copyright
+      // policy: /copyright-policy serves the Terms of Use, whose
+      // "Intellectual property" section covers it.
+      { source: '/privacy', destination: '/privacy-policy' },
+      { source: '/acceptable-use-policy-terms', destination: '/legal/terms-of-use' },
+      { source: '/terms-of-use-and-acceptance', destination: '/legal/terms-of-use' },
+      { source: '/copyright-policy', destination: '/legal/terms-of-use' },
     ];
   },
   async redirects() {
